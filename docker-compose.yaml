@@ -6,21 +6,28 @@ services:
     image: nginx:1.18
     ports:
       - 80:80
+      - 443:443
+      - 8282:8282
     volumes:
-      - ./src:/var/www/node114.webte.fei.stuba.sk/ZadanieFinal
+      - ./src:/var/www/node114.webte.fei.stuba.sk/
       - ./.docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./.docker/nginx/ssl/certs:/etc/ssl/certs/
+      - ./.docker/nginx/ssl/private:/etc/ssl/private/
     depends_on:
       - php
 
   # PHP-FPM service
   php:
     build: ./.docker/php
-    working_dir: /var/www/node114.webte.fei.stuba.sk/ZadanieFinal
+    working_dir: /var/www/node114.webte.fei.stuba.sk/
     volumes:
-      - ./src:/var/www/node114.webte.fei.stuba.sk/ZadanieFinal
+      - ./src:/var/www/node114.webte.fei.stuba.sk/
+    environment:
+      PHP_IDE_CONFIG: "serverName=node114.webte.fei.stuba.sk"
     depends_on:
       mysql:
         condition: service_healthy
+    command: sh -c "php ./socket/wsserver.php start -d && php-fpm"
 
   #MySQL service
   mysql:
