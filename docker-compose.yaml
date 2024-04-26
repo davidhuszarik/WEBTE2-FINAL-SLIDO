@@ -22,12 +22,24 @@ services:
     working_dir: /var/www/node114.webte.fei.stuba.sk/
     volumes:
       - ./src:/var/www/node114.webte.fei.stuba.sk/
+      - ./.docker/composer/vendor:/var/www/node114.webte.fei.stuba.sk/vendor
     environment:
       PHP_IDE_CONFIG: "serverName=node114.webte.fei.stuba.sk"
     depends_on:
       mysql:
         condition: service_healthy
+      composer:
+        condition: service_started
     command: sh -c "php ./socket/wsserver.php start -d && php-fpm"
+
+  composer:
+    image: composer/composer
+    working_dir: /composer
+    ports:
+      - 9001:9000
+    volumes:
+      - ./.docker/composer:/composer
+    command: install
 
   #MySQL service
   mysql:
