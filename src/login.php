@@ -69,8 +69,8 @@
 </head>
 <body>
 <div id="particles-js"></div>
-<script src="http://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-<script src="http://threejs.org/examples/js/libs/stats.min.js"></script>
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script src="https://threejs.org/examples/js/libs/stats.min.js"></script>
 <div class="form-container">
     <form id="loginForm">
         <img src="images/logo.png" alt="Logo" class="logo">
@@ -87,6 +87,9 @@
         <button type="submit" class="btn btn-primary btn-block">Log in</button>
         <div class="register-prompt">
             Don't have an account? <a href="register.php" class="register-link">Register</a>
+        </div>
+        <div style="text-align: center; margin-top: 10px;">
+            <button onclick="window.location.href = 'index.html';" class="btn btn-secondary">Back</button>
         </div>
     </form>
 </div>
