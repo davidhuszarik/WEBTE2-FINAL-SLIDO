@@ -36,7 +36,7 @@ CREATE TABLE `user` (
   `hashed_password` char(64) COLLATE utf8mb4_general_ci NOT NULL,
   `salt` char(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT ' spVj3cU',
   `google_2FA_secret` varchar(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `access_token` int DEFAULT NULL,
+  `access_token` varchar(16) DEFAULT NULL,
   `last_access` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
