@@ -5,9 +5,9 @@ services:
   nginx:
     image: nginx:1.18
     ports:
-      - 80:80
-      - 443:443
-      - 8282:8282
+      - "80:80"
+      - "443:443"
+      - "8282:8282"
     volumes:
       - ./src:/var/www/node114.webte.fei.stuba.sk/
       - ./.docker/nginx/conf.d:/etc/nginx/conf.d
@@ -36,7 +36,7 @@ services:
     image: composer/composer
     working_dir: /composer
     ports:
-      - 9001:9000
+      - "9001:9000"
     volumes:
       - ./.docker/composer:/composer
     command: install
@@ -44,6 +44,8 @@ services:
   #MySQL service
   mysql:
     image: mysql/mysql-server:8.0
+    ports:
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: "Cv~my8!82ln("
       # MYSQL_ROOT_HOST: "%"
@@ -63,7 +65,7 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:5
     ports:
-      - 8080:80
+      - "8080:80"
     environment:
       PMA_HOST: mysql
     depends_on:
