@@ -60,7 +60,8 @@
         }
     </style>
 </head>
-<body>
+
+<body onload="translateToSlovak()">
 
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
@@ -72,10 +73,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#welcome"><i class="fas fa-home"></i> Home</a>
+                    <a class="nav-link" id="homeLink" href="#welcome"><i class="fas fa-home"></i> Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="login.php"><i class="fas fa-info-circle"></i> Login</a>
+                    <a class="nav-link" id="loginLink" href="login.php"><i class="fas fa-info-circle"></i> Login</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -83,8 +84,8 @@
                         Language
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">English</a>
-                        <a class="dropdown-item" href="#">Slovak</a>
+                        <a class="dropdown-item" id="englishLink" href="#">English <span id="englishIndicator"></span></a>
+                        <a class="dropdown-item" id="slovakLink" href="#">Slovak <span id="slovakIndicator"></span></a>
                     </div>
                 </li>
             </ul>
@@ -96,24 +97,45 @@
 <div id="welcome" class="jumbotron" style="padding: 20px 20px;" data-aos="fade-up" data-aos-duration="1000">
     <div class="container" style="position: relative;">
         <div id="particles-js"></div>
-        <h1 style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">Got an
-            invitation code?</h1>
-        <p style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); z-index: 1; font-size: 16px;">
-            Enter the invitation code you received to connect as visitor</p>
+        <h1 style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); z-index: 1;" id="invitationHeading"></h1>
+        <p style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); z-index: 1; font-size: 16px;" id="invitationMessage"></p>
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
-            <input type="text" id="invitationCode" name="invitationCode" placeholder="Enter your invitation code"
+            <input type="text" id="invitationCode" name="invitationCode" placeholder="XXXXXX"
                    style="width: 300px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;">
             <button onclick="sendInvitation()"
                     style="margin-top: 10px; padding: 10px 20px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">
-                Send
+                <i class="fas fa-paper-plane"></i> <span id="connectText"></span>
             </button>
         </div>
     </div>
 </div>
-<div class="divider"></div>
+<section id="who-we-are" class="section" style="margin-top: 50px; margin-bottom: 50px;">
+    <div class="container">
+        <h2 class="text-center" id="whatsGoodHeading"></h2>
+        <div class="row align-items-center">
+            <div class="col-md-4 text-center">
+                <img src="images/imagWithLogo.png" class="img-fluid" alt="Who We Are Image" style="max-width: 200px;">
+            </div>
+            <div class="col-md-8">
+                <p style="margin-top: 20px; margin-bottom: 20px;" id="whatsGoodText1"></p>
+                <p style="margin-top: 20px; margin-bottom: 0;" id="whatsGoodText2"></p>
+            </div>
+
+            <div class="vertical-divider"></div>
+
+        </div>
+    </div>
+</section>
+<hr style="border-top: 2px solid #ccc; width: 80px; margin: 20px auto;">
+<div class="container text-center" style="margin-bottom: 50px;">
+    <p><strong id="needHelpText"></strong> <span id="documentationText"></span> <br>
+        <span id="logoText"></span>, <span id="phoneIconText"></span>, <span id="aiText"></span>.</p>
+</div>
+
 <footer class="footer">
     <div class="container">
-        <p>&copy; 2024 ODILS. All rights reserved.</p>
+        <p>&copy; 2024 ODILS. <span id="rightsReservedText"></span><br>
+            <span id="schoolProjectText"></span></p>
     </div>
 </footer>
 
@@ -174,6 +196,59 @@
         },
         "retina_detect": true
     });
+
+    function translateToEnglish() {
+        document.getElementById('homeLink').innerText = 'Home';
+        document.getElementById('loginLink').innerText = 'Login';
+        document.getElementById('navbarDropdown').innerText = 'Language';
+        document.getElementById('invitationHeading').innerText = 'Got an invitation code?';
+        document.getElementById('invitationMessage').innerText = 'Enter the invitation code you received to connect as visitor';
+        document.getElementById('connectText').innerText = 'Connect';
+        document.getElementById('whatsGoodHeading').innerText = "What's good about ODILS?";
+        document.getElementById('whatsGoodText1').innerText = 'Odils emerges as a transformative platform redefining audience engagement across various settings, be it presentations, meetings, or events.';
+        document.getElementById('whatsGoodText2').innerText = 'Through Odils, attendees transcend the role of mere spectators, becoming integral contributors to the discourse.';
+        document.getElementById('needHelpText').innerText = 'Do you need help?';
+        document.getElementById('documentationText').innerText = 'You can find our documentation here:';
+        document.getElementById('logoText').innerText = 'The logo was created using';
+        document.getElementById('phoneIconText').innerText = 'the phone icon is from';
+        document.getElementById('aiText').innerText = 'and some parts of the text were generated by';
+        document.getElementById('rightsReservedText').innerText = 'All rights reserved.';
+        document.getElementById('schoolProjectText').innerText = 'This is a school project and is not affiliated with Cisco/Slido.';
+        document.getElementById('englishIndicator').style.display = 'inline';
+        document.getElementById('slovakIndicator').style.display = 'none';
+        localStorage.setItem('selectedLanguage', 'english');
+    }
+
+    function translateToSlovak() {
+        document.getElementById('homeLink').innerText = 'Domov';
+        document.getElementById('loginLink').innerText = 'Prihlásenie';
+        document.getElementById('navbarDropdown').innerText = 'Jazyk';
+        document.getElementById('invitationHeading').innerText = 'Máte pozvánkový kód?';
+        document.getElementById('invitationMessage').innerText = 'Zadajte pozvánkový kód, ktorý ste dostali, aby ste sa pripojili ako návštevník';
+        document.getElementById('connectText').innerText = 'Pripojiť sa';
+        document.getElementById('whatsGoodHeading').innerText = "Čo je dobré na ODILS?";
+        document.getElementById('whatsGoodText1').innerText = 'Odils sa stáva transformačnou platformou, ktorá predefinuje zapojenie publika v rôznych prostrediach, či už ide o prezentácie, stretnutia alebo udalosti.';
+        document.getElementById('whatsGoodText2').innerText = 'Prostredníctvom Odils účastníci presahujú úlohu iba divákov, stávajú sa neoddeliteľnými prispievateľmi k diskurzu.';
+        document.getElementById('needHelpText').innerText = 'Potrebujete pomoc?';
+        document.getElementById('documentationText').innerText = 'Nájdete našu dokumentáciu tu:';
+        document.getElementById('logoText').innerText = 'Logo bolo vytvorené pomocou';
+        document.getElementById('phoneIconText').innerText = 'ikona telefónu je od';
+        document.getElementById('aiText').innerText = 'a niektoré časti textu boli vygenerované pomocou';
+        document.getElementById('rightsReservedText').innerText = 'Všetky práva vyhradené.';
+        document.getElementById('schoolProjectText').innerText = 'Toto je školský projekt a nie je spätý s Cisco/Slido.';
+        document.getElementById('slovakIndicator').style.display = 'inline';
+        document.getElementById('englishIndicator').style.display = 'none';
+        localStorage.setItem('selectedLanguage', 'slovak');
+    }
+
+    document.getElementById('englishLink').addEventListener('click', function() {
+        translateToEnglish();
+    });
+
+    document.getElementById('slovakLink').addEventListener('click', function() {
+        translateToSlovak();
+    });
+
 </script>
 </body>
 </html>
