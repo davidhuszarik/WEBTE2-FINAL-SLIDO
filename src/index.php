@@ -100,7 +100,7 @@
         <h1 style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); z-index: 1;" id="invitationHeading"></h1>
         <p style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); z-index: 1; font-size: 16px;" id="invitationMessage"></p>
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
-            <input type="text" id="invitationCode" name="invitationCode" placeholder="XXX-XXX-XXX"
+            <input type="text" id="invitationCode" name="invitationCode" placeholder="XXXXXX"
                    style="width: 300px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;">
             <button onclick="sendInvitation()"
                     style="margin-top: 10px; padding: 10px 20px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">

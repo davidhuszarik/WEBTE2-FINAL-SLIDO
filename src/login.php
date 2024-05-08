@@ -85,11 +85,11 @@
             <div class="invalid-feedback">Please enter your password.</div>
         </div>
         <button id="loginButton" type="submit" class="btn btn-primary btn-block">Log in</button>
+        <div style="text-align: center; margin-top: 10px;">
+            <button id="backButton" onclick="window.location.href = 'index.html';" class="btn btn-secondary btn-block">Back</button>
+        </div>
         <div class="register-prompt">
             <span id="registerPrompt"></span>
-        </div>
-        <div style="text-align: center; margin-top: 10px;">
-            <button id="backButton" onclick="window.location.href = 'index.html';" class="btn btn-secondary">Back</button>
         </div>
     </form>
 </div>
@@ -107,7 +107,7 @@
         const specialChars = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
         if (specialChars.test(username.value)) {
             savedLanguage = localStorage.getItem('selectedLanguage');
-            if (savedLanguage = "Slovak") {
+            if (savedLanguage === "slovak") {
                 usernameFeedback.textContent = 'Používateľské meno obsahuje špeciálne znaky.';
             }
             else {
@@ -118,7 +118,7 @@
         } else if (username.value.trim() === '') {
             username.classList.add('is-invalid');
             savedLanguage = localStorage.getItem('selectedLanguage');
-            if (savedLanguage = "Slovak") {
+            if (savedLanguage === "slovak") {
                 usernameFeedback.textContent = 'Prosím, zadajte svoje používateľské meno.';
             }
             else {
@@ -128,7 +128,7 @@
         } else if (username.value.length > 25) {
             username.classList.add('is-invalid');
             savedLanguage = localStorage.getItem('selectedLanguage');
-            if (savedLanguage = "Slovak") {
+            if (savedLanguage === "slovak") {
                 usernameFeedback.textContent = 'Používateľské meno musí mať menej ako 25 znakov.';
             }
             else {
@@ -177,6 +177,8 @@
     window.onload = function() {
         checkSavedLanguage();
     };
+
+
 
     function validatePassword() {
         if (password.value.trim() === '') {

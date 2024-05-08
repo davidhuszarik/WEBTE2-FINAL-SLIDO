@@ -90,40 +90,40 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="username">Username</label>
+                    <label id="usernameLabel" for="username">Username</label>
                     <input type="text" class="form-control" id="username" required maxlength="25">
                     <div class="invalid-feedback" id="usernameFeedback">Please enter your username.</div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label id="emailLabel" for="email">Email</label>
                     <input type="email" class="form-control" id="email" required>
                     <div class="invalid-feedback" id="emailFeedback">Please enter a valid email address.</div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label id="passwordLabel" for="password">Password</label>
                     <input type="password" class="form-control" id="password" required minlength="8">
                     <div class="invalid-feedback">Password must be at least 8 characters.</div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="confirmPassword">Confirm password</label>
+                    <label id="confirmPasswordLabel" for="confirmPassword">Confirm password</label>
                     <input type="password" class="form-control" id="confirmPassword" required>
                     <div class="invalid-feedback" id="passwordConfirmFeedback">Passwords do not match.</div>
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-block">Register</button>
+        <button id="registerButton" type="submit" class="btn btn-primary btn-block">Register</button>
     </form>
     <div style="text-align: center; margin-top: 10px;">
-        <p>Have you already account? <a href="login.php">Login</a></p>
+        <button id="backButton" onclick="window.location.href = 'index.html';" class="btn btn-secondary btn-block">Back</button>
     </div>
-    <div style="text-align: center; margin-top: 10px;">
-        <button onclick="window.location.href = 'index.html';" class="btn btn-secondary">Back</button>
+    <div id="loginPrompt" style="text-align: center; margin-top: 10px;">
+        <p>Have you already account? <a href="login.php">Login</a></p>
     </div>
 </div>
 
@@ -145,24 +145,90 @@
         const specialChars = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
         if (specialChars.test(username.value)) {
             username.classList.add('is-invalid');
-            usernameFeedback.textContent = 'Username contains special characters.';
+            savedLanguage = localStorage.getItem('selectedLanguage');
+            if (savedLanguage === "slovak") {
+                usernameFeedback.textContent = 'Používateľské meno obsahuje špeciálne znaky.';
+            }
+            else {
+                usernameFeedback.textContent = 'Username contains special characters.';
+            }
         } else if (username.value.trim() === '') {
             username.classList.add('is-invalid');
-            usernameFeedback.textContent = 'Please enter your username.';
+            savedLanguage = localStorage.getItem('selectedLanguage');
+            if (savedLanguage === "slovak") {
+                usernameFeedback.textContent = 'Prosím, zadajte používateľské meno.';
+            }
+            else {
+                usernameFeedback.textContent = 'Please enter your username.';
+            }
         } else if (username.value.length > 25) {
             username.classList.add('is-invalid');
-            usernameFeedback.textContent = 'Username must be less than 25 characters long.';
+            savedLanguage = localStorage.getItem('selectedLanguage');
+            if (savedLanguage === "slovak") {
+                usernameFeedback.textContent = 'Používateľské meno musí mať menej ako 25 znakov.';
+            }
+            else {
+                usernameFeedback.textContent = 'Username must be less than 25 characters long.';
+            }
         } else {
             username.classList.remove('is-invalid');
             username.classList.add('is-valid');
         }
     }
 
+    function checkSavedLanguage() {
+        var savedLanguage = localStorage.getItem('selectedLanguage');
+        console.log(savedLanguage);
+        if (savedLanguage === 'english') {
+            translateToEnglish();
+        } else if (savedLanguage === 'slovak') {
+            translateToSlovak();
+        } else {
+            translateToEnglish();
+        }
+    }
+
+    window.onload = function() {
+        checkSavedLanguage();
+    };
+
+    function translateToEnglish() {
+        document.getElementById('username').placeholder = 'Username';
+        document.getElementById('email').placeholder = 'Email';
+        document.getElementById('usernameLabel').textContent = 'Username';
+        document.getElementById('password').placeholder = 'Password';
+        document.getElementById('passwordLabel').textContent = 'Password';
+        document.getElementById('confirmPassword').placeholder= 'Confirm password';
+        document.getElementById('confirmPasswordLabel').textContent = 'Confirm password';
+        document.getElementById('registerButton').textContent = 'Register';
+        document.getElementById('backButton').textContent = 'Back';
+        document.getElementById('loginPrompt').innerHTML = 'Have you already account? <a href="login.php" class="register-link">Log in</a>';
+    }
+
+    function translateToSlovak() {
+        document.getElementById('email').placeholder = 'Email';
+        document.getElementById('username').placeholder = 'Užívateľské meno';
+        document.getElementById('usernameLabel').textContent = 'Užívateľské meno';
+        document.getElementById('password').placeholder = 'Heslo';
+        document.getElementById('passwordLabel').textContent = 'Heslo';
+        document.getElementById('confirmPassword').placeholder= 'Potvrďte heslo';
+        document.getElementById('confirmPasswordLabel').textContent = 'Potvrďte heslo';
+        document.getElementById('registerButton').textContent = 'Registrovať';
+        document.getElementById('backButton').textContent = 'Späť';
+        document.getElementById('loginPrompt').innerHTML = 'Máš už učet? <a href="login.php" class="register-link">Prihlásiť</a>';
+    }
+
     function validateEmail() {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email.value)) {
             email.classList.add('is-invalid');
-            emailFeedback.textContent = 'Please enter a valid email address.';
+            savedLanguage = localStorage.getItem('selectedLanguage');
+            if (savedLanguage === "slovak") {
+                usernameFeedback.textContent = 'Prosím, zadaj správnu email.';
+            }
+            else {
+                usernameFeedback.textContent = 'Please enter a valid email address.';
+            }
         } else {
             email.classList.remove('is-invalid');
             email.classList.add('is-valid');
@@ -172,7 +238,13 @@
     function validatePasswordMatch() {
         if (password.value !== confirmPassword.value) {
             confirmPassword.classList.add('is-invalid');
-            passwordConfirmFeedback.textContent = 'Passwords do not match.';
+            savedLanguage = localStorage.getItem('selectedLanguage');
+            if (savedLanguage === "slovak") {
+                usernameFeedback.textContent = 'Heslá sa nerovnajú.';
+            }
+            else {
+                usernameFeedback.textContent = 'Passwords do not match.';
+            }
         } else {
             confirmPassword.classList.remove('is-invalid');
             confirmPassword.classList.add('is-valid');
@@ -254,7 +326,6 @@
         requestAnimationFrame(update);
     };
     requestAnimationFrame(update);
-
 </script>
 </body>
 </html>
