@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    header("Location: restricted.php");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -326,18 +334,4 @@
         localStorage.setItem('selectedLanguage', 'slovak');
     }
 
-    function checkSavedLanguage() {
-        var savedLanguage = localStorage.getItem('selectedLanguage');
-        if (savedLanguage === 'english') {
-            translateToEnglish();
-        } else if (savedLanguage === 'slovak') {
-            translateToSlovak();
-        } else {
-            translateToEnglish();
-        }
-    }
-
-    window.onload = function() {
-        checkSavedLanguage();
-    };
 </script>

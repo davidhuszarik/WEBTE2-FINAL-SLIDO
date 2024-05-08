@@ -120,7 +120,7 @@
         <button id="registerButton" type="submit" class="btn btn-primary btn-block">Register</button>
     </form>
     <div style="text-align: center; margin-top: 10px;">
-        <button id="backButton" onclick="window.location.href = 'index.html';" class="btn btn-secondary btn-block">Back</button>
+        <button id="backButton" onclick="window.location.href = 'index.php';" class="btn btn-secondary btn-block">Back</button>
     </div>
     <div id="loginPrompt" style="text-align: center; margin-top: 10px;">
         <p>Have you already account? <a href="login.php">Login</a></p>
