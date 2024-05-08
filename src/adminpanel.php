@@ -1,9 +1,17 @@
+<?php
+session_start();
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    header("Location: restricted.php");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
+    <title>ODILS | Admin Panel</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.1/font/bootstrap-icons.css" rel="stylesheet">
 
@@ -13,6 +21,23 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+        }
+
+        #logo {
+            max-width: 75px;
+        }
+
+        .navbar {
+            background-color: #28a745 !important;
+        }
+
+        .navbar-brand {
+            color: #ffffff !important;
+            font-weight: bold;
+        }
+
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
         }
 
         .admin-panel {
@@ -110,14 +135,43 @@
             background-color: #0056b3;
             border-color: #0056b3;
         }
+
+        .footer {
+            background-color: #28a745;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
     </style>
 </head>
 <body>
-
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#"><img id="logo" src="images/logo.png" alt="ODILS | Homepage"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Language
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" id="englishLink" href="#">English <span id="englishIndicator"></span></a>
+                        <a class="dropdown-item" id="slovakLink" href="#">Slovak <span id="slovakIndicator"></span></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 <div class="admin-panel">
     <div class="admin-panel-header">
-        <img src="images/logo.png" alt="Logo">
-        <h2>Welcome to Admin Panel</h2>
+        <h2 id="welcomeTitle" >Welcome to Admin Panel</h2>
     </div>
     <div class="admin-details">
         <p>Hello, John Doe!</p>
@@ -125,22 +179,22 @@
     </div>
     <div class="admin-panel-content">
         <div class="section">
-            <div class="section-title">Profile settings</div>
+            <div id="profileTitle" class="section-title">Profile settings</div>
             <div class="section-content">
-                <button class="btn btn-yellow mx-auto" data-toggle="modal" data-target="#changePasswordModal"><i class="bi bi-key"></i> Change password</button>
-                <button class="btn btn-yellow mx-auto"><i class="bi bi-box-arrow-right"></i> Logout</button>
+                <button id="changePasswordButton" class="btn btn-yellow mx-auto" data-toggle="modal" data-target="#changePasswordModal"><i class="bi bi-key"></i> Change password</button>
+                <button id="logoutButton" class="btn btn-yellow mx-auto"><i class="bi bi-box-arrow-right"></i> Logout</button>
             </div>
         </div>
         <div class="section">
-            <div class="section-title">User settings</div>
+            <div id="userSettingsLabel" class="section-title">User settings</div>
             <div class="section-content">
-                <button class="btn btn-green mx-auto"><i class="bi bi-people"></i> Manage users</button>
+                <button id="manageUsersButton" class="btn btn-green mx-auto"><i class="bi bi-people"></i> Manage users</button>
             </div>
         </div>
         <div class="section">
-            <div class="section-title">Question settings</div>
+            <div id="questionsSettingsTitle" class="section-title">Question settings</div>
             <div class="section-content">
-                <button class="btn btn-red mx-auto"><i class="bi bi-file-earmark-text"></i> Manage questions</button>
+                <button id="manageQuestionsButton" class="btn btn-red mx-auto"><i class="bi bi-file-earmark-text"></i> Manage questions</button>
                 <button class="btn btn-blue mx-auto"><i class="bi bi-bar-chart"></i> Show results</button>
             </div>
         </div>
@@ -200,6 +254,13 @@
     </div>
 </div>
 
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2024 ODILS. <span id="rightsReservedText"></span><br>
+            <span id="schoolProjectText"></span></p>
+    </div>
+</footer>
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -238,4 +299,39 @@
             }
         }
     });
+
+    document.getElementById('englishLink').addEventListener('click', function() {
+        translateToEnglish();
+    });
+
+    document.getElementById('slovakLink').addEventListener('click', function() {
+        translateToSlovak();
+    });
+
+    function translateToEnglish() {
+        document.getElementById('navbarDropdown').innerText = 'Language';
+        document.getElementById('welcomeTitle').innerText = 'Welcome to Admin Panel';
+        document.getElementById('profileTitle').innerText = 'Profile settings';
+        document.getElementById('changePasswordButton').innerHTML = '<i class="bi bi-key"></i> Change password';
+        document.getElementById('logoutButton').innerHTML = '<i class="bi bi-box-arrow-right"></i> Logout';
+        document.getElementById('userSettingsLabel').innerText = 'Manager users';
+        document.getElementById('manageUsersButton').innerHTML = '<i class="bi bi-people"></i> Manage users';
+        document.getElementById('questionsSettingsTitle').innerText = 'Question settings';
+        document.getElementById('manageQuestionsButton').innerHTML = '<i class="bi bi-file-earmark-text"></i> Manage questions';
+        localStorage.setItem('selectedLanguage', 'english');
+    }
+
+    function translateToSlovak() {
+        document.getElementById('navbarDropdown').innerText = 'Jazyk';
+        document.getElementById('welcomeTitle').innerText = 'Vitajte v admin paneli';
+        document.getElementById('profileTitle').innerText = 'Nastavenia profilu';
+        document.getElementById('changePasswordButton').innerHTML = '<i class="bi bi-key"></i> Zmena hesla';
+        document.getElementById('logoutButton').innerHTML = '<i class="bi bi-box-arrow-right"></i> Odhlásenie';
+        document.getElementById('userSettingsLabel').innerText = 'Správa užívateľov';
+        document.getElementById('manageUsersButton').innerHTML = '<i class="bi bi-people"></i> Správa užívateľov';
+        document.getElementById('questionsSettingsTitle').innerText = 'Nastavenia otázok';
+        document.getElementById('manageQuestionsButton').innerHTML = '<i class="bi bi-file-earmark-text"></i> Správa otázky';
+        localStorage.setItem('selectedLanguage', 'slovak');
+    }
+
 </script>

@@ -86,7 +86,7 @@
         </div>
         <button id="loginButton" type="submit" class="btn btn-primary btn-block">Log in</button>
         <div style="text-align: center; margin-top: 10px;">
-            <button id="backButton" onclick="window.location.href = 'index.html';" class="btn btn-secondary btn-block">Back</button>
+            <button id="backButton" onclick="window.location.href = 'index.php';" class="btn btn-secondary btn-block">Back</button>
         </div>
         <div class="register-prompt">
             <span id="registerPrompt"></span>
@@ -177,7 +177,6 @@
     window.onload = function() {
         checkSavedLanguage();
     };
-
 
 
     function validatePassword() {
