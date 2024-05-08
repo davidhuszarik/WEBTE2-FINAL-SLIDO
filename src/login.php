@@ -75,21 +75,21 @@
     <form id="loginForm">
         <img src="images/logo.png" alt="Logo" class="logo">
         <div class="form-group">
-            <label for="username">Username</label>
+            <label id="usernameLabel" for="username">Username</label>
             <input type="text" class="form-control" id="username" required maxlength="25">
             <div class="invalid-feedback" id="usernameFeedback">Please enter your username.</div>
         </div>
         <div class="form-group">
-            <label for="password">Password</label>
+            <label id="passwordLabel" for="password">Password</label>
             <input type="password" class="form-control" id="password" required>
             <div class="invalid-feedback">Please enter your password.</div>
         </div>
-        <button type="submit" class="btn btn-primary btn-block">Log in</button>
+        <button id="loginButton" type="submit" class="btn btn-primary btn-block">Log in</button>
         <div class="register-prompt">
-            Don't have an account? <a href="register.php" class="register-link">Register</a>
+            <span id="registerPrompt"></span>
         </div>
         <div style="text-align: center; margin-top: 10px;">
-            <button onclick="window.location.href = 'index.html';" class="btn btn-secondary">Back</button>
+            <button id="backButton" onclick="window.location.href = 'index.html';" class="btn btn-secondary">Back</button>
         </div>
     </form>
 </div>
@@ -106,16 +106,34 @@
         let valid = true;
         const specialChars = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
         if (specialChars.test(username.value)) {
+            savedLanguage = localStorage.getItem('selectedLanguage');
+            if (savedLanguage = "Slovak") {
+                usernameFeedback.textContent = 'Používateľské meno obsahuje špeciálne znaky.';
+            }
+            else {
+                usernameFeedback.textContent = 'Username contains special characters.';
+            }
             username.classList.add('is-invalid');
-            usernameFeedback.textContent = 'Username contains special characters.';
             valid = false;
         } else if (username.value.trim() === '') {
             username.classList.add('is-invalid');
-            usernameFeedback.textContent = 'Please enter your username.';
+            savedLanguage = localStorage.getItem('selectedLanguage');
+            if (savedLanguage = "Slovak") {
+                usernameFeedback.textContent = 'Prosím, zadajte svoje používateľské meno.';
+            }
+            else {
+                usernameFeedback.textContent = 'Please enter your username.';
+            }
             valid = false;
         } else if (username.value.length > 25) {
             username.classList.add('is-invalid');
-            usernameFeedback.textContent = 'Username must be less than 25 characters long.';
+            savedLanguage = localStorage.getItem('selectedLanguage');
+            if (savedLanguage = "Slovak") {
+                usernameFeedback.textContent = 'Používateľské meno musí mať menej ako 25 znakov.';
+            }
+            else {
+                usernameFeedback.textContent = 'Username must be less than 25 characters long.';
+            }
             valid = false;
         } else {
             username.classList.remove('is-invalid');
@@ -124,6 +142,41 @@
         }
         return valid;
     }
+
+    function translateToEnglish() {
+        document.getElementById('username').placeholder = 'Username';
+        document.getElementById('usernameLabel').textContent = 'Username';
+        document.getElementById('password').placeholder = 'Password';
+        document.getElementById('passwordLabel').textContent = 'Password';
+        document.getElementById('loginButton').textContent = 'Log in';
+        document.getElementById('backButton').textContent = 'Back';
+        document.getElementById('registerPrompt').innerHTML = 'Don\'t have an account? <a href="register.php" class="register-link">Register</a>';
+    }
+
+    function translateToSlovak() {
+        document.getElementById('username').placeholder = 'Užívateľské meno';
+        document.getElementById('usernameLabel').textContent = 'Užívateľské meno';
+        document.getElementById('password').placeholder = 'Heslo';
+        document.getElementById('passwordLabel').textContent = 'Heslo';
+        document.getElementById('loginButton').textContent = 'Prihlásiť';
+        document.getElementById('backButton').textContent = 'Späť';
+        document.getElementById('registerPrompt').innerHTML = 'Nemáte účet? <a href="register.php" class="register-link">Registrovať sa</a>';
+    }
+
+    function checkSavedLanguage() {
+        var savedLanguage = localStorage.getItem('selectedLanguage');
+        if (savedLanguage === 'english') {
+            translateToEnglish();
+        } else if (savedLanguage === 'slovak') {
+            translateToSlovak();
+        } else {
+            translateToEnglish();
+        }
+    }
+
+    window.onload = function() {
+        checkSavedLanguage();
+    };
 
     function validatePassword() {
         if (password.value.trim() === '') {
@@ -141,6 +194,9 @@
             event.preventDefault();
         }
     });
+
+
+
     particlesJS("particles-js", {
         "particles": {
             "number": {"value": 6, "density": {"enable": true, "value_area": 800}},

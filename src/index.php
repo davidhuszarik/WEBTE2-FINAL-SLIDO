@@ -248,6 +248,7 @@
     document.getElementById('slovakLink').addEventListener('click', function() {
         translateToSlovak();
     });
+
 </script>
 </body>
 </html>
