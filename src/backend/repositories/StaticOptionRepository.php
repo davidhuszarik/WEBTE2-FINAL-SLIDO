@@ -8,7 +8,7 @@ class StaticOptionRepository{
 
     // Constructor
     public function __construct(){
-        $this->connection = (new DatabaseConnection())->getConnection();
+        $this->connection = DatabaseConnection::getInstance()->getConnection();
     }
 }
 
