@@ -1,4 +1,5 @@
 <?php
+namespace Repositories;
 
 // necessary imports
 require_once __DIR__ . "/../util/DatabaseConnection.php";

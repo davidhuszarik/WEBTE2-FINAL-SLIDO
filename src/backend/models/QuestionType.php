@@ -1,4 +1,5 @@
 <?php
+namespace Models;
 
 enum QuestionType: string{
     case Single_choice = 'single_choice';

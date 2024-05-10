@@ -1,4 +1,5 @@
 <?php
+namespace Models;
 
 class StaticOption{
     private int $id;
