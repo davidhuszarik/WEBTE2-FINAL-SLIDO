@@ -204,6 +204,8 @@ class UserRepository
                 $stmt->close();
                 return false;
             }
+            $stmt->close();
+            return true;
         }else {
             error_log("Update execution failed: " . $stmt->error);
             $stmt->close();
