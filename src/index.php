@@ -76,7 +76,7 @@
                     <a class="nav-link" id="homeLink" href="index.php"><i class="fas fa-home"></i> Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="loginLink" href="login.php"><i class="fas fa-info-circle"></i> Login</a>
+                    <a class="nav-link" id="loginLink" href="login"><i class="fas fa-info-circle"></i> Login</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"

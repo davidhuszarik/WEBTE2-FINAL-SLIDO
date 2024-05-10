@@ -1,10 +1,13 @@
 <?php
+require_once __DIR__ . "/controllers/LoginController.php";
+use Controllers\LoginController;
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 ob_start();
 
-header("Content-Type: application/json");
+// header("Content-Type: application/json");
 
 $method = $_SERVER['REQUEST_METHOD'];
 $uri_parts = explode('?', $_SERVER['REQUEST_URI'], 2);
@@ -13,9 +16,23 @@ $endpoint = $uri_parts[0];
 //echo "Method: " . $method . "\n";
 //echo "Path info: " . $endpoint . "\n";
 
-//if(strpos($endpoint, "/api/test") === 0){
+if(str_starts_with($endpoint, "/api/test"))
+{
 //    if($endpoint == "/api/test"){
 //
 //    }
 //}
+else if($endpoint == "/login")
+{
+    $controller = new LoginController();
+    switch($method){
+        case "GET":
+            $controller->index();
+            break;
+        case "POST":
+            break;
+        case "DELETE":
+            break;
+    }
+}
 ?>

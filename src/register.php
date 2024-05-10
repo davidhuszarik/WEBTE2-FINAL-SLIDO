@@ -123,7 +123,7 @@
         <button id="backButton" onclick="window.location.href = 'index.php';" class="btn btn-secondary btn-block">Back</button>
     </div>
     <div id="loginPrompt" style="text-align: center; margin-top: 10px;">
-        <p>Have you already account? <a href="login.php">Login</a></p>
+        <p>Have you already account? <a href="login">Login</a></p>
     </div>
 </div>
 
@@ -202,7 +202,7 @@
         document.getElementById('confirmPasswordLabel').textContent = 'Confirm password';
         document.getElementById('registerButton').textContent = 'Register';
         document.getElementById('backButton').textContent = 'Back';
-        document.getElementById('loginPrompt').innerHTML = 'Have you already account? <a href="login.php" class="register-link">Log in</a>';
+        document.getElementById('loginPrompt').innerHTML = 'Have you already account? <a href="login" class="register-link">Log in</a>';
     }
 
     function translateToSlovak() {
@@ -215,7 +215,7 @@
         document.getElementById('confirmPasswordLabel').textContent = 'Potvrďte heslo';
         document.getElementById('registerButton').textContent = 'Registrovať';
         document.getElementById('backButton').textContent = 'Späť';
-        document.getElementById('loginPrompt').innerHTML = 'Máš už učet? <a href="login.php" class="register-link">Prihlásiť</a>';
+        document.getElementById('loginPrompt').innerHTML = 'Máš už učet? <a href="login" class="register-link">Prihlásiť</a>';
     }
 
     function validateEmail() {

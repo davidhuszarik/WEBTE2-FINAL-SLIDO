@@ -73,7 +73,7 @@
 <script src="https://threejs.org/examples/js/libs/stats.min.js"></script>
 <div class="form-container">
     <form id="loginForm">
-        <img src="images/logo.png" alt="Logo" class="logo">
+        <img src="../../images/logo.png" alt="Logo" class="logo">
         <div class="form-group">
             <label id="usernameLabel" for="username">Username</label>
             <input type="text" class="form-control" id="username" required maxlength="25">
@@ -150,7 +150,7 @@
         document.getElementById('passwordLabel').textContent = 'Password';
         document.getElementById('loginButton').textContent = 'Log in';
         document.getElementById('backButton').textContent = 'Back';
-        document.getElementById('registerPrompt').innerHTML = 'Don\'t have an account? <a href="register.php" class="register-link">Register</a>';
+        document.getElementById('registerPrompt').innerHTML = 'Don\'t have an account? <a href="../../register.php" class="register-link">Register</a>';
     }
 
     function translateToSlovak() {
@@ -160,7 +160,7 @@
         document.getElementById('passwordLabel').textContent = 'Heslo';
         document.getElementById('loginButton').textContent = 'Prihlásiť';
         document.getElementById('backButton').textContent = 'Späť';
-        document.getElementById('registerPrompt').innerHTML = 'Nemáte účet? <a href="register.php" class="register-link">Registrovať sa</a>';
+        document.getElementById('registerPrompt').innerHTML = 'Nemáte účet? <a href="../../register.php" class="register-link">Registrovať sa</a>';
     }
 
     function checkSavedLanguage() {
