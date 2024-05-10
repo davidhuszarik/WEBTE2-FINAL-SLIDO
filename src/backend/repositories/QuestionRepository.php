@@ -133,7 +133,7 @@ class QuestionRepository
             }
             $stmt->close();
         }else{
-            error_log("Error retrieving all users: " . $stmt->error);
+            error_log("Error retrieving answer with id: " . $id . " error: " . $stmt->error);
             $stmt->close();
         }
         return $question;
