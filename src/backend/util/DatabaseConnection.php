@@ -1,8 +1,11 @@
 <?php
 
+// necessary imports
 require_once __DIR__ . "/config.php";
 
+// Singleton Pattern for Database Connection
 class DatabaseConnection{
+    private static $instance = null;
     private mysqli $connection;
     private string $hostname;
     private string $username;
@@ -28,13 +31,35 @@ class DatabaseConnection{
 
         if(!$this->connection){
             error_log("Database connection failed: " . mysqli_connect_error());
+            throw new Exception("Database connection failed: " . mysqli_connect_error());
         }
+    }
+
+    // Get instance of connection
+    public static function getInstance(): self {
+        if(self::$instance === null){
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 
     // Getter
     public function getConnection(): mysqli
     {
         return $this->connection;
+    }
+
+    // Need to prevent any external code from creating a copy of the singleton instance because it should only ever have
+    // one instance in the application. Overriding this method and making it private ensures that object cannot be cloned.
+    private function __clone(){}
+
+    public function __wakeup(){
+        throw new Exception("Deserialization of singleton is not allowed");
+    }
+
+    public function __sleep()
+    {
+        throw new Exception("Serialization of singleton is not allowed");
     }
 }
 
