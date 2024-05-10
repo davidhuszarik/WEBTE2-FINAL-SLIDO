@@ -166,18 +166,20 @@ class AnswerRepository
             return false;
         }
 
+        $answer_id = $answer->getId();
         $period_id = $answer->getPeriodId();
         $user_id = $answer->getUserId();
         $type = $answer->getQuestionType()->value;
         $free_answer = $answer->getFreeAnswer();
         $vote_time = $answer->getVoteTime()->format("Y-m-d H:i:s");
 
-        $stmt->bind_param("iisss",
+        $stmt->bind_param("iisssi",
             $period_id,
             $user_id,
             $type,
             $free_answer,
-            $vote_time
+            $vote_time,
+            $answer_id
         );
 
         if($stmt->execute()){

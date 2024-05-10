@@ -178,6 +178,7 @@ class QuestionRepository
             return false;
         }
 
+        $question_id = $question->getId();
         $user_id = $question->getUserId();
         $title_en = $question->getTitleEn();
         $title_sk = $question->getTitleSk();
@@ -187,7 +188,7 @@ class QuestionRepository
         $type = $question->getQuestionType()->value;
         $is_open = $question->isIsOpen() ? 1 : 0;
 
-        $stmt->bind_param("issssssi",
+        $stmt->bind_param("issssssii",
             $user_id,
             $title_en,
             $title_sk,
@@ -196,6 +197,7 @@ class QuestionRepository
             $creation_date,
             $type,
             $is_open,
+            $question_id
         );
 
         if($stmt->execute()){
