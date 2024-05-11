@@ -75,42 +75,36 @@ class AuthController extends Controller
 
     public function register(): void
     {
-        if(preg_match('/^[a-zA-Z0-9._]{1,64}$/', $_POST['username'])){
-            if($this->validateEmail($_POST['email'])){
-                $repository = new UserRepository();
-                $emailResult = $repository->getByEmail($_POST['email']);
-                $usernameResult = $repository->getByUsername($_POST['username']);
+        if(preg_match('/^[a-zA-Z0-9._]{1,64}$/', $_POST['username']) && $this->validateEmail($_POST['email'])){
+            $repository = new UserRepository();
+            $emailResult = $repository->getByEmail($_POST['email']);
+            $usernameResult = $repository->getByUsername($_POST['username']);
 
-                if ($emailResult == null && $usernameResult == null) {
-                    $salt = $this->randomSalt();
-                    $newUser = new User(
-                        $_POST['username'], $_POST['email'],
-                        password_hash($_POST['password'] . $salt, PASSWORD_DEFAULT),
-                        $salt,
-                        '', null, new \DateTime(), UserRole::User
-                    );
+            if ($emailResult == null && $usernameResult == null) {
+                $salt = $this->randomSalt();
+                $newUser = new User(
+                    $_POST['username'], $_POST['email'],
+                    password_hash($_POST['password'] . $salt, PASSWORD_DEFAULT),
+                    $salt,
+                    '', null, new \DateTime(), UserRole::User
+                );
 
-                    if($repository->createNewUser($newUser) == -1){
-                        echo json_encode(["error" => "Failed to create new user"]);
-                        http_response_code($response_code = 500);
-                    }
-                    else{
-                        echo json_encode(["success" => "User created"]);
-                        http_response_code($response_code = 201);
-                    }
+                if($repository->createNewUser($newUser) == -1){
+                    echo json_encode(["error" => "Failed to create new user"]);
+                    http_response_code($response_code = 500);
                 }
-                else {
-                    echo json_encode(["error" => "User already exists"]);
-                    http_response_code($response_code = 400);
+                else{
+                    echo json_encode(["success" => "User created"]);
+                    http_response_code($response_code = 201);
                 }
             }
-            else{
-                echo json_encode(["error" => "Invalid email address"]);
+            else {
+                echo json_encode(["error" => "User already exists"]);
                 http_response_code($response_code = 400);
             }
         }
         else{
-            echo json_encode(["error" => "Invalid username"]);
+            echo json_encode(["error" => "Invalid username or email address"]);
             http_response_code($response_code = 400);
         }
 
