@@ -104,8 +104,8 @@ class UserRepository
         }
     }
 
-    private function getByUnique($keyType, $uniqueKey){
-        $query = "SELECT * FROM user WHERE $keyType = ?";
+    private function getByUnique($key_name, $keyType, $uniqueKey){
+        $query = "SELECT * FROM user WHERE $key_name = ?";
 
         $stmt = $this->connection->prepare($query);
         $user = null;
@@ -115,7 +115,7 @@ class UserRepository
             return null;
         }
 
-        $stmt->bind_param("i", $uniqueKey);
+        $stmt->bind_param("$keyType", $uniqueKey);
 
         if($stmt->execute()){
             $result = $stmt->get_result();
@@ -146,17 +146,17 @@ class UserRepository
     // Get user by ID
     public function getUserById(int $id)
     {
-        return $this->getByUnique('id', $id);
+        return $this->getByUnique('id', 'i', $id);
     }
 
     public function getByUsername(string $username)
     {
-        return $this->getByUnique('username', $username);
+        return $this->getByUnique('username', 's', $username);
     }
 
     public function getByEmail(string $email)
     {
-        return $this->getByUnique('email', $email);
+        return $this->getByUnique('email', 's', $email);
     }
 
     // Delete user by ID
