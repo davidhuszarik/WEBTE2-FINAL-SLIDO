@@ -27,12 +27,24 @@ else if($endpoint == "/login")
     $controller = new AuthController();
     switch($method){
         case "GET":
-            $controller->index();
+            $controller->loginIndex();
             break;
         case "POST":
             $controller->login();
             break;
         case "DELETE":
+            break;
+    }
+}
+else if($endpoint == "/register")
+{
+    $controller = new AuthController();
+    switch($method){
+        case "GET":
+            $controller->registerIndex();
+            break;
+        case "POST":
+            $controller->register();
             break;
     }
 }

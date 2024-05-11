@@ -152,7 +152,7 @@
         document.getElementById('passwordLabel').textContent = 'Password';
         document.getElementById('loginButton').textContent = 'Log in';
         document.getElementById('backButton').textContent = 'Back';
-        document.getElementById('registerPrompt').innerHTML = 'Don\'t have an account? <a href="../../register.php" class="register-link">Register</a>';
+        document.getElementById('registerPrompt').innerHTML = 'Don\'t have an account? <a href="register" class="register-link">Register</a>';
     }
 
     function translateToSlovak() {
@@ -162,7 +162,7 @@
         document.getElementById('passwordLabel').textContent = 'Heslo';
         document.getElementById('loginButton').textContent = 'Prihlásiť';
         document.getElementById('backButton').textContent = 'Späť';
-        document.getElementById('registerPrompt').innerHTML = 'Nemáte účet? <a href="../../register.php" class="register-link">Registrovať sa</a>';
+        document.getElementById('registerPrompt').innerHTML = 'Nemáte účet? <a href="register" class="register-link">Registrovať sa</a>';
     }
 
     function checkSavedLanguage() {
@@ -205,8 +205,10 @@
                 type: 'POST',
                 url: window.location.href,
                 data: formData,
+                // TODO visual handle success and error here
                 success: function(response) {
                     sessionStorage.setItem('credentials', JSON.stringify(response.credentials));
+                    window.location.replace(window.location.hostname)
                 },
                 error: function(xhr, status, error) {
                     console.error('Error:', error);
