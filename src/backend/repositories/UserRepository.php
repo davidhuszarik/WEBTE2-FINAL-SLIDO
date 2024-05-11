@@ -2,7 +2,14 @@
 namespace Repositories;
 
 // necessary imports
+use mysqli;
+use DateTime;
+use Models\User;
+use Models\UserRole;
+use Util\DatabaseConnection;
+
 require_once __DIR__ . "/../util/DatabaseConnection.php";
+require_once __DIR__ . "/../models/User.php";
 
 class UserRepository
 {
