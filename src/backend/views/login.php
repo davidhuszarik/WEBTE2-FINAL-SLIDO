@@ -66,6 +66,8 @@
             z-index: -1;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
 </head>
 <body>
 <div id="particles-js"></div>
@@ -150,7 +152,7 @@
         document.getElementById('passwordLabel').textContent = 'Password';
         document.getElementById('loginButton').textContent = 'Log in';
         document.getElementById('backButton').textContent = 'Back';
-        document.getElementById('registerPrompt').innerHTML = 'Don\'t have an account? <a href="../../register.php" class="register-link">Register</a>';
+        document.getElementById('registerPrompt').innerHTML = 'Don\'t have an account? <a href="register" class="register-link">Register</a>';
     }
 
     function translateToSlovak() {
@@ -160,7 +162,7 @@
         document.getElementById('passwordLabel').textContent = 'Heslo';
         document.getElementById('loginButton').textContent = 'Prihlásiť';
         document.getElementById('backButton').textContent = 'Späť';
-        document.getElementById('registerPrompt').innerHTML = 'Nemáte účet? <a href="../../register.php" class="register-link">Registrovať sa</a>';
+        document.getElementById('registerPrompt').innerHTML = 'Nemáte účet? <a href="register" class="register-link">Registrovať sa</a>';
     }
 
     function checkSavedLanguage() {
@@ -189,10 +191,30 @@
     }
 
     document.getElementById('loginForm').addEventListener('submit', function (event) {
+        event.preventDefault();
         let isValidUsername = validateUsername();
         let isValidPassword = password.value.trim() !== '';
-        if (!isValidUsername || !isValidPassword) {
-            event.preventDefault();
+        if (isValidUsername && isValidPassword) {
+            let formData = {
+                username: $('#username').val(),
+                password: $('#password').val()
+            };
+
+            // Post data to the same URL
+            $.ajax({
+                type: 'POST',
+                url: window.location.href,
+                data: formData,
+                // TODO visual handle success and error here
+                success: function(response) {
+                    sessionStorage.setItem('credentials', JSON.stringify(response.credentials));
+                    window.location.replace(window.location.hostname)
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+
         }
     });
 

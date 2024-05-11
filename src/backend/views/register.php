@@ -78,6 +78,8 @@
         }
 
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
 </head>
 <body>
 <div id="particles-js"></div>
@@ -86,7 +88,7 @@
 <script src="https://threejs.org/examples/js/libs/stats.min.js"></script>
 <div class="form-container">
     <form id="registrationForm">
-        <img src="images/logo.png" alt="Logo" class="logo">
+        <img src="../../images/logo.png" alt="Logo" class="logo">
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
@@ -253,11 +255,30 @@
     }
 
     document.getElementById('registrationForm').addEventListener('submit', function (event) {
+        event.preventDefault();
         validateUsername();
         validateEmail();
         validatePasswordMatch();
-        if (username.classList.contains('is-invalid') || email.classList.contains('is-invalid') || confirmPassword.classList.contains('is-invalid')) {
-            event.preventDefault();
+        if (username.classList.contains('is-valid') && email.classList.contains('is-valid') && confirmPassword.classList.contains('is-valid')) {
+            let formData = {
+                username: $('#username').val(),
+                email: $('#email').val(),
+                password: $('#password').val()
+            };
+
+            // Post data to the same URL
+            $.ajax({
+                type: 'POST',
+                url: window.location.href,
+                data: formData,
+                // TODO visual handle success and error here
+                success: function(response) {
+                    window.location.replace(window.location.hostname + '/login')
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
         }
     });
     particlesJS("particles-js", {
