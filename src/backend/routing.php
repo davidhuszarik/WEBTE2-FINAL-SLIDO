@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . "/controllers/LoginController.php";
-use Controllers\LoginController;
+require_once __DIR__ . "/controllers/AuthController.php";
+use Controllers\AuthController;
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -21,15 +21,16 @@ if(str_starts_with($endpoint, "/api/test"))
 //    if($endpoint == "/api/test"){
 //
 //    }
-//}
+}
 else if($endpoint == "/login")
 {
-    $controller = new LoginController();
+    $controller = new AuthController();
     switch($method){
         case "GET":
             $controller->index();
             break;
         case "POST":
+            $controller->login();
             break;
         case "DELETE":
             break;

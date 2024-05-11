@@ -66,6 +66,8 @@
             z-index: -1;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
 </head>
 <body>
 <div id="particles-js"></div>
@@ -189,10 +191,28 @@
     }
 
     document.getElementById('loginForm').addEventListener('submit', function (event) {
+        event.preventDefault();
         let isValidUsername = validateUsername();
         let isValidPassword = password.value.trim() !== '';
-        if (!isValidUsername || !isValidPassword) {
-            event.preventDefault();
+        if (isValidUsername && isValidPassword) {
+            let formData = {
+                username: $('#username').val(),
+                password: $('#password').val()
+            };
+
+            // Post data to the same URL
+            $.ajax({
+                type: 'POST',
+                url: window.location.href,
+                data: formData,
+                success: function(response) {
+                    sessionStorage.setItem('credentials', JSON.stringify(response.credentials));
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+
         }
     });
 
