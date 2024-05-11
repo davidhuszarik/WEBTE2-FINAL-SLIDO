@@ -1,5 +1,6 @@
 <?php
-
+namespace Repositories;
+use mysqli;
 // necessary imports
 require_once __DIR__ . "/../util/DatabaseConnection.php";
 

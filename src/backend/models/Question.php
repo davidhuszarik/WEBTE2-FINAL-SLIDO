@@ -1,5 +1,6 @@
 <?php
-
+namespace Models;
+use DateTime;
 require_once __DIR__ . "/QuestionType.php";
 
 class Question
