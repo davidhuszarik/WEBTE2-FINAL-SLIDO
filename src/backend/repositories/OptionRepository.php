@@ -1,8 +1,9 @@
 <?php
 namespace Repositories;
 
-// necessary imports
-require_once __DIR__ . "/../util/DatabaseConnection.php";
+use Util\DatabaseConnection;
+use mysqli;
+use Models\Option;
 
 class OptionRepository{
     private mysqli $connection;

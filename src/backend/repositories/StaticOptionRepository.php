@@ -1,9 +1,9 @@
 <?php
 namespace Repositories;
-use mysqli;
 
-// necessary imports
-require_once __DIR__ . "/../util/DatabaseConnection.php";
+use Util\DatabaseConnection;
+use mysqli;
+use Models\StaticOption;
 
 class StaticOptionRepository{
     private mysqli $connection;

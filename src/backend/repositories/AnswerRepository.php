@@ -1,8 +1,13 @@
 <?php
 namespace Repositories;
 
-// necessary imports
-require_once __DIR__ . "/../util/DatabaseConnection.php";
+use UnhandledMatchError;
+use Util\DatabaseConnection;
+use mysqli;
+use Models\Answer;
+use Models\QuestionType;
+use DateTime;
+
 
 class AnswerRepository
 {
