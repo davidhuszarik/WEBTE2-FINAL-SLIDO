@@ -159,6 +159,62 @@ class UserRepository
         return $this->getByUnique('email', 's', $email);
     }
 
+    private function randomAccessToken()
+    {
+        // size of access_token in bytes
+        return bin2hex(random_bytes(16));
+    }
+
+    // touches the user row, generates new access token and saves it in the database
+    // all time definitions must be passed to database
+    public function touch(User $user): string|null
+    {
+        $this->connection->query("START TRANSACTION");
+
+        if(($token = $user->getAccessToken()) == null){
+            $newToken = $this->randomAccessToken();
+            $user->setAccessToken($newToken);
+
+            $result = $this->updateUser($user);
+            if(!$result){
+                $this->connection->query("ROLLBACK");
+                return null;
+            }
+
+            $token = $newToken;
+        }
+
+        // code could be shortened if database is synced with php server
+        $query = "UPDATE user SET last_access = NOW() WHERE id = ?";
+
+        $stmt = $this->connection->prepare($query);
+        if (!$stmt) {
+            error_log("Prepare failed: " . $this->connection->error);
+            $this->connection->query("ROLLBACK");
+            return null;
+        }
+
+        $id = $user->getId();
+        $stmt->bind_param("i", $id);
+
+        if($stmt->execute()){
+            if ($stmt->affected_rows === 0) {
+                error_log("No rows updated, possibly because the user ID does not exist.");
+                $stmt->close();
+                $this->connection->query("ROLLBACK");
+                return null;
+            }
+            $stmt->close();
+            $this->connection->query("COMMIT");
+            return $token;
+        }else {
+            error_log("Update execution failed: " . $stmt->error);
+            $stmt->close();
+            $this->connection->query("ROLLBACK");
+            return null;
+        }
+    }
+
     // Delete user by ID
     public function deleteUserById(int $id)
     {
