@@ -1,7 +1,6 @@
 <?php
-require_once __DIR__ . "/controllers/AuthController.php";
+require_once __DIR__ . "/loader.php";
 
-use Controllers\LoginController;
 use Controllers\AuthController;
 
 error_reporting(E_ALL);
