@@ -21,3 +21,4 @@ Na vytvorenie tohto projektu sa spolupracovali:
 ![image](https://github.com/davidhuszarik/WEBTE2-FINAL-SLIDO/assets/76002397/d8ac6ffd-c4a3-4f8e-a731-37da576183c9)
 
 
+    
