@@ -5,10 +5,10 @@
 
 ## TÍM Č. 5
 Na vytvorenie tohto projektu sa spolupracovali:
-:robot: Gergely Tóth (TEAM LEADER) [github](https://github.com/GergelyToth-stuba)
-:alien: Denis Pudelka (BACKEND) [github](https://github.com/DenisPudelka)
-:japanese_goblin: Péter Takács (FRONTEND) [github](https://github.com/PeterTakacs3000)
-:space_invader: Dávid Huszárik (FRONTEND) [github](https://github.com/davidhuszarik)
+- :robot: Gergely Tóth (TEAM LEADER) [github](https://github.com/GergelyToth-stuba)
+- :alien: Denis Pudelka (BACKEND) [github](https://github.com/DenisPudelka)
+- :japanese_goblin: Péter Takács (FRONTEND) [github](https://github.com/PeterTakacs3000)
+- :space_invader: Dávid Huszárik (FRONTEND) [github](https://github.com/davidhuszarik)
 
 ## POUŽITÉ TECHNOLÓGIE
 - [Bootstrap](https://getbootstrap.com/)
