@@ -11,11 +11,10 @@
 
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             height: 100vh;
             background-color: #e9f5f0;
+            margin-left: 0;
+            margin-right: 0;
         }
 
         .form-container {
@@ -24,6 +23,13 @@
             border: 1px solid #a2d9ce;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
+            position: fixed;
+            inset: 0px;
+            width: fit-content;
+            height: fit-content;
+            max-width: 100vw;
+            max-height: 100dvh;
+            margin: auto;
         }
 
         .btn-primary {
@@ -208,12 +214,10 @@
                 password: $('#password').val()
             };
 
-            // Post data to the same URL
             $.ajax({
                 type: 'POST',
                 url: window.location.href,
                 data: formData,
-                // TODO visual handle success and error here
                 success: function(response) {
                     sessionStorage.setItem('credentials', JSON.stringify(response.credentials));
                     window.location.replace(window.location.hostname)

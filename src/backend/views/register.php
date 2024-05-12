@@ -10,9 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             height: 100vh;
             background-color: #e9f5f0;
         }
@@ -23,8 +20,12 @@
             border: 1px solid #a2d9ce;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
-            max-width: 600px;
-            width: 100%;
+            position: fixed;
+            inset: 0px;
+            width: fit-content;
+            height: fit-content;
+            max-width: 100vw;
+            max-height: 100dvh;
             margin: auto;
         }
 
