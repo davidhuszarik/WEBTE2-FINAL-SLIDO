@@ -16,9 +16,7 @@ Na vytvorenie tohto projektu sa spolupracovali:
 - [FontAwasome](https://fontawesome.com/)
 - 
 
-## DIAGRAMY
+## NÁVRH DATABÁZU
 ![image](https://github.com/davidhuszarik/WEBTE2-FINAL-SLIDO/assets/76002397/50b7930f-9bc0-48ad-848b-a79979c7f916)
-![image](https://github.com/davidhuszarik/WEBTE2-FINAL-SLIDO/assets/76002397/d8ac6ffd-c4a3-4f8e-a731-37da576183c9)
 
 
-    
