@@ -7,6 +7,10 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             min-height: 100vh;
@@ -79,13 +83,13 @@
                     <a class="nav-link" id="loginLink" href="login"><i class="fas fa-info-circle"></i> Login</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Language
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" id="englishLink" href="#">English <span id="englishIndicator"></span></a>
-                        <a class="dropdown-item" id="slovakLink" href="#">Slovak <span id="slovakIndicator"></span></a>
+                        <a class="dropdown-item" id="englishLink">English <span id="englishIndicator"></span></a>
+                        <a class="dropdown-item" id="slovakLink">Slovak <span id="slovakIndicator"></span></a>
                     </div>
                 </li>
             </ul>
@@ -134,7 +138,7 @@
 
 <footer class="footer">
     <div class="container">
-        <p>&copy; 2024 ODILS. <span id="rightsReservedText"></span><br>
+        <p><strong>&copy; 2024 ODILS. </strong> <span id="rightsReservedText"></span><br>
             <span id="schoolProjectText"></span></p>
     </div>
 </footer>
@@ -198,14 +202,14 @@
     });
 
     function translateToEnglish() {
-        document.getElementById('homeLink').innerText = 'Home';
-        document.getElementById('loginLink').innerText = 'Login';
-        document.getElementById('navbarDropdown').innerText = 'Language';
-        document.getElementById('invitationHeading').innerText = 'Got an invitation code?';
+        document.getElementById('homeLink').innerHTML = '<i class="fas fa-home"></i> Home';
+        document.getElementById('loginLink').innerHTML = "<i class=\"fas fa-angle-double-right\"></i> Login";
+        document.getElementById('navbarDropdown').innerHTML = '<i class="fas fa-globe"></i> Language';
+        document.getElementById('invitationHeading').innerHTML = '<strong>Got an invitation code?</strong>';
         document.getElementById('invitationMessage').innerText = 'Enter the invitation code you received to connect as visitor';
         document.getElementById('connectText').innerText = 'Connect';
-        document.getElementById('whatsGoodHeading').innerText = "What's good about ODILS?";
-        document.getElementById('whatsGoodText1').innerText = 'Odils emerges as a transformative platform redefining audience engagement across various settings, be it presentations, meetings, or events.';
+        document.getElementById('whatsGoodHeading').innerHTML = "<strong>WHAT IS ODILS?</strong>";
+        document.getElementById('whatsGoodText1').innerText = 'Odils is an easy to use Q&A and polling platform for meetings and events. It allows meeting and event organizers to crowdsource top questions to drive meaningful conversations, engage participants with live polls and capture valuable event data.';
         document.getElementById('whatsGoodText2').innerText = 'Through Odils, attendees transcend the role of mere spectators, becoming integral contributors to the discourse.';
         document.getElementById('needHelpText').innerText = 'Do you need help?';
         document.getElementById('documentationText').innerHTML = 'You can find our documentation here: <a href="https://www.example.com/documentation">DOCUMENTATION</a>';
@@ -220,14 +224,14 @@
     }
 
     function translateToSlovak() {
-        document.getElementById('homeLink').innerText = 'Domov';
-        document.getElementById('loginLink').innerText = 'Prihlásenie';
-        document.getElementById('navbarDropdown').innerText = 'Jazyk';
-        document.getElementById('invitationHeading').innerText = 'Máte pozvánkový kód?';
+        document.getElementById('homeLink').innerHTML = '<i class="fas fa-home"></i> Domov';
+        document.getElementById('loginLink').innerHTML = "<i class=\"fas fa-angle-double-right\"></i> Prihlásenie";
+        document.getElementById('navbarDropdown').innerHTML = '<i class="fas fa-globe"></i> Jazyk';
+        document.getElementById('invitationHeading').innerHTML = '<strong>Máte pozvánkový kód?</strong>';
         document.getElementById('invitationMessage').innerText = 'Zadajte pozvánkový kód, ktorý ste dostali, aby ste sa pripojili ako návštevník';
         document.getElementById('connectText').innerText = 'Pripojiť sa';
-        document.getElementById('whatsGoodHeading').innerText = "Čo je dobré na ODILS?";
-        document.getElementById('whatsGoodText1').innerText = 'Odils sa stáva transformačnou platformou, ktorá predefinuje zapojenie publika v rôznych prostrediach, či už ide o prezentácie, stretnutia alebo udalosti.';
+        document.getElementById('whatsGoodHeading').innerHTML = "<strong>ČO JE ODILS?</strong>";
+        document.getElementById('whatsGoodText1').innerText = 'ODILS je jednoduchá a intuitívna platforma pre otázky a ankety, určená pre stretnutia a udalosti. Organizátorom stretnutí a podujatí umožňuje získať najlepšie otázky od účastníkov a viesť zmysluplné rozhovory, zapájať účastníkov živými anketami a zbierať cenné údaje o udalostiach.';
         document.getElementById('whatsGoodText2').innerText = 'Prostredníctvom Odils účastníci presahujú úlohu iba divákov, stávajú sa neoddeliteľnými prispievateľmi k diskurzu.';
         document.getElementById('needHelpText').innerText = 'Potrebujete pomoc?';
         document.getElementById('documentationText').innerHTML = 'Nájdite našu dokumentáciu tu: <a href="https://www.example.com/documentation">DOKUMENTÁCIA</a>';
@@ -243,10 +247,20 @@
 
     document.getElementById('englishLink').addEventListener('click', function() {
         translateToEnglish();
+        Swal.fire({
+            icon: 'success',
+            title: 'Language changed',
+            text: 'The language has been successfully changed.'
+        });
     });
 
     document.getElementById('slovakLink').addEventListener('click', function() {
         translateToSlovak();
+        Swal.fire({
+            icon: 'success',
+            title: 'Jazyk zmenený',
+            text: 'Jazyk bol úspešne zmenený.'
+        });
     });
 
 </script>
