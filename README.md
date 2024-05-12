@@ -1,4 +1,4 @@
-# ODILS | WEBOVÉ TECHNOLÓGIE 2 | FINALNÉ ZADANIE
+# :left_speech_bubble: ODILS | WEBOVÉ TECHNOLÓGIE 2 | FINALNÉ ZADANIE
 
 > [!WARNING]
 > Toto je školský projekt, nie je súčasťou SLIDO a ani CISCO.
