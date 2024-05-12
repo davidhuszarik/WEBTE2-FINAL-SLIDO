@@ -220,7 +220,7 @@
                 data: formData,
                 success: function(response) {
                     sessionStorage.setItem('credentials', JSON.stringify(response.credentials));
-                    window.location.replace(window.location.hostname)
+                    window.location.replace('index.php')
                 },
                 error: function(xhr, status, error) {
                     console.error('Error:', error);

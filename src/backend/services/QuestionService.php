@@ -1,6 +1,7 @@
 <?php
 
 namespace Services;
+require_once __DIR__ . "/../loader.php";
 
 use Models\Question;
 use Models\QuestionType;

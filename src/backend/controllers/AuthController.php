@@ -1,8 +1,9 @@
 <?php
 namespace Controllers;
 
+require_once __DIR__ . "/../loader.php";
 require_once __DIR__ . "/Controller.php";
-require_once __DIR__ . "/../repositories/UserRepository.php";
+
 use Models\User;
 use Models\UserRole;
 use Repositories\UserRepository;
@@ -24,7 +25,6 @@ class AuthController extends Controller
     public function login(): void
     {
         $repository = new UserRepository();
-
 
         if (preg_match('/^[a-zA-Z0-9._]{1,64}$/', $_POST['username'])){
             $user = $repository->getByUsername($_POST["username"]);

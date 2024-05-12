@@ -1,8 +1,6 @@
 <?php
-require_once __DIR__ . "/controllers/LoginController.php";
-require_once __DIR__ . "/controllers/AuthController.php";
+require_once __DIR__ . "/loader.php";
 
-use Controllers\LoginController;
 use Controllers\AuthController;
 
 error_reporting(E_ALL);
@@ -10,14 +8,16 @@ ini_set('display_errors', 1);
 
 ob_start();
 
-header("Content-Type: application/json");
-
 $method = $_SERVER['REQUEST_METHOD'];
 $uri_parts = explode('?', $_SERVER['REQUEST_URI'], 2);
 $endpoint = $uri_parts[0];
 $query_string = isset($uri_parts[1]) ? $uri_parts[1] : null;
-parse_str($query_string, $params);
-
+if ($query_string != null) {
+    parse_str($query_string, $params);
+}
+else{
+    $params = [];
+}
 //echo "Method: " . $method . "\n";
 //echo "Path info: " . $endpoint . "\n";
 
@@ -59,7 +59,7 @@ if (str_starts_with($endpoint, "/api")) {
             echo json_encode($response);
     }
 } else if ($endpoint == "/login") {
-    $controller = new LoginController();
+    $controller = new AuthController();
     switch ($method) {
         case "GET":
             $controller->loginIndex();

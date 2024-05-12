@@ -1,5 +1,6 @@
 <?php
 namespace Repositories;
+require_once __DIR__ . "/../loader.php";
 
 use UnhandledMatchError;
 use mysqli;
