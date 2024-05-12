@@ -23,7 +23,7 @@ class QuestionRepository
     // Create new Question
     public function createNewQuestion(Question $new_question)
     {
-        $query = "INSERT INTO questios (user_id, title_en, title_sk, content_en, content_sk, creation_date, type, is_open)
+        $query = "INSERT INTO questions (user_id, title_en, title_sk, content_en, content_sk, creation_date, type, is_open)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $this->connection->prepare($query);
@@ -176,7 +176,7 @@ class QuestionRepository
     // Update question
     public function updateQuestion(Question $question)
     {
-        $query = "UPDATE question SET user_id = ?, title_en = ?, title_sk = ?, content_en = ?, content_sk = ?, creation_date = ?,
+        $query = "UPDATE questions SET user_id = ?, title_en = ?, title_sk = ?, content_en = ?, content_sk = ?, creation_date = ?,
                     type = ?, is_open = ? WHERE id = ?";
         $stmt = $this->connection->prepare($query);
         if (!$stmt) {

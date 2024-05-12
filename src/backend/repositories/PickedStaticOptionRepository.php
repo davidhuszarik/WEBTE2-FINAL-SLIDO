@@ -18,7 +18,7 @@ class PickedStaticOptionRepository{
     // Create new
     public function createNewPickedStaticOption(PickedStaticOption $picked_static_option)
     {
-        $query = "INSERT INTO picked_static_option (answer_id, static_option_id) VALUES (?, ?)";
+        $query = "INSERT INTO picked_static_options (answer_id, static_option_id) VALUES (?, ?)";
 
         $stmt = $this->connection->prepare($query);
         if (!$stmt) {
