@@ -14,9 +14,10 @@ Na vytvorenie tohto projektu sa spolupracovali:
 - [Bootstrap](https://getbootstrap.com/)
 - [Particles.JS](https://vincentgarreau.com/particles.js/)
 - [FontAwasome](https://fontawesome.com/)
-- 
+- [Ajax](https://wintercms.com/docs/v1.2/docs/ajax/introduction)
+- [Websocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
 
-## NÁVRH DATABÁZU
+## NÁVRH DATABÁZY
 ![image](https://github.com/davidhuszarik/WEBTE2-FINAL-SLIDO/assets/76002397/50b7930f-9bc0-48ad-848b-a79979c7f916)
 
 
