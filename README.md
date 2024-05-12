@@ -1,13 +1,14 @@
 <!-- Title -->
-<h1 align="center">Project Name</h1>
+<h1 align="center">ODILS<br>
+Webové technológie 2 - Finálne zadanie</h2></h1>
 
 <!-- Description -->
 <p align="center">A brief description of your project.</p>
 
 <!-- Badges -->
 <p align="center">
-    <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/username/repo">
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/username/repo">
+    <img alt="GitHub contributors" src="https://github.com/davidhuszarik/WEBTE2-FINAL-SLIDO">
+    <img alt="GitHub last commit" src="https://github.com/davidhuszarik/WEBTE2-FINAL-SLIDO">
     <img alt="GitHub stars" src="https://img.shields.io/github/stars/username/repo?style=social">
 </p>
 
