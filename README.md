@@ -7,9 +7,10 @@ Webové technológie 2 - Finálne zadanie</h2></h1>
 <!-- Badges -->
 <p align="center">
     <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/davidhuszarik/WEBTE2-FINAL-SLIDO">
-    <img alt="GitHub last commit" src="https://github.com/davidhuszarik/WEBTE2-FINAL-SLIDO">
-    <img alt="GitHub stars" src="https://img.shields.io/github/stars/username/repo?style=social">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/davidhuszarik/WEBTE2-FINAL-SLIDO">
+    <img alt="GitHub issues" src="https://img.shields.io/github/issues/davidhuszarik/WEBTE2-FINAL-SLIDO">
 </p>
+
 
 <!-- Table of Contents -->
 ## Table of Contents
