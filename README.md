@@ -5,9 +5,9 @@
 
 ## TÍM Č. 5
 Na vytvorenie tohto projektu sa spolupracovali:
-- Gergely Tóth (TEAM LEADER)
-- Denis Pudelka (BACKEND)
-- Péter Takács (FRONTEND)
-- Dávid Huszárik (FRONTEND)
+- Gergely Tóth (TEAM LEADER) [github](https://github.com/GergelyToth-stuba)
+- Denis Pudelka (BACKEND) [github](https://github.com/DenisPudelka)
+- Péter Takács (FRONTEND) [github](https://github.com/PeterTakacs3000)
+- Dávid Huszárik (FRONTEND) [github](https://github.com/davidhuszarik)
 
 
