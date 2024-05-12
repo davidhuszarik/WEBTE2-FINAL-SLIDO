@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ODILS | Login</title>
+    <title id="pageTitle">ODILS | Login</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             height: 100vh;
             background-color: #e9f5f0;
+            margin-left: 0;
+            margin-right: 0;
         }
 
         .form-container {
@@ -20,6 +23,13 @@
             border: 1px solid #a2d9ce;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
+            position: fixed;
+            inset: 0px;
+            width: fit-content;
+            height: fit-content;
+            max-width: 100vw;
+            max-height: 100dvh;
+            margin: auto;
         }
 
         .btn-primary {
@@ -75,7 +85,7 @@
 <script src="https://threejs.org/examples/js/libs/stats.min.js"></script>
 <div class="form-container">
     <form id="loginForm">
-        <img src="../../images/logo.png" alt="Logo" class="logo">
+        <img src="images/logo.png" alt="Logo" class="logo">
         <div class="form-group">
             <label id="usernameLabel" for="username">Username</label>
             <input type="text" class="form-control" id="username" required maxlength="25">
@@ -146,6 +156,7 @@
     }
 
     function translateToEnglish() {
+        document.getElementById('pageTitle').innerText = 'ODILS |> Login';
         document.getElementById('username').placeholder = 'Username';
         document.getElementById('usernameLabel').textContent = 'Username';
         document.getElementById('password').placeholder = 'Password';
@@ -156,6 +167,7 @@
     }
 
     function translateToSlovak() {
+        document.getElementById('pageTitle').innerText = 'ODILS |> Prihlásenie';
         document.getElementById('username').placeholder = 'Užívateľské meno';
         document.getElementById('usernameLabel').textContent = 'Užívateľské meno';
         document.getElementById('password').placeholder = 'Heslo';
@@ -169,10 +181,12 @@
         var savedLanguage = localStorage.getItem('selectedLanguage');
         if (savedLanguage === 'english') {
             translateToEnglish();
+            return "English";
         } else if (savedLanguage === 'slovak') {
             translateToSlovak();
         } else {
             translateToEnglish();
+            return "Slovak";
         }
     }
 
@@ -200,25 +214,58 @@
                 password: $('#password').val()
             };
 
-            // Post data to the same URL
             $.ajax({
                 type: 'POST',
                 url: window.location.href,
                 data: formData,
-                // TODO visual handle success and error here
                 success: function(response) {
                     sessionStorage.setItem('credentials', JSON.stringify(response.credentials));
                     window.location.replace(window.location.hostname)
                 },
                 error: function(xhr, status, error) {
                     console.error('Error:', error);
+                    if (xhr.responseJSON.error === "Invalid username or password") {
+                        if (checkSavedLanguage() === "English") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Invalid credentials',
+                                text: 'Please check your username and password and try again.'
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Neplatné prihlasovacie údaje',
+                                text: 'Skontrolujte si svoje používateľské meno a heslo a skúste to znova.'
+                            });
+                        }
+                    } else {
+                        if (checkSavedLanguage() === "English") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'An unknown error occurred!',
+                                footer: 'Please try again later'
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Ups...',
+                                text: 'Došlo k neznámej chybe!',
+                                footer: 'Skúste to prosím neskôr znova'
+                            });
+                        }
+                    }
+                    const usernameInput = document.getElementById('username');
+                    usernameInput.value = '';
+                    usernameInput.classList.remove('is-valid');
+                    const passwordInput = document.getElementById('password');
+                    passwordInput.value = '';
+                    passwordInput.classList.remove('is-valid');
                 }
             });
-
         }
     });
-
-
 
     particlesJS("particles-js", {
         "particles": {

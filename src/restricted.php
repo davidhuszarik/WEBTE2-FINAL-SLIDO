@@ -41,7 +41,7 @@
 </head>
 <body>
 <div class="container">
-    <img id="logo" src="images/logo.png" alt="Your Logo">
+    <img id="logo" src="backend/views/images/logo.png" alt="Your Logo">
     <h1 id="title">Prístup zamietnutý</h1>
     <p id="text">Budete presmerovaní na prihlasovaciu stránku do <span id="countdown">5</span> sekúnd.</p>
     <div id="progressBar">
@@ -70,18 +70,18 @@
     }
 
     function redirectToLogin() {
-        window.location.href = 'login.php';
+        window.location.href = 'index.php';
     }
 
 
     function translateToEnglish() {
         document.getElementById('title').innerText = 'Permission denied';
-        document.getElementById('text').innerText = 'You will be redirected to the login page!';
+        document.getElementById('text').innerText = 'You will be redirected to the home page!';
     }
 
     function translateToSlovak() {
         document.getElementById('title').innerText = 'Prístup zamietnutý';
-        document.getElementById('text').innerText = 'Budete presmerovaní na prihlasovaciu stránku!';
+        document.getElementById('text').innerText = 'Budete presmerovaní na domovskú stránku!';
     }
 
     function checkSavedLanguage() {

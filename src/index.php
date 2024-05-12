@@ -3,10 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ODILS | Homepage</title>
+    <title id="pageTitle">ODILS | Homepage</title>
+    <link rel="icon" type="image/x-icon" href="backend/views/images/favicon.png">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             min-height: 100vh;
@@ -65,7 +70,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-        <a class="navbar-brand" href="#"><img id="logo" src="images/logo.png" alt="ODILS | Homepage"></a>
+        <a class="navbar-brand" href="#"><img id="logo" src="backend/views/images/logo.png" alt="ODILS | Homepage"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -79,13 +84,13 @@
                     <a class="nav-link" id="loginLink" href="login"><i class="fas fa-info-circle"></i> Login</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Language
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" id="englishLink" href="#">English <span id="englishIndicator"></span></a>
-                        <a class="dropdown-item" id="slovakLink" href="#">Slovak <span id="slovakIndicator"></span></a>
+                        <a class="dropdown-item" id="englishLink">English <span id="englishIndicator"></span></a>
+                        <a class="dropdown-item" id="slovakLink">Slovak <span id="slovakIndicator"></span></a>
                     </div>
                 </li>
             </ul>
@@ -114,7 +119,7 @@
         <h2 class="text-center" id="whatsGoodHeading"></h2>
         <div class="row align-items-center">
             <div class="col-md-4 text-center">
-                <img src="images/imagWithLogo.png" class="img-fluid" alt="Who We Are Image" style="max-width: 200px;">
+                <img src="backend/views/images/imagWithLogo.png" class="img-fluid" alt="Who We Are Image" style="max-width: 200px; border: 1px solid black;">
             </div>
             <div class="col-md-8">
                 <p style="margin-top: 20px; margin-bottom: 20px;" id="whatsGoodText1"></p>
@@ -134,7 +139,7 @@
 
 <footer class="footer">
     <div class="container">
-        <p>&copy; 2024 ODILS. <span id="rightsReservedText"></span><br>
+        <p><strong>&copy; 2024 ODILS. </strong> <span id="rightsReservedText"></span><br>
             <span id="schoolProjectText"></span></p>
     </div>
 </footer>
@@ -146,6 +151,37 @@
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
 <script>
+
+    // Check if the user has previously accepted cookies
+    const cookieAccepted = localStorage.getItem('cookieAccepted');
+
+    if (!cookieAccepted) {
+        // If cookies are not accepted, show the dialog
+        Swal.fire({
+            title: 'Súhlas so súbormi cookie',
+            html: 'Táto webová stránka používa súbory cookie na zabezpečenie toho, aby ste na našej webovej stránke získali najlepšie skúsenosti. Súbory cookie sú malé textové súbory, ktoré sú uložené vo vašom zariadení a pomáhajú poskytovať personalizovaný zážitok pri prehliadaní a analyzujú premávku na webovej stránke. Kliknutím na tlačidlo "Súhlasiť" súhlasíte s používaním všetkých súborov cookie.',
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonText: 'Súhlasiť',
+            cancelButtonText: 'Odmietnuť',
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.setItem('cookieAccepted', true);
+                Swal.fire({
+                    title: 'Súbor cookies bol úspešne akceptovaný!',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                window.location.href = 'restricted.php';
+            }
+        });
+    }
+
+
+
     AOS.init();
     particlesJS("particles-js", {
         "particles": {
@@ -198,14 +234,15 @@
     });
 
     function translateToEnglish() {
-        document.getElementById('homeLink').innerText = 'Home';
-        document.getElementById('loginLink').innerText = 'Login';
-        document.getElementById('navbarDropdown').innerText = 'Language';
-        document.getElementById('invitationHeading').innerText = 'Got an invitation code?';
+        document.getElementById('pageTitle').innerText = 'ODILS |> Homepage';
+        document.getElementById('homeLink').innerHTML = '<i class="fas fa-home"></i> Home';
+        document.getElementById('loginLink').innerHTML = "<i class=\"fas fa-angle-double-right\"></i> Login";
+        document.getElementById('navbarDropdown').innerHTML = '<i class="fas fa-globe"></i> Language';
+        document.getElementById('invitationHeading').innerHTML = '<strong>Got an invitation code?</strong>';
         document.getElementById('invitationMessage').innerText = 'Enter the invitation code you received to connect as visitor';
         document.getElementById('connectText').innerText = 'Connect';
-        document.getElementById('whatsGoodHeading').innerText = "What's good about ODILS?";
-        document.getElementById('whatsGoodText1').innerText = 'Odils emerges as a transformative platform redefining audience engagement across various settings, be it presentations, meetings, or events.';
+        document.getElementById('whatsGoodHeading').innerHTML = "<strong>WHAT IS ODILS?</strong>";
+        document.getElementById('whatsGoodText1').innerText = 'Odils is an easy to use Q&A and polling platform for meetings and events. It allows meeting and event organizers to crowdsource top questions to drive meaningful conversations, engage participants with live polls and capture valuable event data.';
         document.getElementById('whatsGoodText2').innerText = 'Through Odils, attendees transcend the role of mere spectators, becoming integral contributors to the discourse.';
         document.getElementById('needHelpText').innerText = 'Do you need help?';
         document.getElementById('documentationText').innerHTML = 'You can find our documentation here: <a href="https://www.example.com/documentation">DOCUMENTATION</a>';
@@ -220,14 +257,15 @@
     }
 
     function translateToSlovak() {
-        document.getElementById('homeLink').innerText = 'Domov';
-        document.getElementById('loginLink').innerText = 'Prihlásenie';
-        document.getElementById('navbarDropdown').innerText = 'Jazyk';
-        document.getElementById('invitationHeading').innerText = 'Máte pozvánkový kód?';
+        document.getElementById('pageTitle').innerText = 'ODILS |> Domov';
+        document.getElementById('homeLink').innerHTML = '<i class="fas fa-home"></i> Domov';
+        document.getElementById('loginLink').innerHTML = "<i class=\"fas fa-angle-double-right\"></i> Prihlásenie";
+        document.getElementById('navbarDropdown').innerHTML = '<i class="fas fa-globe"></i> Jazyk';
+        document.getElementById('invitationHeading').innerHTML = '<strong>Máte pozvánkový kód?</strong>';
         document.getElementById('invitationMessage').innerText = 'Zadajte pozvánkový kód, ktorý ste dostali, aby ste sa pripojili ako návštevník';
         document.getElementById('connectText').innerText = 'Pripojiť sa';
-        document.getElementById('whatsGoodHeading').innerText = "Čo je dobré na ODILS?";
-        document.getElementById('whatsGoodText1').innerText = 'Odils sa stáva transformačnou platformou, ktorá predefinuje zapojenie publika v rôznych prostrediach, či už ide o prezentácie, stretnutia alebo udalosti.';
+        document.getElementById('whatsGoodHeading').innerHTML = "<strong>ČO JE ODILS?</strong>";
+        document.getElementById('whatsGoodText1').innerText = 'ODILS je jednoduchá a intuitívna platforma pre otázky a ankety, určená pre stretnutia a udalosti. Organizátorom stretnutí a podujatí umožňuje získať najlepšie otázky od účastníkov a viesť zmysluplné rozhovory, zapájať účastníkov živými anketami a zbierať cenné údaje o udalostiach.';
         document.getElementById('whatsGoodText2').innerText = 'Prostredníctvom Odils účastníci presahujú úlohu iba divákov, stávajú sa neoddeliteľnými prispievateľmi k diskurzu.';
         document.getElementById('needHelpText').innerText = 'Potrebujete pomoc?';
         document.getElementById('documentationText').innerHTML = 'Nájdite našu dokumentáciu tu: <a href="https://www.example.com/documentation">DOKUMENTÁCIA</a>';
@@ -243,10 +281,20 @@
 
     document.getElementById('englishLink').addEventListener('click', function() {
         translateToEnglish();
+        Swal.fire({
+            icon: 'success',
+            title: 'Language changed',
+            text: 'The language has been successfully changed.'
+        });
     });
 
     document.getElementById('slovakLink').addEventListener('click', function() {
         translateToSlovak();
+        Swal.fire({
+            icon: 'success',
+            title: 'Jazyk zmenený',
+            text: 'Jazyk bol úspešne zmenený.'
+        });
     });
 
 </script>
