@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ODILS | Registration</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             display: flex;
@@ -20,9 +22,16 @@
             border: 1px solid #a2d9ce;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
-            max-width: 400px;
+            max-width: 600px;
             width: 100%;
             margin: auto;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"] {
+            width: 100%;
+            max-width: 100%;
         }
 
         .btn-primary {
@@ -183,8 +192,10 @@
         console.log(savedLanguage);
         if (savedLanguage === 'english') {
             translateToEnglish();
+            return "English";
         } else if (savedLanguage === 'slovak') {
             translateToSlovak();
+            return "Slovak";
         } else {
             translateToEnglish();
         }
@@ -271,16 +282,68 @@
                 type: 'POST',
                 url: window.location.href,
                 data: formData,
-                // TODO visual handle success and error here
                 success: function(response) {
-                    window.location.replace(window.location.hostname + '/login')
+                    window.location.replace(window.location.hostname + '/login');
                 },
                 error: function(xhr, status, error) {
                     console.error('Error:', error);
+                    if (checkSavedLanguage() === "Slovak") {
+                        if (xhr.responseJSON.error === "Failed to create new user") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Ups...',
+                                text: 'Došlo k neznámej chybe!',
+                                footer: 'Skúste to prosím neskôr znova'
+                            });
+                        }
+                        else if (xhr.responseJSON.error === "User already exists") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Ups...',
+                                text: 'Používateľ už existuje!',
+                                footer: 'Skúste to prosím s iným používateľom alebo emailom.'
+                            });
+                        }
+                        else if (xhr.responseJSON.error === "Invalid username or email address") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Registrácia zlyhala',
+                                text: 'Neplatné používateľské meno alebo emailová adresa.',
+                                footer: 'Prosím, skontrolujte, či používateľské meno a emailová adresa spĺňajú požiadavky.'
+                            });
+                        }
+
+                    } else {
+                        if (xhr.responseJSON.error === "Failed to create new user") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Ups...',
+                                text: 'An unknown error occurred!',
+                                footer: 'Please try again later'
+                            });
+                        }
+                        else if (xhr.responseJSON.error === "User already exists") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'User already exists!',
+                                footer: 'Please try with a different user or email'
+                            });
+                        }
+                        else if (xhr.responseJSON.error === "Invalid username or email address") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Registration Failed',
+                                text: 'Invalid username or email address.',
+                                footer: 'Please username and your email meets the requirements.'
+                            });
+                        }
+                    }
                 }
             });
         }
     });
+
     particlesJS("particles-js", {
         "particles": {
             "number": {"value": 6, "density": {"enable": true, "value_area": 800}},

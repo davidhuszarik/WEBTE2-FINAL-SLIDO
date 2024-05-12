@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ODILS | Login</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         body {
             display: flex;
@@ -169,10 +172,12 @@
         var savedLanguage = localStorage.getItem('selectedLanguage');
         if (savedLanguage === 'english') {
             translateToEnglish();
+            return "English";
         } else if (savedLanguage === 'slovak') {
             translateToSlovak();
         } else {
             translateToEnglish();
+            return "Slovak";
         }
     }
 
@@ -212,13 +217,48 @@
                 },
                 error: function(xhr, status, error) {
                     console.error('Error:', error);
+                    if (xhr.responseJSON.error === "Invalid username or password") {
+                        if (checkSavedLanguage() === "English") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Invalid credentials',
+                                text: 'Please check your username and password and try again.'
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Neplatné prihlasovacie údaje',
+                                text: 'Skontrolujte si svoje používateľské meno a heslo a skúste to znova.'
+                            });
+                        }
+                    } else {
+                        if (checkSavedLanguage() === "English") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'An unknown error occurred!',
+                                footer: 'Please try again later'
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Ups...',
+                                text: 'Došlo k neznámej chybe!',
+                                footer: 'Skúste to prosím neskôr znova'
+                            });
+                        }
+                    }
+                    const usernameInput = document.getElementById('username');
+                    usernameInput.value = '';
+                    usernameInput.classList.remove('is-valid');
+                    const passwordInput = document.getElementById('password');
+                    passwordInput.value = '';
+                    passwordInput.classList.remove('is-valid');
                 }
             });
-
         }
     });
-
-
 
     particlesJS("particles-js", {
         "particles": {
