@@ -114,7 +114,7 @@
         <h2 class="text-center" id="whatsGoodHeading"></h2>
         <div class="row align-items-center">
             <div class="col-md-4 text-center">
-                <img src="images/imagWithLogo.png" class="img-fluid" alt="Who We Are Image" style="max-width: 200px;">
+                <img src="images/imagWithLogo.png" class="img-fluid" alt="Who We Are Image" style="max-width: 200px; border: 1px solid black;">
             </div>
             <div class="col-md-8">
                 <p style="margin-top: 20px; margin-bottom: 20px;" id="whatsGoodText1"></p>
