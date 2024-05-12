@@ -41,7 +41,7 @@
 </head>
 <body>
 <div class="container">
-    <img id="logo" src="images/logo.png" alt="Your Logo">
+    <img id="logo" src="backend/views/images/logo.png" alt="Your Logo">
     <h1 id="title">Prístup zamietnutý</h1>
     <p id="text">Budete presmerovaní na prihlasovaciu stránku do <span id="countdown">5</span> sekúnd.</p>
     <div id="progressBar">

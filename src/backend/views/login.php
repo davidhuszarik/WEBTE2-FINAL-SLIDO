@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ODILS | Login</title>
+    <title id="pageTitle">ODILS | Login</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -78,7 +79,7 @@
 <script src="https://threejs.org/examples/js/libs/stats.min.js"></script>
 <div class="form-container">
     <form id="loginForm">
-        <img src="../../images/logo.png" alt="Logo" class="logo">
+        <img src="images/logo.png" alt="Logo" class="logo">
         <div class="form-group">
             <label id="usernameLabel" for="username">Username</label>
             <input type="text" class="form-control" id="username" required maxlength="25">
@@ -149,6 +150,7 @@
     }
 
     function translateToEnglish() {
+        document.getElementById('pageTitle').innerText = 'ODILS |> Login';
         document.getElementById('username').placeholder = 'Username';
         document.getElementById('usernameLabel').textContent = 'Username';
         document.getElementById('password').placeholder = 'Password';
@@ -159,6 +161,7 @@
     }
 
     function translateToSlovak() {
+        document.getElementById('pageTitle').innerText = 'ODILS |> Prihlásenie';
         document.getElementById('username').placeholder = 'Užívateľské meno';
         document.getElementById('usernameLabel').textContent = 'Užívateľské meno';
         document.getElementById('password').placeholder = 'Heslo';

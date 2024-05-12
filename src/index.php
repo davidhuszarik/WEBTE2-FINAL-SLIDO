@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ODILS | Homepage</title>
+    <title id="pageTitle">ODILS | Homepage</title>
+    <link rel="icon" type="image/x-icon" href="backend/views/images/favicon.png">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
@@ -69,7 +70,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-        <a class="navbar-brand" href="#"><img id="logo" src="images/logo.png" alt="ODILS | Homepage"></a>
+        <a class="navbar-brand" href="#"><img id="logo" src="backend/views/images/logo.png" alt="ODILS | Homepage"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -118,7 +119,7 @@
         <h2 class="text-center" id="whatsGoodHeading"></h2>
         <div class="row align-items-center">
             <div class="col-md-4 text-center">
-                <img src="images/imagWithLogo.png" class="img-fluid" alt="Who We Are Image" style="max-width: 200px; border: 1px solid black;">
+                <img src="backend/views/images/imagWithLogo.png" class="img-fluid" alt="Who We Are Image" style="max-width: 200px; border: 1px solid black;">
             </div>
             <div class="col-md-8">
                 <p style="margin-top: 20px; margin-bottom: 20px;" id="whatsGoodText1"></p>
@@ -202,6 +203,7 @@
     });
 
     function translateToEnglish() {
+        document.getElementById('pageTitle').innerText = 'ODILS |> Homepage';
         document.getElementById('homeLink').innerHTML = '<i class="fas fa-home"></i> Home';
         document.getElementById('loginLink').innerHTML = "<i class=\"fas fa-angle-double-right\"></i> Login";
         document.getElementById('navbarDropdown').innerHTML = '<i class="fas fa-globe"></i> Language';
@@ -224,6 +226,7 @@
     }
 
     function translateToSlovak() {
+        document.getElementById('pageTitle').innerText = 'ODILS |> Domov';
         document.getElementById('homeLink').innerHTML = '<i class="fas fa-home"></i> Domov';
         document.getElementById('loginLink').innerHTML = "<i class=\"fas fa-angle-double-right\"></i> Prihlásenie";
         document.getElementById('navbarDropdown').innerHTML = '<i class="fas fa-globe"></i> Jazyk';
