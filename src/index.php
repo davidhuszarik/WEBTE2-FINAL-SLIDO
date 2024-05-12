@@ -151,6 +151,37 @@
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
 <script>
+
+    // Check if the user has previously accepted cookies
+    const cookieAccepted = localStorage.getItem('cookieAccepted');
+
+    if (!cookieAccepted) {
+        // If cookies are not accepted, show the dialog
+        Swal.fire({
+            title: 'Súhlas so súbormi cookie',
+            html: 'Táto webová stránka používa súbory cookie na zabezpečenie toho, aby ste na našej webovej stránke získali najlepšie skúsenosti. Súbory cookie sú malé textové súbory, ktoré sú uložené vo vašom zariadení a pomáhajú poskytovať personalizovaný zážitok pri prehliadaní a analyzujú premávku na webovej stránke. Kliknutím na tlačidlo "Súhlasiť" súhlasíte s používaním všetkých súborov cookie.',
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonText: 'Súhlasiť',
+            cancelButtonText: 'Odmietnuť',
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.setItem('cookieAccepted', true);
+                Swal.fire({
+                    title: 'Súbor cookies bol úspešne akceptovaný!',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                window.location.href = 'restricted.php';
+            }
+        });
+    }
+
+
+
     AOS.init();
     particlesJS("particles-js", {
         "particles": {
