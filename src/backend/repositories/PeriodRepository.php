@@ -1,9 +1,12 @@
 <?php
 namespace Repositories;
-use mysqli;
 
-// necessary imports
-require_once __DIR__ . "/../util/DatabaseConnection.php";
+use UnhandledMatchError;
+use Util\DatabaseConnection;
+use mysqli;
+use Models\Period;
+use Models\QuestionType;
+use DateTime;
 
 class PeriodRepository{
     private mysqli $connection;

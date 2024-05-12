@@ -273,7 +273,7 @@
                 data: formData,
                 // TODO visual handle success and error here
                 success: function(response) {
-                    window.location.replace(window.location.hostname + '/login')
+                    window.location.replace('/login');
                 },
                 error: function(xhr, status, error) {
                     console.error('Error:', error);
