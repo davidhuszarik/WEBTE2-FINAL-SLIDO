@@ -1,23 +1,32 @@
-# :thought_balloon: ODILS | WEBOVÉ TECHNOLÓGIE 2 | FINALNÉ ZADANIE
+<!-- Title -->
+<h1 align="center">Project Name</h1>
 
-> [!WARNING]
-> Toto je školský projekt, nie je súčasťou SLIDO a ani CISCO.
+<!-- Description -->
+<p align="center">A brief description of your project.</p>
 
-## TÍM Č. 5
-Na vytvorenie tohto projektu sa spolupracovali:
-- :robot: Gergely Tóth (TEAM LEADER) [github](https://github.com/GergelyToth-stuba)
-- :alien: Denis Pudelka (BACKEND) [github](https://github.com/DenisPudelka)
-- :japanese_goblin: Péter Takács (FRONTEND) [github](https://github.com/PeterTakacs3000)
-- :space_invader: Dávid Huszárik (FRONTEND) [github](https://github.com/davidhuszarik)
+<!-- Badges -->
+<p align="center">
+    <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/username/repo">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/username/repo">
+    <img alt="GitHub stars" src="https://img.shields.io/github/stars/username/repo?style=social">
+</p>
 
-## POUŽITÉ TECHNOLÓGIE
-- [Bootstrap](https://getbootstrap.com/)
-- [Particles.JS](https://vincentgarreau.com/particles.js/)
-- [FontAwasome](https://fontawesome.com/)
-- [Ajax](https://wintercms.com/docs/v1.2/docs/ajax/introduction)
-- [Websocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
+<!-- Table of Contents -->
+## Table of Contents
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-## NÁVRH DATABÁZY
-![image](https://github.com/davidhuszarik/WEBTE2-FINAL-SLIDO/assets/76002397/50b7930f-9bc0-48ad-848b-a79979c7f916)
+<!-- Features -->
+## Features
+- Feature 1
+- Feature 2
+- Feature 3
 
-
+<!-- Installation -->
+## Installation
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/username/repo.git
