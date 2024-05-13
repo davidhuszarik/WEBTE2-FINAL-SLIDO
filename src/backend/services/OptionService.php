@@ -20,7 +20,9 @@ class OptionService{
 
     public function getOptionsByGivenQuestion(int $question_id)
     {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
 
         if (!isset($_SESSION['user'])) {
             return [
@@ -57,7 +59,9 @@ class OptionService{
 
     public function getSpecificOption(int $option_id)
     {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         if (!isset($_SESSION['user'])) {
             return [
                 'error' => "Unauthorized access - no session found",
@@ -101,7 +105,9 @@ class OptionService{
 
     public function updateOption(int $option_id, array $option_data)
     {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         if (!isset($_SESSION['user'])) {
             return [
                 'error' => "Unauthorized access - no session found",
@@ -163,7 +169,9 @@ class OptionService{
 
     public function createOption(int $question_id, array $option_data)
     {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         if (!isset($_SESSION['user'])) {
             return [
                 'error' => "Unauthorized access - no session found",
@@ -214,7 +222,9 @@ class OptionService{
 
     public function deleteOption(int $option_id)
     {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         if (!isset($_SESSION['user'])) {
             return [
                 'error' => "Unauthorized access - no session found",
