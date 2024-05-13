@@ -163,8 +163,8 @@
     </div>
 </footer>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
@@ -409,10 +409,14 @@
                             icon: 'success',
                             confirmButtonColor: '#3085d6',
                             confirmButtonText: 'OK'
-                        })
+                        });
                         $.ajax({
+                            url: 'login',
                             type: 'DELETE',
-                            url: window.location.href + "/login",
+                            success: function(result) {
+                                // Handle success response here
+                                console.log('Deleted successfully');
+                            }
                         });
                     }
                 }
@@ -443,10 +447,12 @@
                         icon: 'success',
                         confirmButtonColor: '#3085d6',
                         confirmButtonText: 'OK'
-                    })
+                    });
                     $.ajax({
+                        url: '/login',
                         type: 'DELETE',
-                        url: window.location.href + "/login",
+                        success: function(result) {
+                        }
                     });
                 }
             });
