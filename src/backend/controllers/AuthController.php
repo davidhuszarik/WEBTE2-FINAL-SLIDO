@@ -23,14 +23,28 @@ class AuthController extends Controller
 
     public function loginIndex(): void
     {
-        $this->render("login", []);
-        header("Content-Type: text/html");
+        if ($this->loginService->getLoggedInUser() == null){
+            $this->render("login", []);
+            header("Content-Type: text/html");
+        }
+        else{
+            // TODO make this work on on the school server
+            header('Location: '. gethostname());
+        }
     }
 
     public function login(): void
     {
-        $this->loginService->login();
-        header("Content-Type: application/json");
+        if ($this->loginService->getLoggedInUser() == null){
+            $this->loginService->login();
+            header("Content-Type: application/json");
+
+        }
+        else{
+            // TODO make this work on on the school server
+            header('Location: '. gethostname());
+        }
+
     }
 
     public function logout(): void
@@ -41,13 +55,25 @@ class AuthController extends Controller
 
     public function registerIndex(): void
     {
-        $this->render("register", []);
-        header("Content-Type: text/html");
+        if ($this->loginService->getLoggedInUser() == null){
+            $this->render("register", []);
+            header("Content-Type: text/html");
+        }
+        else{
+            // TODO make this work on on the school server
+            header('Location: '. gethostname());
+        }
     }
 
     public function register(): void
     {
-        $this->registerService->register();
-        header("Content-Type: application/json");
+        if ($this->loginService->getLoggedInUser() == null){
+            $this->registerService->register();
+            header("Content-Type: application/json");
+        }
+        else{
+            // TODO make this work on on the school server
+            header('Location: '. gethostname());
+        }
     }
 }
