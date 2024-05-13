@@ -435,6 +435,14 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     sessionStorage.removeItem('credentials');
+                    $.ajax({
+                        url: 'login',
+                        type: 'DELETE',
+                        success: function(result) {
+                            // Handle success response here
+                            console.log('Deleted successfully');
+                        }
+                    });
                     Swal.fire({
                         title: 'Logged out successfully!',
                         text: "You have been logged out of your account.",
@@ -458,6 +466,14 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     sessionStorage.removeItem('credentials');
+                    $.ajax({
+                        url: 'login',
+                        type: 'DELETE',
+                        success: function(result) {
+                            // Handle success response here
+                            console.log('Deleted successfully');
+                        }
+                    });
                     Swal.fire({
                         title: 'Úspešné odhlásenie!',
                         text: "Boli ste úspešne odhlásení zo svojho účtu.",
