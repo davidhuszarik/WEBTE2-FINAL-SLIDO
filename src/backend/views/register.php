@@ -284,7 +284,7 @@
                 url: window.location.href,
                 data: formData,
                 success: function (response) {
-                    window.location.replace(window.location.hostname + '/login');
+                    window.location.replace('/login');
                 },
                 error: function (xhr, status, error) {
                     console.error('Error:', error);
