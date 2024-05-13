@@ -28,8 +28,7 @@ class AuthController extends Controller
             header("Content-Type: text/html");
         }
         else{
-            // TODO make this work on on the school server
-            header('Location: '. gethostname());
+            header('Location: index.php');
         }
     }
 
@@ -41,8 +40,7 @@ class AuthController extends Controller
 
         }
         else{
-            // TODO make this work on on the school server
-            header('Location: '. gethostname());
+            header('Location: index.php');
         }
 
     }
@@ -60,8 +58,7 @@ class AuthController extends Controller
             header("Content-Type: text/html");
         }
         else{
-            // TODO make this work on on the school server
-            header('Location: '. gethostname());
+            header('Location: index.php');
         }
     }
 
@@ -72,8 +69,7 @@ class AuthController extends Controller
             header("Content-Type: application/json");
         }
         else{
-            // TODO make this work on on the school server
-            header('Location: '. gethostname());
+            header('Location: index.php');
         }
     }
 }
