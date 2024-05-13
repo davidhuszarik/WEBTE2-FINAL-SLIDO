@@ -66,11 +66,11 @@
     </style>
 </head>
 
-<body onload="translateToSlovak()">
+<body onload="translateToSlovak(); localStorage.setItem('selectedLanguage', 'slovak');">
 
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-        <a class="navbar-brand" href="#"><img id="logo" src="backend/views/images/logo.png" alt="ODILS | Homepage"></a>
+        <a class="navbar-brand"><img id="logo" src="backend/views/images/logo.png" alt="ODILS | Homepage"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -83,6 +83,9 @@
                 <li class="nav-item">
                     <a class="nav-link" id="loginLink" href="login"><i class="fas fa-info-circle"></i> Login</a>
                 </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="logoutLink" style="display: none;" onclick="logout()">Logout</button>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -93,6 +96,10 @@
                         <a class="dropdown-item" id="slovakLink">Slovak <span id="slovakIndicator"></span></a>
                     </div>
                 </li>
+                <li class="nav-item" id="userMenuItem" style="display: none;">
+                    <a class="nav-link" id="userNameLink" href="#"><i class="fas fa-user"></i> <span id="userName"></span></a>
+                </li>
+
             </ul>
         </div>
     </div>
@@ -239,6 +246,7 @@
         document.getElementById('loginLink').innerHTML = "<i class=\"fas fa-angle-double-right\"></i> Login";
         document.getElementById('navbarDropdown').innerHTML = '<i class="fas fa-globe"></i> Language';
         document.getElementById('invitationHeading').innerHTML = '<strong>Got an invitation code?</strong>';
+        document.getElementById('logoutLink').innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
         document.getElementById('invitationMessage').innerText = 'Enter the invitation code you received to connect as visitor';
         document.getElementById('connectText').innerText = 'Connect';
         document.getElementById('whatsGoodHeading').innerHTML = "<strong>WHAT IS ODILS?</strong>";
@@ -254,6 +262,12 @@
         document.getElementById('englishIndicator').style.display = 'inline';
         document.getElementById('slovakIndicator').style.display = 'none';
         localStorage.setItem('selectedLanguage', 'english');
+        var credentials = sessionStorage.getItem('credentials');
+        if (credentials) {
+            var parsedCredentials = JSON.parse(credentials);
+            var userNameLink = document.getElementById('userNameLink');
+            userNameLink.textContent = "You are logged in as " + parsedCredentials.username;
+        }
     }
 
     function translateToSlovak() {
@@ -262,6 +276,7 @@
         document.getElementById('loginLink').innerHTML = "<i class=\"fas fa-angle-double-right\"></i> Prihlásenie";
         document.getElementById('navbarDropdown').innerHTML = '<i class="fas fa-globe"></i> Jazyk';
         document.getElementById('invitationHeading').innerHTML = '<strong>Máte pozvánkový kód?</strong>';
+        document.getElementById('logoutLink').innerHTML = '<i class="fas fa-sign-out-alt"></i> Odhlásenie';
         document.getElementById('invitationMessage').innerText = 'Zadajte pozvánkový kód, ktorý ste dostali, aby ste sa pripojili ako návštevník';
         document.getElementById('connectText').innerText = 'Pripojiť sa';
         document.getElementById('whatsGoodHeading').innerHTML = "<strong>ČO JE ODILS?</strong>";
@@ -277,6 +292,12 @@
         document.getElementById('slovakIndicator').style.display = 'inline';
         document.getElementById('englishIndicator').style.display = 'none';
         localStorage.setItem('selectedLanguage', 'slovak');
+        var credentials = sessionStorage.getItem('credentials');
+        if (credentials) {
+            var parsedCredentials = JSON.parse(credentials);
+            var userNameLink = document.getElementById('userNameLink');
+            userNameLink.textContent = "Si prihlásený ako " + parsedCredentials.username;
+        }
     }
 
     document.getElementById('englishLink').addEventListener('click', function() {
@@ -296,6 +317,122 @@
             text: 'Jazyk bol úspešne zmenený.'
         });
     });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var credentials = sessionStorage.getItem('credentials');
+        if (credentials) {
+            var parsedCredentials = JSON.parse(credentials);
+            var loginButton = document.getElementById('loginLink');
+            var logoutButton = document.getElementById('logoutLink');
+            var userMenuItem = document.getElementById('userMenuItem');
+            var userNameLink = document.getElementById('userNameLink');
+            if (loginButton) {
+                loginButton.style.display = "none";
+            }
+            if (logoutButton) {
+                logoutButton.style.display = "block";
+            }
+            if (userMenuItem) {
+                userMenuItem.style.display = "block";
+            }
+            if (userNameLink) {
+                userNameLink.textContent = "You are logged in as " + parsedCredentials.username;
+            }
+        } else {
+            var loginButton = document.getElementById('loginLink');
+            var logoutButton = document.getElementById('logoutLink');
+            var userMenuItem = document.getElementById('userMenuItem');
+            if (loginButton) {
+                loginButton.style.display = "block";
+            }
+            if (logoutButton) {
+                logoutButton.style.display = "none";
+            }
+            if (userMenuItem) {
+                userMenuItem.style.display = "none";
+            }
+        }
+    });
+
+    function checkSavedLanguage() {
+        var savedLanguage = localStorage.getItem('selectedLanguage');
+        if (savedLanguage === 'english') {
+            translateToEnglish();
+            return "english";
+        } else if (savedLanguage === 'slovak') {
+            translateToSlovak();
+        } else {
+            translateToEnglish();
+            return "slovak";
+        }
+    }
+
+
+
+    function logout() {
+
+        if (checkSavedLanguage() === "english") {
+            Swal.fire({
+                title: 'Are you sure you want to log out?',
+                text: "You will be logged out of your account.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, log me out!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    sessionStorage.removeItem('credentials');
+                    var loginButton = document.getElementById('loginLink');
+                    loginButton.style.display = "block";
+                    var logoutButton = document.getElementById('logoutLink');
+                    logoutButton.style.display = "none";
+                    var userMenuItem = document.getElementById('userMenuItem');
+                    userMenuItem.style.display = "none";
+                    if (checkSavedLanguage() == "english") {
+                        Swal.fire({
+                            title: 'Logged out successfully!',
+                            text: "You have been logged out of your account.",
+                            icon: 'success',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        })
+                    }
+                }
+            });
+        }
+        else {
+            Swal.fire({
+                title: 'Ste si istý/á, že sa chcete odhlásiť?',
+                text: "Budete odhlásený/á zo svojho účtu.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Áno, odhlásiť ma!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    sessionStorage.removeItem('credentials');
+                    var loginButton = document.getElementById('loginLink');
+                    loginButton.style.display = "block";
+                    var logoutButton = document.getElementById('logoutLink');
+                    logoutButton.style.display = "none";
+                    var userMenuItem = document.getElementById('userMenuItem');
+                    userMenuItem.style.display = "none";
+                        Swal.fire({
+                            title: 'Úspešné odhlásenie!',
+                            text: "Boli ste úspešne odhlásení zo svojho účtu.",
+                            icon: 'success',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        })
+                }
+            });
+        }
+
+    }
+
+
 
 </script>
 </body>
