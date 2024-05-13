@@ -297,13 +297,12 @@
 
             checkForm();
         });
-        
+
         function validatePassword(password) {
             var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{7,}$/;
             return re.test(password);
         }
 
-        // Function to check if both passwords are valid and identical
         function checkForm() {
             var isValidPassword = $('.is-valid').length == 2;
 
@@ -341,6 +340,7 @@
         document.getElementById('changePasswordModalLabel').innerText = '🔐 Change password';
         document.getElementById('newPasswordLabel').innerText = 'New password';
         document.getElementById('confirmNewPasswordLabel').innerText = 'Confrim password';
+        document.getElementById('currentPasswordLabel').innerText = 'Current password';
         document.getElementById('passwordCriteria').innerText = 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.';
         document.getElementById('confirmPasswordButton').innerText = 'Back';
         document.getElementById('closePasswordButton').innerText = 'Submit';
