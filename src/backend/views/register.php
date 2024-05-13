@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ODILS | Registration</title>
+    <title id="pageTitle">ODILS | Registration</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             height: 100vh;
             background-color: #e9f5f0;
         }
@@ -20,10 +20,22 @@
             border: 1px solid #a2d9ce;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
-            max-width: 400px;
-            width: 100%;
+            position: fixed;
+            inset: 0px;
+            width: fit-content;
+            height: fit-content;
+            max-width: 100vw;
+            max-height: 100dvh;
             margin: auto;
         }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"] {
+            width: 100%;
+            max-width: 100%;
+        }
+
 
         .btn-primary {
             background-color: #28a745;
@@ -88,7 +100,7 @@
 <script src="https://threejs.org/examples/js/libs/stats.min.js"></script>
 <div class="form-container">
     <form id="registrationForm">
-        <img src="../../images/logo.png" alt="Logo" class="logo">
+        <img src="images/logo.png" alt="Logo" class="logo">
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
@@ -122,7 +134,8 @@
         <button id="registerButton" type="submit" class="btn btn-primary btn-block">Register</button>
     </form>
     <div style="text-align: center; margin-top: 10px;">
-        <button id="backButton" onclick="window.location.href = 'index.php';" class="btn btn-secondary btn-block">Back</button>
+        <button id="backButton" onclick="window.location.href = 'index.php';" class="btn btn-secondary btn-block">Back
+        </button>
     </div>
     <div id="loginPrompt" style="text-align: center; margin-top: 10px;">
         <p>Have you already account? <a href="login">Login</a></p>
@@ -150,8 +163,7 @@
             savedLanguage = localStorage.getItem('selectedLanguage');
             if (savedLanguage === "slovak") {
                 usernameFeedback.textContent = 'Používateľské meno obsahuje špeciálne znaky.';
-            }
-            else {
+            } else {
                 usernameFeedback.textContent = 'Username contains special characters.';
             }
         } else if (username.value.trim() === '') {
@@ -159,8 +171,7 @@
             savedLanguage = localStorage.getItem('selectedLanguage');
             if (savedLanguage === "slovak") {
                 usernameFeedback.textContent = 'Prosím, zadajte používateľské meno.';
-            }
-            else {
+            } else {
                 usernameFeedback.textContent = 'Please enter your username.';
             }
         } else if (username.value.length > 25) {
@@ -168,8 +179,7 @@
             savedLanguage = localStorage.getItem('selectedLanguage');
             if (savedLanguage === "slovak") {
                 usernameFeedback.textContent = 'Používateľské meno musí mať menej ako 25 znakov.';
-            }
-            else {
+            } else {
                 usernameFeedback.textContent = 'Username must be less than 25 characters long.';
             }
         } else {
@@ -183,24 +193,27 @@
         console.log(savedLanguage);
         if (savedLanguage === 'english') {
             translateToEnglish();
+            return "English";
         } else if (savedLanguage === 'slovak') {
             translateToSlovak();
+            return "Slovak";
         } else {
             translateToEnglish();
         }
     }
 
-    window.onload = function() {
+    window.onload = function () {
         checkSavedLanguage();
     };
 
     function translateToEnglish() {
+        document.getElementById('pageTitle').innerText = 'ODILS |> Registration';
         document.getElementById('username').placeholder = 'Username';
         document.getElementById('email').placeholder = 'Email';
         document.getElementById('usernameLabel').textContent = 'Username';
         document.getElementById('password').placeholder = 'Password';
         document.getElementById('passwordLabel').textContent = 'Password';
-        document.getElementById('confirmPassword').placeholder= 'Confirm password';
+        document.getElementById('confirmPassword').placeholder = 'Confirm password';
         document.getElementById('confirmPasswordLabel').textContent = 'Confirm password';
         document.getElementById('registerButton').textContent = 'Register';
         document.getElementById('backButton').textContent = 'Back';
@@ -208,12 +221,13 @@
     }
 
     function translateToSlovak() {
+        document.getElementById('pageTitle').innerText = 'ODILS |> Registrácia';
         document.getElementById('email').placeholder = 'Email';
         document.getElementById('username').placeholder = 'Užívateľské meno';
         document.getElementById('usernameLabel').textContent = 'Užívateľské meno';
         document.getElementById('password').placeholder = 'Heslo';
         document.getElementById('passwordLabel').textContent = 'Heslo';
-        document.getElementById('confirmPassword').placeholder= 'Potvrďte heslo';
+        document.getElementById('confirmPassword').placeholder = 'Potvrďte heslo';
         document.getElementById('confirmPasswordLabel').textContent = 'Potvrďte heslo';
         document.getElementById('registerButton').textContent = 'Registrovať';
         document.getElementById('backButton').textContent = 'Späť';
@@ -227,8 +241,7 @@
             savedLanguage = localStorage.getItem('selectedLanguage');
             if (savedLanguage === "slovak") {
                 usernameFeedback.textContent = 'Prosím, zadaj správnu email.';
-            }
-            else {
+            } else {
                 usernameFeedback.textContent = 'Please enter a valid email address.';
             }
         } else {
@@ -243,8 +256,7 @@
             savedLanguage = localStorage.getItem('selectedLanguage');
             if (savedLanguage === "slovak") {
                 usernameFeedback.textContent = 'Heslá sa nerovnajú.';
-            }
-            else {
+            } else {
                 usernameFeedback.textContent = 'Passwords do not match.';
             }
         } else {
@@ -271,16 +283,64 @@
                 type: 'POST',
                 url: window.location.href,
                 data: formData,
-                // TODO visual handle success and error here
-                success: function(response) {
-                    window.location.replace('/login');
+                success: function (response) {
+                    window.location.replace(window.location.hostname + '/login');
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Error:', error);
+                    if (checkSavedLanguage() === "Slovak") {
+                        if (xhr.responseJSON.error === "Failed to create new user") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Ups...',
+                                text: 'Došlo k neznámej chybe!',
+                                footer: 'Skúste to prosím neskôr znova'
+                            });
+                        } else if (xhr.responseJSON.error === "User already exists") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Ups...',
+                                text: 'Používateľ už existuje!',
+                                footer: 'Skúste to prosím s iným používateľom alebo emailom.'
+                            });
+                        } else if (xhr.responseJSON.error === "Invalid username or email address") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Registrácia zlyhala',
+                                text: 'Neplatné používateľské meno alebo emailová adresa.',
+                                footer: 'Prosím, skontrolujte, či používateľské meno a emailová adresa spĺňajú požiadavky.'
+                            });
+                        }
+
+                    } else {
+                        if (xhr.responseJSON.error === "Failed to create new user") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Ups...',
+                                text: 'An unknown error occurred!',
+                                footer: 'Please try again later'
+                            });
+                        } else if (xhr.responseJSON.error === "User already exists") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'User already exists!',
+                                footer: 'Please try with a different user or email'
+                            });
+                        } else if (xhr.responseJSON.error === "Invalid username or email address") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Registration Failed',
+                                text: 'Invalid username or email address.',
+                                footer: 'Please username and your email meets the requirements.'
+                            });
+                        }
+                    }
                 }
             });
         }
     });
+
     particlesJS("particles-js", {
         "particles": {
             "number": {"value": 6, "density": {"enable": true, "value_area": 800}},

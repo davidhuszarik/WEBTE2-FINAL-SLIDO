@@ -13,6 +13,7 @@
             align-items: center;
             height: 100vh;
         }
+
         .container {
             width: 300px;
             padding: 20px;
@@ -20,10 +21,12 @@
             border-radius: 10px;
             background-color: #f9f9f9;
         }
+
         #logo {
             width: 100px;
             margin-bottom: 20px;
         }
+
         #progressBar {
             width: 100%;
             height: 20px;
@@ -31,6 +34,7 @@
             border-radius: 10px;
             margin-top: 20px;
         }
+
         #progress {
             width: 0;
             height: 100%;
@@ -53,7 +57,7 @@
     var countdown = 5;
     var countdownElement = document.getElementById('countdown');
 
-    var countdownInterval = setInterval(function() {
+    var countdownInterval = setInterval(function () {
         countdown--;
         countdownElement.textContent = countdown;
         updateProgressBar();
@@ -95,7 +99,7 @@
         }
     }
 
-    window.onload = function() {
+    window.onload = function () {
         checkSavedLanguage();
     };
 </script>

@@ -1,9 +1,12 @@
 <?php
+
 namespace Models;
 require_once __DIR__ . "/UserRole.php";
+
 use DateTime;
 
-class User{
+class User
+{
     private int $id;
     private string $user_name;
     private string $email;

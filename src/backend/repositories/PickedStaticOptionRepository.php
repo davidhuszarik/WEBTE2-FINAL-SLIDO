@@ -1,16 +1,19 @@
 <?php
+
 namespace Repositories;
 require_once __DIR__ . "/../loader.php";
 
-use Util\DatabaseConnection;
-use mysqli;
 use Models\PickedStaticOption;
+use mysqli;
+use Util\DatabaseConnection;
 
-class PickedStaticOptionRepository{
+class PickedStaticOptionRepository
+{
     private mysqli $connection;
 
     // Construct
-    public function __construct(){
+    public function __construct()
+    {
         $this->connection = DatabaseConnection::getInstance()->getConnection();
     }
 
@@ -34,12 +37,12 @@ class PickedStaticOptionRepository{
             $static_option_id
         );
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             $inserted_id = $stmt->insert_id;
             $stmt->close();
             return $inserted_id;
-        }else{
-            error_log("Error creating new picked static option: ". $stmt->error);
+        } else {
+            error_log("Error creating new picked static option: " . $stmt->error);
             $stmt->close();
             return -1;
         }
@@ -56,16 +59,16 @@ class PickedStaticOptionRepository{
             return [];
         }
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             $result = $stmt->get_result();
             $picked_static_options_array = [];
-            while ($row = $result->fetch_assoc()){
+            while ($row = $result->fetch_assoc()) {
                 $tmp = new PickedStaticOption($row['answer_id'], $row['static_option_id']);
                 $picked_static_options_array[] = $tmp;
             }
             $stmt->close();
             return $picked_static_options_array;
-        }else{
+        } else {
             error_log("Error retrieving all picked static options: " . $stmt->error);
             $stmt->close();
             return [];

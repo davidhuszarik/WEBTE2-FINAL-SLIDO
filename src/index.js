@@ -1,9 +1,9 @@
 let ws = new WebSocket(`wss://${window.location.hostname}/wss`);
 
-ws.onopen = function() {
+ws.onopen = function () {
     console.log("Connection established");
 };
 
-ws.onclose = function (){
+ws.onclose = function () {
     console.log("Connection closed");
 };

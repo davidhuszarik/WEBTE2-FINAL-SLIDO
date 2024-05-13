@@ -3,15 +3,14 @@
 namespace Services;
 require_once __DIR__ . "/../loader.php";
 
-use Models\Question;
-use Models\QuestionType;
 use Repositories\QuestionRepository;
 
 class QuestionService
 {
     private QuestionRepository $question_repository;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->question_repository = new QuestionRepository();
     }
 

@@ -1,13 +1,14 @@
 <?php
+
 namespace Repositories;
 require_once __DIR__ . "/../loader.php";
 
-use UnhandledMatchError;
-use Util\DatabaseConnection;
-use mysqli;
+use DateTime;
 use Models\Answer;
 use Models\QuestionType;
-use DateTime;
+use mysqli;
+use UnhandledMatchError;
+use Util\DatabaseConnection;
 
 
 class AnswerRepository
@@ -45,11 +46,11 @@ class AnswerRepository
             $vote_time
         );
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             $inserted_id = $stmt->insert_id;
             $stmt->close();
             return $inserted_id;
-        }else{
+        } else {
             error_log("Error creating new answer: " . $stmt->error);
             $stmt->close();
             return -1;
@@ -67,15 +68,15 @@ class AnswerRepository
             return [];
         }
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             $result = $stmt->get_result();
             $answers_array = [];
-            while ($row = $result->fetch_assoc()){
+            while ($row = $result->fetch_assoc()) {
                 $vote_time = new DateTime($row['vote_time']);
 
                 try {
                     $type = QuestionType::from($row['type']);
-                }catch (UnhandledMatchError $e){
+                } catch (UnhandledMatchError $e) {
                     error_log("Invalid question type: " . $row['type']);
                     $stmt->close();
                     return [];
@@ -87,7 +88,7 @@ class AnswerRepository
             }
             $stmt->close();
             return $answers_array;
-        }else{
+        } else {
             error_log("Error retrieving all answers: " . $stmt->error);
             $stmt->close();
             return [];
@@ -109,15 +110,15 @@ class AnswerRepository
 
         $stmt->bind_param("i", $id);
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             $result = $stmt->get_result();
             $row = $result->fetch_assoc();
-            if($row){
+            if ($row) {
                 $vote_time = new DateTime($row['vote_time']);
 
                 try {
                     $type = QuestionType::from($row['type']);
-                }catch (UnhandledMatchError $e){
+                } catch (UnhandledMatchError $e) {
                     error_log("Invalid question type: " . $row['type']);
                     $stmt->close();
                     return [];
@@ -127,7 +128,7 @@ class AnswerRepository
                 $answer->setId($row['id']);
             }
             $stmt->close();
-        }else{
+        } else {
             error_log("Error retrieving answer with id " . $id . " error: " . $stmt->error);
             $stmt->close();
         }
@@ -147,15 +148,15 @@ class AnswerRepository
 
         $stmt->bind_param("i", $id);
 
-        if($stmt->execute()){
-            if($stmt->affected_rows > 0){
+        if ($stmt->execute()) {
+            if ($stmt->affected_rows > 0) {
                 $stmt->close();
                 return true;
-            }else{
+            } else {
                 $stmt->close();
                 return false;
             }
-        }else {
+        } else {
             error_log("Deletion execution failed: " . $stmt->error);
             $stmt->close();
             return false;
@@ -189,15 +190,15 @@ class AnswerRepository
             $answer_id
         );
 
-        if($stmt->execute()){
-            if($stmt->affected_rows === 0){
+        if ($stmt->execute()) {
+            if ($stmt->affected_rows === 0) {
                 error_log("No rows updated, possibly because the answer ID does not exist.");
                 $stmt->close();
                 return false;
             }
             $stmt->close();
             return true;
-        }else{
+        } else {
             error_log("Update execution failed: " . $stmt->error);
             $stmt->close();
             return false;
