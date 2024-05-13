@@ -8,7 +8,7 @@ use Models\User;
 use Models\UserRole;
 use Repositories\UserRepository;
 
-class RegisterService
+class UserService
 {
     private UserRepository $userRepository;
 
@@ -69,6 +69,38 @@ class RegisterService
         else{
             echo json_encode(["error" => "Invalid username or email address"]);
             http_response_code($response_code = 400);
+        }
+    }
+
+    public function changePassword(User $user)
+    {
+        parse_str(file_get_contents("php://input"), $putData);
+        if (empty($putData['old_password']) || empty($putData['new_password'])) {
+            return [
+                'error' => 'Missing required fields',
+                'status' => 400
+            ];
+        }
+        if (password_verify($putData['old_password'] . $user->getSalt(), $user->getHashedPassword())){
+            $user->setHashedPassword(password_hash($putData['new_password'] . $user->getSalt(), PASSWORD_DEFAULT));
+            if($this->userRepository->updateUser($user)){
+                return [
+                    'error' => 'Successfully updated password',
+                    'status' => 200
+                ];
+            }
+            else{
+                return [
+                    'error' => 'Could not update password',
+                    'status' => 500
+                ];
+            }
+        }
+        else{
+            return [
+                'error' => 'Old password does not match',
+                'status' => 400
+            ];
         }
     }
 }

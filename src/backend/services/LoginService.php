@@ -2,6 +2,7 @@
 
 namespace Services;
 
+use Models\User;
 use Repositories\UserRepository;
 
 class LoginService
@@ -67,5 +68,12 @@ class LoginService
         session_destroy();
         session_start();
         $_SESSION['loggedIn'] = false;
+    }
+
+    public function updateSessionUser()
+    {
+        if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']){
+            $_SESSION['user'] = $this->userRepository->getUserById($_SESSION['user']->getId());
+        }
     }
 }

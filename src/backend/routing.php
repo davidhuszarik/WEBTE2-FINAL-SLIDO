@@ -80,5 +80,12 @@ if (str_starts_with($endpoint, "/api")) {
             $controller->register();
             break;
     }
+} else if ($endpoint == "/user") {
+    $controller = new AuthController();
+    switch ($method){
+        case "PUT":
+            $controller->changePassword();
+            break;
+    }
 }
 ?>
