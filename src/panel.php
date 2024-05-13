@@ -224,22 +224,26 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label for="currentPassword">Current password</label>
+                        <label id="currentPasswordLabel" for="currentPassword">Current password</label>
                         <input type="password" class="form-control" id="currentPassword" required>
                     </div>
                     <div class="form-group">
-                        <label for="newPassword">New password</label>
+                        <label id="newPasswordLabel" for="newPassword">New password</label>
                         <input type="password" class="form-control" id="newPassword" required>
+                        <small id="passwordCriteria" class="form-text text-muted">
+                            Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.
+                        </small>
                     </div>
                     <div class="form-group">
-                        <label for="confirmNewPassword">Confirm new password</label>
+                        <label id="confirmNewPasswordLabel" for="confirmNewPassword">Confirm new password</label>
                         <input type="password" class="form-control" id="confirmNewPassword" required>
+                        <small id="passwordMatchError" class="form-text text-danger d-none">Passwords do not match.</small>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="saveChanges" disabled>Save changes</button>
+                <button id="confirmPasswordButton" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="closePasswordButton" type="button" class="btn btn-primary" id="saveChanges" disabled>Save changes</button>
             </div>
         </div>
     </div>
@@ -262,34 +266,55 @@
 <script>
     $(document).ready(function () {
         var passwordInput = $('#newPassword');
+        var confirmPasswordInput = $('#confirmNewPassword');
 
         passwordInput.keyup(function () {
             var password = $(this).val();
+            var confirmPassword = confirmPasswordInput.val();
 
-            if (validatePassword(password)) {
+            if (validatePassword(password) && password === confirmPassword) {
                 $(this).removeClass('is-invalid').addClass('is-valid');
+                confirmPasswordInput.removeClass('is-invalid').addClass('is-valid');
             } else {
                 $(this).removeClass('is-valid').addClass('is-invalid');
+                confirmPasswordInput.removeClass('is-valid').addClass('is-invalid');
             }
 
             checkForm();
         });
 
+        confirmPasswordInput.keyup(function () {
+            var password = passwordInput.val();
+            var confirmPassword = $(this).val();
+
+            if (validatePassword(password) && password === confirmPassword) {
+                $(this).removeClass('is-invalid').addClass('is-valid');
+                passwordInput.removeClass('is-invalid').addClass('is-valid');
+            } else {
+                $(this).removeClass('is-valid').addClass('is-invalid');
+                passwordInput.removeClass('is-valid').addClass('is-invalid');
+            }
+
+            checkForm();
+        });
+        
         function validatePassword(password) {
             var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{7,}$/;
             return re.test(password);
         }
 
+        // Function to check if both passwords are valid and identical
         function checkForm() {
-            var isValid = $('.is-valid').length == 1;
+            var isValidPassword = $('.is-valid').length == 2;
 
-            if (isValid) {
+            if (isValidPassword) {
                 $('#saveChanges').prop('disabled', false);
             } else {
                 $('#saveChanges').prop('disabled', true);
             }
         }
     });
+
 
     document.getElementById('englishLink').addEventListener('click', function () {
         translateToEnglish();
@@ -313,6 +338,12 @@
         document.getElementById('manageQuestionsButton').innerHTML = '<i class="bi bi-file-earmark-text"></i> Manage questions';
         document.getElementById('rightsReservedText').innerText = 'All rights reserved.';
         document.getElementById('schoolProjectText').innerText = 'This is a school project and is not affiliated with Cisco/Slido.';
+        document.getElementById('changePasswordModalLabel').innerText = '🔐 Change password';
+        document.getElementById('newPasswordLabel').innerText = 'New password';
+        document.getElementById('confirmNewPasswordLabel').innerText = 'Confrim password';
+        document.getElementById('passwordCriteria').innerText = 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.';
+        document.getElementById('confirmPasswordButton').innerText = 'Back';
+        document.getElementById('closePasswordButton').innerText = 'Submit';
         localStorage.setItem('selectedLanguage', 'english');
         var credentials = sessionStorage.getItem('credentials');
         if (credentials) {
@@ -354,6 +385,13 @@
         document.getElementById('logoutLink').innerHTML = '<i class="fas fa-sign-out-alt"></i> Odhlásenie';
         document.getElementById('rightsReservedText').innerText = 'Všetky práva vyhradené.';
         document.getElementById('schoolProjectText').innerText = 'Toto je školský projekt a nie je spätý s Cisco/Slido.';
+        document.getElementById('changePasswordModalLabel').innerText = '🔐 Zmena hesla';
+        document.getElementById('currentPasswordLabel').innerText = 'Aktuálne heslo';
+        document.getElementById('newPasswordLabel').innerText = 'Nové heslo';
+        document.getElementById('confirmNewPasswordLabel').innerText = 'Potvrdenie hesla';
+        document.getElementById('passwordCriteria').innerText = 'Heslo musí mať aspoň 8 znakov a obsahovať aspoň jedno veľké písmeno, jedno malé písmeno a jedno číslo.';
+        document.getElementById('confirmPasswordButton').innerText = 'Späť';
+        document.getElementById('closePasswordButton').innerText = 'Poslať';
         localStorage.setItem('selectedLanguage', 'slovak');
         var credentials = sessionStorage.getItem('credentials');
         if (credentials) {
