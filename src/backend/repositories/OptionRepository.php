@@ -175,6 +175,40 @@ class OptionRepository{
             return false;
         }
     }
+
+    // Specific Methods
+    // ---------------------------------
+
+    // Get options by Question id
+    public function getOptionsByQuestionId(int $question_id)
+    {
+        $query = "SELECT * FROM options WHERE question_id = ?";
+
+        $stmt = $this->connection->prepare($query);
+        if(!$stmt){
+            error_log("Prepare failed: " . $this->connection->error);
+            return [];
+        }
+
+        $stmt->bind_param("i", $question_id);
+        $options_array = [];
+
+        if($stmt->execute()){
+            $result = $stmt->get_result();
+            while ($row = $result->fetch_assoc()){
+                $is_correct = (bool) $row['is_correct'];
+                $option = new Option($row['question_id'], $row['value_en'], $row['value_sk'], $is_correct);
+                $option->setId($row['id']);
+                $options_array[] = $option;
+            }
+            $stmt->close();
+            return $options_array;
+        }else{
+            error_log("Failed to retrieve options for question_id: " . $question_id . " error: " . $stmt->error);
+            $stmt->close();
+            return $options_array;
+        }
+    }
 }
 
 ?>

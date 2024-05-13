@@ -20,6 +20,7 @@ class QuestionRepository
     }
 
     // CRUD methods
+    // ----------------------------------
     // Create new Question
     public function createNewQuestion(Question $new_question)
     {
@@ -218,6 +219,43 @@ class QuestionRepository
             error_log("Update execution failed: " . $stmt->error);
             $stmt->close();
             return false;
+        }
+    }
+
+
+    // Specific Methods
+    // ---------------------------
+
+    // Get questions by user id
+    public function getQuestionsByUserId(int $user_id)
+    {
+        $query = "SELECT * FROM questions WHERE user_id = ?";
+
+        $stmt = $this->connection->prepare($query);
+        if (!$stmt) {
+            error_log("Prepare failed: " . $this->connection->error);
+            return [];
+        }
+
+        $stmt->bind_param("i", $user_id);
+        $questions_array = [];
+
+        if($stmt->execute()){
+            $result = $stmt->get_result();
+            while($row = $result->fetch_assoc()){
+                $creation_date = new DateTime($row['creation_date']);
+                $question_type = QuestionType::from($row['type']);
+                $question = new Question($row['user_id'], $row['title_en'], $row['title_sk'], $row['content_en'],
+                                         $row['content_sk'], $creation_date, $question_type, (bool)$row['is_open']);
+                $question->setId($row['id']);
+                $questions_array[] = $question;
+            }
+            $stmt->close();
+            return $questions_array;
+        }else{
+            error_log("Failed retrieving questions for user_id: " . $user_id . ", error: " . $stmt->error);
+            $stmt->close();
+            return [];
         }
     }
 }
