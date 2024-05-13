@@ -1,13 +1,12 @@
 <?php
-
 namespace Repositories;
 require_once __DIR__ . "/../loader.php";
 
+use UnhandledMatchError;
+use mysqli;
 use DateTime;
 use Models\User;
 use Models\UserRole;
-use mysqli;
-use UnhandledMatchError;
 use Util\DatabaseConnection;
 
 class UserRepository
@@ -89,8 +88,10 @@ class UserRepository
                     return null;
                 }
 
-                $user = new User($row['username'], $row['email'], $row['hashed_password'], $row['salt'], $row['google_2FA_secret'],
-                    $row['access_token'], $last_access, $user_role);
+                $user = new User(
+                    $row['username'], $row['email'], $row['hashed_password'], $row['salt'], $row['google_2FA_secret'],
+                    $row['access_token'], $last_access, $user_role
+                );
                 $user->setId($row['id']);
                 $users_array[] = $user;
             }
@@ -103,15 +104,7 @@ class UserRepository
         }
     }
 
-    public function getUserById(int $id)
-    {
-        return $this->getByUnique('id', 'i', $id);
-    }
-
-    // Get user by ID
-
-    private function getByUnique($key_name, $keyType, $uniqueKey)
-    {
+    private function getByUnique($key_name, $keyType, $uniqueKey){
         $query = "SELECT * FROM user WHERE $key_name = ?";
 
         $stmt = $this->connection->prepare($query);
@@ -150,6 +143,12 @@ class UserRepository
         return $user;
     }
 
+    // Get user by ID
+    public function getUserById(int $id)
+    {
+        return $this->getByUnique('id', 'i', $id);
+    }
+
     public function getByUsername(string $username)
     {
         return $this->getByUnique('username', 's', $username);
@@ -160,7 +159,15 @@ class UserRepository
         return $this->getByUnique('email', 's', $email);
     }
 
-    public function touch(User $user): string|null
+    private function randomAccessToken()
+    {
+        // size of access_token in bytes
+        return bin2hex(random_bytes(16));
+    }
+
+    // touches the user row, generates new access token and saves it in the database
+    // all time definitions must be passed to database
+    public function touch(User &$user): string|null
     {
         $this->connection->query("START TRANSACTION");
 
@@ -199,6 +206,7 @@ class UserRepository
             }
             $stmt->close();
             $this->connection->query("COMMIT");
+            $user = $this->getUserById($user->getId());
             return $token;
         } else {
             error_log("Update execution failed: " . $stmt->error);
@@ -208,17 +216,35 @@ class UserRepository
         }
     }
 
-    // touches the user row, generates new access token and saves it in the database
-    // all time definitions must be passed to database
-
-    private function randomAccessToken()
+    // Delete user by ID
+    public function deleteUserById(int $id)
     {
-        // size of access_token in bytes
-        return bin2hex(random_bytes(16));
+        $query = "DELETE FROM user WHERE id = ?";
+
+        $stmt = $this->connection->prepare($query);
+        if (!$stmt) {
+            error_log("Prepare failed: " . $this->connection->error);
+            return false;
+        }
+
+        $stmt->bind_param("i", $id);
+
+        if($stmt->execute()){
+            if($stmt->affected_rows > 0){
+                $stmt->close();
+                return true;
+            }else{
+                $stmt->close();
+                return false;
+            }
+        }else {
+            error_log("Deletion execution failed: " . $stmt->error);
+            $stmt->close();
+            return false;
+        }
     }
 
-    // Delete user by ID
-
+    // Update user by ID
     public function updateUser(User $user)
     {
         $query = "UPDATE user SET username = ?, email = ?, hashed_password = ?, salt = ?, google_2FA_secret = ?, access_token = ?, last_access = ?, role = ? WHERE id = ?";
@@ -261,35 +287,6 @@ class UserRepository
             return true;
         } else {
             error_log("Update execution failed: " . $stmt->error);
-            $stmt->close();
-            return false;
-        }
-    }
-
-    // Update user by ID
-
-    public function deleteUserById(int $id)
-    {
-        $query = "DELETE FROM user WHERE id = ?";
-
-        $stmt = $this->connection->prepare($query);
-        if (!$stmt) {
-            error_log("Prepare failed: " . $this->connection->error);
-            return false;
-        }
-
-        $stmt->bind_param("i", $id);
-
-        if ($stmt->execute()) {
-            if ($stmt->affected_rows > 0) {
-                $stmt->close();
-                return true;
-            } else {
-                $stmt->close();
-                return false;
-            }
-        } else {
-            error_log("Deletion execution failed: " . $stmt->error);
             $stmt->close();
             return false;
         }

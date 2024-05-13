@@ -3,6 +3,7 @@ $directories = array(
     "models/",
     "controllers/",
     "repositories/",
+    "services/",
     "util/"
 );
 
