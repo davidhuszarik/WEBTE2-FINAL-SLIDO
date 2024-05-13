@@ -86,6 +86,11 @@
                 <li class="nav-item">
                     <button class="nav-link" id="logoutLink" style="display: none;" onclick="logout()">Logout</button>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="panelLink" style="display: none;" href="panel.php"><i class="fas fa-cogs"></i> Panel</a>
+                </li>
+
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -97,7 +102,7 @@
                     </div>
                 </li>
                 <li class="nav-item" id="userMenuItem" style="display: none;">
-                    <a class="nav-link" id="userNameLink" href="#"><i class="fas fa-user"></i> <span id="userName"></span></a>
+                    <a class="nav-link" id="userNameLink"><i class="fas fa-user"></i> <span id="userName"></span></a>
                 </li>
 
             </ul>
@@ -146,7 +151,7 @@
 
 <footer class="footer">
     <div class="container">
-        <p><strong>&copy; 2024 ODILS. </strong> <span id="rightsReservedText"></span><br>
+        <p>&copy; 2024 ODILS. <span id="rightsReservedText"></span><br>
             <span id="schoolProjectText"></span></p>
     </div>
 </footer>
@@ -158,12 +163,8 @@
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
 <script>
-
-    // Check if the user has previously accepted cookies
     const cookieAccepted = localStorage.getItem('cookieAccepted');
-
     if (!cookieAccepted) {
-        // If cookies are not accepted, show the dialog
         Swal.fire({
             title: 'Súhlas so súbormi cookie',
             html: 'Táto webová stránka používa súbory cookie na zabezpečenie toho, aby ste na našej webovej stránke získali najlepšie skúsenosti. Súbory cookie sú malé textové súbory, ktoré sú uložené vo vašom zariadení a pomáhajú poskytovať personalizovaný zážitok pri prehliadaní a analyzujú premávku na webovej stránke. Kliknutím na tlačidlo "Súhlasiť" súhlasíte s používaním všetkých súborov cookie.',
@@ -326,6 +327,7 @@
             var logoutButton = document.getElementById('logoutLink');
             var userMenuItem = document.getElementById('userMenuItem');
             var userNameLink = document.getElementById('userNameLink');
+            var panelLink = document.getElementById('panelLink');
             if (loginButton) {
                 loginButton.style.display = "none";
             }
@@ -338,10 +340,12 @@
             if (userNameLink) {
                 userNameLink.textContent = "You are logged in as " + parsedCredentials.username;
             }
+            panelLink.style.display = "block";
         } else {
             var loginButton = document.getElementById('loginLink');
             var logoutButton = document.getElementById('logoutLink');
             var userMenuItem = document.getElementById('userMenuItem');
+            var panelLink = document.getElementById('panelLink');
             if (loginButton) {
                 loginButton.style.display = "block";
             }
@@ -351,6 +355,7 @@
             if (userMenuItem) {
                 userMenuItem.style.display = "none";
             }
+            panelLink.style.display = "none";
         }
     });
 
@@ -367,10 +372,7 @@
         }
     }
 
-
-
     function logout() {
-
         if (checkSavedLanguage() === "english") {
             Swal.fire({
                 title: 'Are you sure you want to log out?',
@@ -389,6 +391,8 @@
                     logoutButton.style.display = "none";
                     var userMenuItem = document.getElementById('userMenuItem');
                     userMenuItem.style.display = "none";
+                    var panelLink = document.getElementById('panelLink');
+                    panelLink.style.display = "none";
                     if (checkSavedLanguage() == "english") {
                         Swal.fire({
                             title: 'Logged out successfully!',
@@ -419,6 +423,8 @@
                     logoutButton.style.display = "none";
                     var userMenuItem = document.getElementById('userMenuItem');
                     userMenuItem.style.display = "none";
+                    var panelLink = document.getElementById('panelLink');
+                    panelLink.style.display = "none";
                         Swal.fire({
                             title: 'Úspešné odhlásenie!',
                             text: "Boli ste úspešne odhlásení zo svojho účtu.",
@@ -429,10 +435,7 @@
                 }
             });
         }
-
     }
-
-
 
 </script>
 </body>

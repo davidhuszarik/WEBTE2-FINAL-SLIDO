@@ -1,20 +1,16 @@
-<?php
-session_start();
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-    header("Location: restricted.php");
-    exit;
-}
-?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ODILS | Admin Panel</title>
+    <title id="pageTitle">ODILS | Admin Panel</title>
+    <link rel="icon" type="image/x-icon" href="backend/views/images/favicon.png">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.1/font/bootstrap-icons.css" rel="stylesheet">
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             background-color: #f8f9fa;
@@ -148,22 +144,31 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-        <a class="navbar-brand" href="#"><img id="logo" src="backend/views/images/logo.png" alt="ODILS | Homepage"></a>
+        <a class="navbar-brand"><img id="logo" src="backend/views/images/logo.png" alt="ODILS | Homepage"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" id="homeLink" href="index.php"><i class="fas fa-home"></i> Home</a>
+                </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Language
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" id="englishLink" href="#">English <span id="englishIndicator"></span></a>
-                        <a class="dropdown-item" id="slovakLink" href="#">Slovak <span id="slovakIndicator"></span></a>
+                        <a class="dropdown-item" id="englishLink">English <span id="englishIndicator"></span></a>
+                        <a class="dropdown-item" id="slovakLink">Slovak <span id="slovakIndicator"></span></a>
                     </div>
+                </li>
+                <li class="nav-item" id="userMenuItem" style="display: none;">
+                    <a class="nav-link" id="userNameLink"><i class="fas fa-user"></i> <span id="userName"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="logoutLink" onclick="logout()">Logout</a>
                 </li>
             </ul>
         </div>
@@ -174,8 +179,8 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         <h2 id="welcomeTitle" >Welcome to Admin Panel</h2>
     </div>
     <div class="admin-details">
-        <p>Hello, John Doe!</p>
-        <p>You are logged in as an administrator.</p>
+        <p id="usernameText">Hello, John Doe!</p>
+        <p id="groupText">You are logged in as an administrator.</p>
     </div>
     <div class="admin-panel-content">
         <div class="section">
@@ -269,6 +274,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 </html>
 
 <script>
+    checkSavedLanguage();
     $(document).ready(function () {
         var passwordInput = $('#newPassword');
 
@@ -309,21 +315,52 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     });
 
     function translateToEnglish() {
-        document.getElementById('navbarDropdown').innerText = 'Language';
-        document.getElementById('welcomeTitle').innerText = 'Welcome to Admin Panel';
+        document.getElementById('homeLink').innerHTML = '<i class="fas fa-home"></i> Home';
+        document.getElementById('pageTitle').innerText = 'ODILS |> Panel';
+        document.getElementById('navbarDropdown').innerHTML = '<i class="fas fa-globe"></i> Language';
+        document.getElementById('welcomeTitle').innerHTML = '<strong>Welcome to ODILS Panel</strong>';
         document.getElementById('profileTitle').innerText = 'Profile settings';
         document.getElementById('changePasswordButton').innerHTML = '<i class="bi bi-key"></i> Change password';
         document.getElementById('logoutButton').innerHTML = '<i class="bi bi-box-arrow-right"></i> Logout';
         document.getElementById('userSettingsLabel').innerText = 'Manager users';
         document.getElementById('manageUsersButton').innerHTML = '<i class="bi bi-people"></i> Manage users';
         document.getElementById('questionsSettingsTitle').innerText = 'Question settings';
+        document.getElementById('logoutLink').innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
         document.getElementById('manageQuestionsButton').innerHTML = '<i class="bi bi-file-earmark-text"></i> Manage questions';
+        document.getElementById('rightsReservedText').innerText = 'All rights reserved.';
+        document.getElementById('schoolProjectText').innerText = 'This is a school project and is not affiliated with Cisco/Slido.';
         localStorage.setItem('selectedLanguage', 'english');
+        var credentials = sessionStorage.getItem('credentials');
+        if (credentials) {
+            var parsedCredentials = JSON.parse(credentials);
+            var userNameLink = document.getElementById('userNameLink');
+            var usernameLabel = document.getElementById('usernameText');
+            var groupText = document.getElementById('groupText');
+            userNameLink.textContent = "You are logged in as " + parsedCredentials.username;
+            usernameText.textContent = "You are logged in as " + parsedCredentials.username;
+            usernameLabel.innerHTML = "Logged in as: <strong>" + parsedCredentials.username + " </strong>";
+
+            var role = parsedCredentials.role;
+            var roleText = "Role: ";
+            var userColor = "green";
+            var adminColor = "red";
+
+            if (role === "admin") {
+                roleText += "<span style='color: " + adminColor + "; font-weight: bold;'>ADMIN</span>";
+            } else if (role === "user") {
+                roleText += "<span style='color: " + userColor + "; font-weight: bold;'>User</span>";
+            } else {
+                roleText += role;
+            }
+            groupText.innerHTML = roleText;
+        }
     }
 
     function translateToSlovak() {
-        document.getElementById('navbarDropdown').innerText = 'Jazyk';
-        document.getElementById('welcomeTitle').innerText = 'Vitajte v admin paneli';
+        document.getElementById('homeLink').innerHTML = '<i class="fas fa-home"></i> Domov';
+        document.getElementById('pageTitle').innerText = 'ODILS |> Panel';
+        document.getElementById('navbarDropdown').innerHTML = '<i class="fas fa-globe"></i> Jazyk';
+        document.getElementById('welcomeTitle').innerHTML = '<strong>Vitajte v ODILS paneli</strong>';
         document.getElementById('profileTitle').innerText = 'Nastavenia profilu';
         document.getElementById('changePasswordButton').innerHTML = '<i class="bi bi-key"></i> Zmena hesla';
         document.getElementById('logoutButton').innerHTML = '<i class="bi bi-box-arrow-right"></i> Odhlásenie';
@@ -331,7 +368,117 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         document.getElementById('manageUsersButton').innerHTML = '<i class="bi bi-people"></i> Správa užívateľov';
         document.getElementById('questionsSettingsTitle').innerText = 'Nastavenia otázok';
         document.getElementById('manageQuestionsButton').innerHTML = '<i class="bi bi-file-earmark-text"></i> Správa otázky';
+        document.getElementById('logoutLink').innerHTML = '<i class="fas fa-sign-out-alt"></i> Odhlásenie';
+        document.getElementById('rightsReservedText').innerText = 'Všetky práva vyhradené.';
+        document.getElementById('schoolProjectText').innerText = 'Toto je školský projekt a nie je spätý s Cisco/Slido.';
         localStorage.setItem('selectedLanguage', 'slovak');
+        var credentials = sessionStorage.getItem('credentials');
+        if (credentials) {
+            var parsedCredentials = JSON.parse(credentials);
+            var userNameLink = document.getElementById('userNameLink');
+            var usernameLabel = document.getElementById('usernameText');
+            var groupText = document.getElementById('groupText');
+            userNameLink.textContent = "Si prihlásený ako " + parsedCredentials.username;
+            usernameLabel.innerHTML = "Prihlásený ako: <strong>" + parsedCredentials.username + " </strong>";
+
+            var role = parsedCredentials.role;
+            var roleText = "Rola: ";
+            var userColor = "green";
+            var adminColor = "red";
+
+            if (role === "admin") {
+                roleText += "<span style='color: " + adminColor + "; font-weight: bold;'>ADMIN</span>";
+            } else if (role === "user") {
+                roleText += "<span style='color: " + userColor + "; font-weight: bold;'>Použivateľ</span>";
+            } else {
+                roleText += role;
+            }
+            groupText.innerHTML = roleText;
+        }
     }
 
+    document.addEventListener("DOMContentLoaded", function() {
+        var credentials = sessionStorage.getItem('credentials');
+        if (credentials) {
+            var parsedCredentials = JSON.parse(credentials);
+            var logoutButton = document.getElementById('logoutLink');
+            var userMenuItem = document.getElementById('userMenuItem');
+            var userNameLink = document.getElementById('userNameLink');
+            if (logoutButton) {
+                logoutButton.style.display = "block";
+            }
+            if (userMenuItem) {
+                userMenuItem.style.display = "block";
+            }
+            if (userNameLink) {
+                userNameLink.textContent = "You are logged in as " + parsedCredentials.username;
+            }
+        } else {
+            window.location.href = 'restricted.php';
+        }
+    });
+
+    function checkSavedLanguage() {
+        var savedLanguage = localStorage.getItem('selectedLanguage');
+        if (savedLanguage === 'english') {
+            translateToEnglish();
+            return "english";
+        } else if (savedLanguage === 'slovak') {
+            translateToSlovak();
+        } else {
+            translateToEnglish();
+            return "slovak";
+        }
+    }
+
+    function logout() {
+        if (checkSavedLanguage() === "english") {
+            Swal.fire({
+                title: 'Are you sure you want to log out?',
+                text: "You will be logged out of your account.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, log me out!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    sessionStorage.removeItem('credentials');
+                    Swal.fire({
+                        title: 'Logged out successfully!',
+                        text: "You have been logged out of your account.",
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    }).then(function() {
+                        window.location.href = 'index.php';
+                    });
+                }
+            });
+        }
+        else {
+            Swal.fire({
+                title: 'Ste si istý/á, že sa chcete odhlásiť?',
+                text: "Budete odhlásený/á zo svojho účtu.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Áno, odhlásiť ma!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    sessionStorage.removeItem('credentials');
+                    Swal.fire({
+                        title: 'Úspešné odhlásenie!',
+                        text: "Boli ste úspešne odhlásení zo svojho účtu.",
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    }).then(function() {
+                        window.location.href = 'index.php';
+                    });
+                }
+            });
+        }
+    }
 </script>
