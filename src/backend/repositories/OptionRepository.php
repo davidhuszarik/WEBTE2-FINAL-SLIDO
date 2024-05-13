@@ -187,7 +187,7 @@ class OptionRepository{
         $stmt = $this->connection->prepare($query);
         if(!$stmt){
             error_log("Prepare failed: " . $this->connection->error);
-            return [];
+            return null;
         }
 
         $stmt->bind_param("i", $question_id);
@@ -206,7 +206,7 @@ class OptionRepository{
         }else{
             error_log("Failed to retrieve options for question_id: " . $question_id . " error: " . $stmt->error);
             $stmt->close();
-            return $options_array;
+            return null;
         }
     }
 }

@@ -3,6 +3,8 @@
 namespace Services;
 require_once __DIR__ . "/../loader.php";
 
+use Models\User;
+use Models\UserRole;
 use Models\Question;
 use DateTime;
 use Models\QuestionType;
@@ -39,9 +41,10 @@ class QuestionService
         try {
             $creation_date = new DateTime($question_data['creation_date']);
             $type = QuestionType::from($question_data['type']);
+            $isOpen = (bool) $question_data['is_open'];
         } catch (UnhandledMatchError $e) {
             return [
-                'error' => "Invalid date format or question type",
+                'error' => "Invalid date format or question type or isOpen state",
                 'status' => 400,
             ];
         }
@@ -51,16 +54,16 @@ class QuestionService
         // admin creates question for himself
         if ($user_role === 'admin' && $username === null) {
             $new_question = new Question($user_id, $question_data['title_en'], $question_data['title_sk'], $question_data['content_en'],
-                $question_data['content_sk'], $creation_date, $type, $question_data['is_open']);
+                $question_data['content_sk'], $creation_date, $type, $isOpen);
             $new_question_id = $this->question_repository->createNewQuestion($new_question);
         } elseif ($user_role === 'admin' && $username != null) { // Admin creates for specific user
             $specific_user = $this->user_repository->getByUsername($username);
             $new_question = new Question($specific_user->getId(), $question_data['title_en'], $question_data['title_sk'], $question_data['content_en'],
-                $question_data['content_sk'], $creation_date, $type, $question_data['is_open']);
+                $question_data['content_sk'], $creation_date, $type, $isOpen);
             $new_question_id = $this->question_repository->createNewQuestion($new_question);
         } elseif ($user_role === 'user' && $username === null) { // User creates question for himself
             $new_question = new Question($user_id, $question_data['title_en'], $question_data['title_sk'], $question_data['content_en'],
-                $question_data['content_sk'], $creation_date, $type, $question_data['is_open']);
+                $question_data['content_sk'], $creation_date, $type, $isOpen);
             $new_question_id = $this->question_repository->createNewQuestion($new_question);
         }
 
@@ -78,32 +81,42 @@ class QuestionService
         }
     }
 
-    /* Get All questions */
-    public function getAllQuestionsForGivenUser(int $user_id, string $user_role, ?bool $only_admins_questions)
+    public function getAllQuestionsForGivenUser(User $user, User $requester)
     {
-        if ($user_role === "admin") {
-            $temp = null;
-            if ($only_admins_questions === false) {
-                $temp = $this->question_repository->getAllQuestions();
-            } else {
-                $temp = $this->question_repository->getQuestionsByUserId($user_id);
-            }
+        if (
+            $requester->getUserRole() != UserRole::Admin
+            && $requester->getId() != $user->getId()
+        ) {
             return [
-                'message' => "Retried all question records successfully",
-                'status' => 200,
-                'data' => $temp,
+                'error' => "Not authorized",
+                'status' => 403,
+            ];
+        }
+
+        $questionArray = $this->question_repository->getQuestionsByUserId($user->getId());
+
+        if ($questionArray === null) {
+            return [
+                'message' => "Failed to get questions",
+                'status' => 500,
+                'data' => $questionArray,
             ];
         } else {
-            $temp = $this->question_repository->getQuestionsByUserId($user_id);
             return [
-                'message' => "Retried all question records successfully",
+                'message' => "Retrieved all question records successfully",
                 'status' => 200,
-                'data' => $temp,
+                'data' => $questionArray,
             ];
         }
     }
 
-    /* Get specific question only */
+    /**
+     * Get specific question only
+     * @param int $question_id
+     * @param int $user_id
+     * @param string $user_role
+     * @return array<string, int>|array<string, int, Question>
+     */
     public function getSpecificQuestion(int $question_id, int $user_id, string $user_role)
     {
         $question = $this->question_repository->getQuestionById($question_id);
@@ -140,17 +153,22 @@ class QuestionService
     /* Get specific question and its options */
     public function getSpecificQuestionWithOptions(int $question_id, int $user_id, string $user_role)
     {
-        $question = $this->question_repository->getQuestionById($question_id);
-
-        if ($question === null) {
-            return [
-                'error' => "Question does not exist",
-                'status' => 404,
-            ];
+        $question = $this->getSpecificQuestion($question_id, $user_id, $user_role);
+        if ($question['status'] != 200 ) {
+            return $question;
         }
 
-        if ($user_role === 'admin' || ($user_role === 'user' && $question->getUserId() === $user_id)) {
-            $options_array = $this->option_repository->getOptionsByQuestionId($question->getId());
+        $question = $question['data'];
+
+        $options_array = $this->option_repository->getOptionsByQuestionId($question->getId());
+
+        if($options_array === null) {
+            return [
+                'error' => "Failed to get options",
+                'status' => 500,
+            ];
+        }
+        else{
             return [
                 'message' => "Successfully retrieved question and its options",
                 'status' => 200,
@@ -160,92 +178,69 @@ class QuestionService
                 ]
             ];
         }
-
-        return [
-            'error' => "Not authorized",
-            'status' => 403,
-        ];
     }
 
     /* Delete specific question */
     public function deleteSpecificQuestion(int $question_id, int $user_id, string $user_role)
     {
-        $question = $this->question_repository->getQuestionById($question_id);
+        $question = $this->getSpecificQuestion($question_id, $user_id, $user_role);
+        if ($question['status'] != 200 ) {
+            return $question;
+        }
 
-        if ($question === null) {
+        $question = $question['data'];
+
+        $deleted = $this->question_repository->deleteQuestionById($question->getId());
+        if ($deleted) {
             return [
-                'error' => "Question does not exist",
-                'status' => 404,
+                'message' => "Successfully deleted question",
+                'status' => 200,
+            ];
+        } else {
+            return [
+                'error' => "Failed to delete question",
+                'status' => 500,
             ];
         }
-
-        if ($user_role === 'admin' || ($user_role === 'user' && $question->getUserId() === $user_id)) {
-            $deleted = $this->question_repository->deleteQuestionById($question->getId());
-            if ($deleted) {
-                return [
-                    'message' => "Successfully deleted question",
-                    'status' => 200,
-                ];
-            } else {
-                return [
-                    'error' => "Failed to delete question",
-                    'status' => 500,
-                ];
-            }
-        }
-
-        return [
-            'error' => "Not authorized",
-            'status' => 403,
-        ];
     }
 
     /* Update question */
     public function updateSpecificQuestion(int $user_id, string $user_role, int $question_id, array $question_data)
     {
-        $question = $this->question_repository->getQuestionById($question_id);
+        $question = $this->getSpecificQuestion($question_id, $user_id, $user_role);
+        if ($question['status'] != 200 ) {
+            return $question;
+        }
 
-        if($question === null){
+        $question = $question['data'];
+
+        if (empty($question_data['title_en']) || empty($question_data['title_sk']) || empty($question_data['content_en'])
+            || empty($question_data['content_sk']) || empty($question_data['creation_date']) || empty($question_data['type'])
+            || empty($question_data['is_open'])) {
             return [
-                'error' => 'Question not found',
-                'status' => 404,
+                'error' => 'Missing required fields',
+                'status' => 400
             ];
         }
 
-        if($user_role === 'admin' || ($user_role === 'user' && $question->getUserId() === $user_id)){
-            if (empty($question_data['title_en']) || empty($question_data['title_sk']) || empty($question_data['content_en'])
-                || empty($question_data['content_sk']) || empty($question_data['creation_date']) || empty($question_data['type'])
-                || empty($question_data['is_open'])) {
-                return [
-                    'error' => 'Missing required fields',
-                    'status' => 400
-                ];
-            }
+        $question->setTitleEn($question_data['title_en']);
+        $question->setTitleSk($question_data['title_sk']);
+        $question->setContentEn($question_data['content_en']);
+        $question->setContentSk($question_data['content_sk']);
+        $question->setCreationDate(new DateTime($question_data['creation_date']));
+        $question->setQuestionType(QuestionType::from($question_data['type']));
+        $question->setIsOpen((bool)$question_data['is_open']);
 
-            $question->setTitleEn($question_data['title_en']);
-            $question->setTitleSk($question_data['title_sk']);
-            $question->setContentEn($question_data['content_en']);
-            $question->setContentSk($question_data['content_sk']);
-            $question->setCreationDate(new DateTime($question_data['creation_date']));
-            $question->setQuestionType(QuestionType::from($question_data['type']));
-            $question->setIsOpen((bool)$question_data['is_open']);
-
-            $update_success = $this->question_repository->updateQuestion($question);
-            if($update_success){
-                return [
-                    'message' => 'Question updated successfully',
-                    'status' => 200
-                ];
-            }else{
-                return [
-                    'error' => "Failed to updated question",
-                    'status' => 500
-                ];
-            }
+        $update_result = $this->question_repository->updateQuestion($question);
+        if($update_result){
+            return [
+                'message' => 'Question updated successfully',
+                'status' => 200
+            ];
         }else{
             return [
-                'error' => "Unauthorized to updated this question",
-                'status' => 403
+                'error' => "Failed to updated question",
+                'status' => 500
             ];
         }
     }
