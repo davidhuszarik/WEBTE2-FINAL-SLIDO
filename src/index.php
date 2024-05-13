@@ -410,6 +410,10 @@
                             confirmButtonColor: '#3085d6',
                             confirmButtonText: 'OK'
                         })
+                        $.ajax({
+                            type: 'DELETE',
+                            url: window.location.href + "/login",
+                        });
                     }
                 }
             });
@@ -440,6 +444,10 @@
                         confirmButtonColor: '#3085d6',
                         confirmButtonText: 'OK'
                     })
+                    $.ajax({
+                        type: 'DELETE',
+                        url: window.location.href + "/login",
+                    });
                 }
             });
         }
