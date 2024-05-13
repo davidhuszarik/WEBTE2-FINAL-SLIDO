@@ -256,9 +256,9 @@
         document.getElementById('logoutLink').innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
         document.getElementById('invitationMessage').innerText = 'Enter the invitation code you received to connect as visitor';
         document.getElementById('connectText').innerText = 'Connect';
-        document.getElementById('whatsGoodHeading').innerHTML = "<strong>WHAT IS ODILS?</strong>";
-        document.getElementById('whatsGoodText1').innerText = 'Odils is an easy to use Q&A and polling platform for meetings and events. It allows meeting and event organizers to crowdsource top questions to drive meaningful conversations, engage participants with live polls and capture valuable event data.';
-        document.getElementById('whatsGoodText2').innerText = 'Through Odils, attendees transcend the role of mere spectators, becoming integral contributors to the discourse.';
+        document.getElementById('whatsGoodHeading').innerHTML = "🔍 <strong>WHAT IS ODILS?</strong>";
+        document.getElementById('whatsGoodText1').innerHTML = '<strong>ODILS</strong> is an easy to use Q&A and polling platform for meetings and events. It allows meeting and event organizers to crowdsource top questions to drive meaningful conversations, engage participants with live polls and capture valuable event data.';
+        document.getElementById('whatsGoodText2').innerHTML = 'Through <strong>ODILS</strong>, attendees transcend the role of mere spectators, becoming integral contributors to the discourse.';
         document.getElementById('needHelpText').innerText = 'Do you need help?';
         document.getElementById('documentationText').innerHTML = 'You can find our documentation here: <a href="https://www.example.com/documentation">DOCUMENTATION</a>';
         document.getElementById('logoText').innerText = 'The logo was created using';
@@ -289,8 +289,8 @@
         document.getElementById('invitationMessage').innerText = 'Zadaj pozvánkový kód, ktorý si dostal, aby si sa mohol pripojiť ako návštevník.';
         document.getElementById('connectText').innerText = 'Pripojiť sa';
         document.getElementById('whatsGoodHeading').innerHTML = "🔍 <strong>ČO JE ODILS?</strong>";
-        document.getElementById('whatsGoodText1').innerText = 'ODILS je jednoduchá a intuitívna platforma pre otázky a ankety, určená pre stretnutia a udalosti. Organizátorom stretnutí a podujatí umožňuje získať najlepšie otázky od účastníkov a viesť zmysluplné rozhovory, zapájať účastníkov živými anketami a zbierať cenné údaje o udalostiach.';
-        document.getElementById('whatsGoodText2').innerText = 'Prostredníctvom Odils účastníci presahujú úlohu iba divákov, stávajú sa neoddeliteľnými prispievateľmi k diskurzu.';
+        document.getElementById('whatsGoodText1').innerHTML = '<strong>ODILS</strong> je jednoduchá a intuitívna platforma pre otázky a ankety, určená pre stretnutia a udalosti. Organizátorom stretnutí a podujatí umožňuje získať najlepšie otázky od účastníkov a viesť zmysluplné rozhovory, zapájať účastníkov živými anketami a zbierať cenné údaje o udalostiach.';
+        document.getElementById('whatsGoodText2').innerHTML = 'Prostredníctvom <strong>ODILS</strong> účastníci presahujú úlohu iba divákov, stávajú sa neoddeliteľnými prispievateľmi k diskurzu.';
         document.getElementById('needHelpText').innerText = 'Potrebujete pomoc?';
         document.getElementById('documentationText').innerHTML = 'Nájdite našu dokumentáciu tu: <a href="https://www.example.com/documentation">DOKUMENTÁCIA</a>';
         document.getElementById('logoText').innerText = 'Logo bolo vytvorené pomocou';
