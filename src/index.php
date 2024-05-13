@@ -123,7 +123,7 @@
         <p style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); z-index: 1; font-size: 16px;"
            id="invitationMessage"></p>
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
-            <input type="text" id="invitationCode" name="invitationCode" placeholder="XXXXXX"
+            <input type="text" id="invitationCode" name="invitationCode" placeholder="Enter your 6 digit-code"
                    style="width: 300px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;">
             <button onclick="sendInvitation()"
                     style="margin-top: 10px; padding: 10px 20px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">
@@ -252,7 +252,7 @@
         document.getElementById('homeLink').innerHTML = '<i class="fas fa-home"></i> Home';
         document.getElementById('loginLink').innerHTML = "<i class=\"fas fa-angle-double-right\"></i> Login";
         document.getElementById('navbarDropdown').innerHTML = '<i class="fas fa-globe"></i> Language';
-        document.getElementById('invitationHeading').innerHTML = '<strong>Got an invitation code?</strong>';
+        document.getElementById('invitationHeading').innerHTML = '👋 <strong>Hey, got an invitation code?</strong>';
         document.getElementById('logoutLink').innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
         document.getElementById('invitationMessage').innerText = 'Enter the invitation code you received to connect as visitor';
         document.getElementById('connectText').innerText = 'Connect';
@@ -268,6 +268,7 @@
         document.getElementById('schoolProjectText').innerText = 'This is a school project and is not affiliated with Cisco/Slido.';
         document.getElementById('englishIndicator').style.display = 'inline';
         document.getElementById('slovakIndicator').style.display = 'none';
+        document.getElementById('invitationCode').placeholder = 'Enter your 6-digit code'
         localStorage.setItem('selectedLanguage', 'english');
         var credentials = sessionStorage.getItem('credentials');
         if (credentials) {
@@ -282,11 +283,12 @@
         document.getElementById('homeLink').innerHTML = '<i class="fas fa-home"></i> Domov';
         document.getElementById('loginLink').innerHTML = "<i class=\"fas fa-angle-double-right\"></i> Prihlásenie";
         document.getElementById('navbarDropdown').innerHTML = '<i class="fas fa-globe"></i> Jazyk';
-        document.getElementById('invitationHeading').innerHTML = '<strong>Máte pozvánkový kód?</strong>';
+        document.getElementById('invitationHeading').innerHTML = '👋 <strong>Ahoj, máš pozvánkový kód?</strong>';
+
         document.getElementById('logoutLink').innerHTML = '<i class="fas fa-sign-out-alt"></i> Odhlásenie';
-        document.getElementById('invitationMessage').innerText = 'Zadajte pozvánkový kód, ktorý ste dostali, aby ste sa pripojili ako návštevník';
+        document.getElementById('invitationMessage').innerText = 'Zadaj pozvánkový kód, ktorý si dostal, aby si sa mohol pripojiť ako návštevník.';
         document.getElementById('connectText').innerText = 'Pripojiť sa';
-        document.getElementById('whatsGoodHeading').innerHTML = "<strong>ČO JE ODILS?</strong>";
+        document.getElementById('whatsGoodHeading').innerHTML = "🔍 <strong>ČO JE ODILS?</strong>";
         document.getElementById('whatsGoodText1').innerText = 'ODILS je jednoduchá a intuitívna platforma pre otázky a ankety, určená pre stretnutia a udalosti. Organizátorom stretnutí a podujatí umožňuje získať najlepšie otázky od účastníkov a viesť zmysluplné rozhovory, zapájať účastníkov živými anketami a zbierať cenné údaje o udalostiach.';
         document.getElementById('whatsGoodText2').innerText = 'Prostredníctvom Odils účastníci presahujú úlohu iba divákov, stávajú sa neoddeliteľnými prispievateľmi k diskurzu.';
         document.getElementById('needHelpText').innerText = 'Potrebujete pomoc?';
@@ -298,6 +300,7 @@
         document.getElementById('schoolProjectText').innerText = 'Toto je školský projekt a nie je spätý s Cisco/Slido.';
         document.getElementById('slovakIndicator').style.display = 'inline';
         document.getElementById('englishIndicator').style.display = 'none';
+        document.getElementById('invitationCode').placeholder = 'Zadaj tvôj 6 miestný kód'
         localStorage.setItem('selectedLanguage', 'slovak');
         var credentials = sessionStorage.getItem('credentials');
         if (credentials) {
