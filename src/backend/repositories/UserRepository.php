@@ -165,7 +165,7 @@ class UserRepository
 
     // touches the user row, generates new access token and saves it in the database
     // all time definitions must be passed to database
-    public function touch(User $user): string|null
+    public function touch(User &$user): string|null
     {
         $this->connection->query("START TRANSACTION");
 
@@ -204,6 +204,7 @@ class UserRepository
             }
             $stmt->close();
             $this->connection->query("COMMIT");
+            $user = $this->getUserById($user->getId());
             return $token;
         }else {
             error_log("Update execution failed: " . $stmt->error);

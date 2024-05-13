@@ -68,6 +68,7 @@ if (str_starts_with($endpoint, "/api")) {
             $controller->login();
             break;
         case "DELETE":
+            $controller->logout();
             break;
     }
 }
