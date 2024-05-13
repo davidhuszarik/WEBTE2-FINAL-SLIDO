@@ -36,7 +36,6 @@
             max-width: 100%;
         }
 
-
         .btn-primary {
             background-color: #28a745;
             border-color: #28a745;
