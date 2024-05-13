@@ -34,6 +34,7 @@
 
         .navbar-nav .nav-link {
             color: #ffffff !important;
+            cursor: pointer;
         }
 
         .admin-panel {
