@@ -139,6 +139,10 @@
             padding: 20px 0;
         }
 
+        .cursor-pointer {
+            cursor: pointer;
+        }
+
     </style>
 </head>
 
@@ -161,8 +165,8 @@
                         Language
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" id="englishLink">English <span id="englishIndicator"></span></a>
-                        <a class="dropdown-item" id="slovakLink">Slovak <span id="slovakIndicator"></span></a>
+                        <a class="dropdown-item cursor-pointer" id="englishLink">English <span id="englishIndicator"></span></a>
+                        <a class="dropdown-item cursor-pointer" id="slovakLink">Slovak <span id="slovakIndicator"></span></a>
                     </div>
                 </li>
                 <li class="nav-item">
