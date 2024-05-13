@@ -1,13 +1,14 @@
 <?php
+
 namespace Repositories;
 require_once __DIR__ . "/../loader.php";
 
-use UnhandledMatchError;
-use Util\DatabaseConnection;
-use mysqli;
+use DateTime;
 use Models\Question;
 use Models\QuestionType;
-use DateTime;
+use mysqli;
+use UnhandledMatchError;
+use Util\DatabaseConnection;
 
 class QuestionRepository
 {
@@ -52,11 +53,11 @@ class QuestionRepository
             $is_open,
         );
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             $inserted_id = $stmt->insert_id;
             $stmt->close();
             return $inserted_id;
-        }else{
+        } else {
             error_log("Error creating new question: " . $stmt->error);
             $stmt->close();
             return -1;
@@ -74,29 +75,29 @@ class QuestionRepository
             return [];
         }
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             $result = $stmt->get_result();
             $qustions_array = [];
-            while($row = $result->fetch_assoc()){
+            while ($row = $result->fetch_assoc()) {
                 $creation_date = new DateTime($row['creation_date']);
                 try {
                     $type = QuestionType::from($row['type']);
-                } catch (UnhandledMatchError $e){
+                } catch (UnhandledMatchError $e) {
                     error_log("Invalid question type: " . $row['type']);
                     $stmt->close();
                     return null;
                 }
 
-                $is_open = (bool) $row['is_open'];
+                $is_open = (bool)$row['is_open'];
 
                 $question = new Question($row['user_id'], $row['title_en'], $row['title_sk'], $row['content_en'], $row['content_sk'],
-                                         $creation_date, $type, $is_open);
+                    $creation_date, $type, $is_open);
                 $question->setId($row['id']);
                 $qustions_array[] = $question;
             }
             $stmt->close();
             return $qustions_array;
-        }else{
+        } else {
             error_log("Error retrieving all users: " . $stmt->error);
             $stmt->close();
             return [];
@@ -117,28 +118,28 @@ class QuestionRepository
 
         $stmt->bind_param("i", $id);
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             $result = $stmt->get_result();
             $row = $result->fetch_assoc();
 
-            if($row){
+            if ($row) {
                 $creation_date = new DateTime($row['creation_date']);
                 try {
                     $type = QuestionType::from($row['type']);
-                } catch (UnhandledMatchError $e){
+                } catch (UnhandledMatchError $e) {
                     error_log("Invalid question type: " . $row['type']);
                     $stmt->close();
                     return null;
                 }
 
-                $is_open = (bool) $row['is_open'];
+                $is_open = (bool)$row['is_open'];
 
                 $question = new Question($row['user_id'], $row['title_en'], $row['title_sk'], $row['content_en'], $row['content_sk'],
                     $creation_date, $type, $is_open);
                 $question->setId($row['id']);
             }
             $stmt->close();
-        }else{
+        } else {
             error_log("Error retrieving answer with id: " . $id . " error: " . $stmt->error);
             $stmt->close();
         }
@@ -158,15 +159,15 @@ class QuestionRepository
 
         $stmt->bind_param("i", $id);
 
-        if($stmt->execute()){
-            if($stmt->affected_rows > 0){
+        if ($stmt->execute()) {
+            if ($stmt->affected_rows > 0) {
                 $stmt->close();
                 return true;
-            }else{
+            } else {
                 $stmt->close();
                 return false;
             }
-        }else {
+        } else {
             error_log("Deletion execution failed: " . $stmt->error);
             $stmt->close();
             return false;
@@ -206,15 +207,15 @@ class QuestionRepository
             $question_id
         );
 
-        if($stmt->execute()){
-            if($stmt->affected_rows === 0){
+        if ($stmt->execute()) {
+            if ($stmt->affected_rows === 0) {
                 error_log("No rows updated, possibly because the question ID does not exist");
                 $stmt->close();
                 return false;
             }
             $stmt->close();
             return true;
-        }else {
+        } else {
             error_log("Update execution failed: " . $stmt->error);
             $stmt->close();
             return false;

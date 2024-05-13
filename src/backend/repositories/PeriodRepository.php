@@ -1,19 +1,22 @@
 <?php
+
 namespace Repositories;
 require_once __DIR__ . "/../loader.php";
 
-use UnhandledMatchError;
-use Util\DatabaseConnection;
-use mysqli;
+use DateTime;
 use Models\Period;
 use Models\QuestionType;
-use DateTime;
+use mysqli;
+use UnhandledMatchError;
+use Util\DatabaseConnection;
 
-class PeriodRepository{
+class PeriodRepository
+{
     private mysqli $connection;
 
     // Constructor
-    public function __construct(){
+    public function __construct()
+    {
         $this->connection = DatabaseConnection::getInstance()->getConnection();
     }
 
@@ -51,11 +54,11 @@ class PeriodRepository{
             $code
         );
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             $inserted_id = $stmt->insert_id;
             $stmt->close();
             return $inserted_id;
-        }else{
+        } else {
             error_log("Error creating new period: " . $stmt->error);
             $stmt->close();
             return -1;
@@ -73,29 +76,29 @@ class PeriodRepository{
             return [];
         }
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             $result = $stmt->get_result();
             $periods_array = [];
-            while ($row = $result->fetch_assoc()){
+            while ($row = $result->fetch_assoc()) {
                 $start_timestamp = new DateTime($row['start_timestamp']);
                 $end_timestamp = new DateTime($row['end_timestamp']);
 
                 try {
                     $type = QuestionType::from($row['type']);
-                }catch (UnhandledMatchError $e){
+                } catch (UnhandledMatchError $e) {
                     error_log("Invalid question type: " . $row['type']);
                     $stmt->close();
                     return null;
                 }
 
                 $period = new Period($row['question_id'], $row['title_en'], $row['title_sk'], $row['content_en'],
-                                    $row['content_sk'], $type, $start_timestamp, $end_timestamp, $row['code']);
+                    $row['content_sk'], $type, $start_timestamp, $end_timestamp, $row['code']);
                 $period->setId($row['id']);
                 $periods_array[] = $period;
             }
             $stmt->close();
             return $periods_array;
-        }else{
+        } else {
             error_log("Error retrieving all periods: " . $stmt->error);
             $stmt->close();
             return [];
@@ -116,16 +119,16 @@ class PeriodRepository{
 
         $stmt->bind_param("i", $id);
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             $result = $stmt->get_result();
             $row = $result->fetch_assoc();
-            if($row){
+            if ($row) {
                 $start_timestamp = new DateTime($row['start_timestamp']);
                 $end_timestamp = new DateTime($row['end_timestamp']);
 
                 try {
                     $type = QuestionType::from($row['type']);
-                }catch (UnhandledMatchError $e){
+                } catch (UnhandledMatchError $e) {
                     error_log("Invalid question type: " . $row['type']);
                     $stmt->close();
                     return null;
@@ -136,7 +139,7 @@ class PeriodRepository{
                 $period->setId($row['id']);
             }
             $stmt->close();
-        }else{
+        } else {
             error_log("Error retrieving period with id: " . $id . " error: " . $stmt->error);
             $stmt->close();
         }
@@ -156,15 +159,15 @@ class PeriodRepository{
 
         $stmt->bind_param("i", $id);
 
-        if($stmt->execute()){
-            if($stmt->affected_rows > 0){
+        if ($stmt->execute()) {
+            if ($stmt->affected_rows > 0) {
                 $stmt->close();
                 return true;
-            }else{
+            } else {
                 $stmt->close();
                 return false;
             }
-        }else{
+        } else {
             error_log("Deletion execution failed: " . $stmt->error);
             $stmt->close();
             return false;
@@ -206,15 +209,15 @@ class PeriodRepository{
             $period_id
         );
 
-        if($stmt->execute()){
-            if($stmt->affected_rows === 0){
+        if ($stmt->execute()) {
+            if ($stmt->affected_rows === 0) {
                 error_log("No rows updated, possibly because the period ID does not exit.");
                 $stmt->close();
                 return false;
             }
             $stmt->close();
             return true;
-        }else{
+        } else {
             error_log("Updated execution failed with period ID: " . $period_id . " error: " . $stmt->error);
             $stmt->close();
             return false;

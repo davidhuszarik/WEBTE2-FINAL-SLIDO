@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -142,7 +141,8 @@
 
     </style>
 </head>
-<body>
+
+<body onload="checkSavedLanguage()">
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
         <a class="navbar-brand"><img id="logo" src="backend/views/images/logo.png" alt="ODILS | Homepage"></a>
@@ -165,11 +165,11 @@
                         <a class="dropdown-item" id="slovakLink">Slovak <span id="slovakIndicator"></span></a>
                     </div>
                 </li>
-                <li class="nav-item" id="userMenuItem" style="display: none;">
-                    <a class="nav-link" id="userNameLink"><i class="fas fa-user"></i> <span id="userName"></span></a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" id="logoutLink" onclick="logout()">Logout</a>
+                </li>
+                <li class="nav-item" id="userMenuItem" style="display: none;">
+                    <a class="nav-link" id="userNameLink"><i class="fas fa-user"></i> <span id="userName"></span></a>
                 </li>
             </ul>
         </div>
@@ -177,7 +177,7 @@
 </nav>
 <div class="admin-panel">
     <div class="admin-panel-header">
-        <h2 id="welcomeTitle" >Welcome to Admin Panel</h2>
+        <h2 id="welcomeTitle">Welcome to Admin Panel</h2>
     </div>
     <div class="admin-details">
         <p id="usernameText">Hello, John Doe!</p>
@@ -187,27 +187,32 @@
         <div class="section">
             <div id="profileTitle" class="section-title">Profile settings</div>
             <div class="section-content">
-                <button id="changePasswordButton" class="btn btn-yellow mx-auto" data-toggle="modal" data-target="#changePasswordModal"><i class="bi bi-key"></i> Change password</button>
-                <button id="logoutButton" class="btn btn-yellow mx-auto"><i class="bi bi-box-arrow-right"></i> Logout</button>
+                <button id="changePasswordButton" class="btn btn-yellow mx-auto" data-toggle="modal"
+                        data-target="#changePasswordModal"><i class="bi bi-key"></i> Change password
+                </button>
             </div>
         </div>
-        <div class="section">
+        <div class="section" id="userSettingsSection">
             <div id="userSettingsLabel" class="section-title">User settings</div>
             <div class="section-content">
-                <button id="manageUsersButton" class="btn btn-green mx-auto"><i class="bi bi-people"></i> Manage users</button>
+                <button id="manageUsersButton" class="btn btn-green mx-auto"><i class="bi bi-people"></i> Manage users
+                </button>
             </div>
         </div>
         <div class="section">
             <div id="questionsSettingsTitle" class="section-title">Question settings</div>
             <div class="section-content">
-                <button id="manageQuestionsButton" class="btn btn-red mx-auto"><i class="bi bi-file-earmark-text"></i> Manage questions</button>
+                <button id="manageQuestionsButton" class="btn btn-red mx-auto"><i class="bi bi-file-earmark-text"></i>
+                    Manage questions
+                </button>
                 <button class="btn btn-blue mx-auto"><i class="bi bi-bar-chart"></i> Show results</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="changePasswordModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -240,26 +245,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="logoutConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="logoutConfirmationModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="logoutConfirmationModalLabel">Logout Confirmation</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to log out?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                <button type="button" class="btn btn-primary" id="confirmLogout">Yes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <footer class="footer">
     <div class="container">
         <p>&copy; 2024 ODILS. <span id="rightsReservedText"></span><br>
@@ -275,7 +260,6 @@
 </html>
 
 <script>
-    checkSavedLanguage();
     $(document).ready(function () {
         var passwordInput = $('#newPassword');
 
@@ -307,11 +291,11 @@
         }
     });
 
-    document.getElementById('englishLink').addEventListener('click', function() {
+    document.getElementById('englishLink').addEventListener('click', function () {
         translateToEnglish();
     });
 
-    document.getElementById('slovakLink').addEventListener('click', function() {
+    document.getElementById('slovakLink').addEventListener('click', function () {
         translateToSlovak();
     });
 
@@ -320,12 +304,11 @@
         document.getElementById('pageTitle').innerText = 'ODILS |> Panel';
         document.getElementById('navbarDropdown').innerHTML = '<i class="fas fa-globe"></i> Language';
         document.getElementById('welcomeTitle').innerHTML = '<strong>Welcome to ODILS Panel</strong>';
-        document.getElementById('profileTitle').innerText = 'Profile settings';
+        document.getElementById('profileTitle').innerText = 'Profile';
         document.getElementById('changePasswordButton').innerHTML = '<i class="bi bi-key"></i> Change password';
-        document.getElementById('logoutButton').innerHTML = '<i class="bi bi-box-arrow-right"></i> Logout';
-        document.getElementById('userSettingsLabel').innerText = 'Manager users';
+        document.getElementById('userSettingsLabel').innerText = 'Hidden functions for admins';
         document.getElementById('manageUsersButton').innerHTML = '<i class="bi bi-people"></i> Manage users';
-        document.getElementById('questionsSettingsTitle').innerText = 'Question settings';
+        document.getElementById('questionsSettingsTitle').innerText = 'Questions';
         document.getElementById('logoutLink').innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
         document.getElementById('manageQuestionsButton').innerHTML = '<i class="bi bi-file-earmark-text"></i> Manage questions';
         document.getElementById('rightsReservedText').innerText = 'All rights reserved.';
@@ -337,7 +320,7 @@
             var userNameLink = document.getElementById('userNameLink');
             var usernameLabel = document.getElementById('usernameText');
             var groupText = document.getElementById('groupText');
-            userNameLink.textContent = "You are logged in as " + parsedCredentials.username;
+            userNameLink.innerHTML = "You are logged in as <strong>" + parsedCredentials.username + " </strong>";
             usernameText.textContent = "You are logged in as " + parsedCredentials.username;
             usernameLabel.innerHTML = "Logged in as: <strong>" + parsedCredentials.username + " </strong>";
 
@@ -362,12 +345,11 @@
         document.getElementById('pageTitle').innerText = 'ODILS |> Panel';
         document.getElementById('navbarDropdown').innerHTML = '<i class="fas fa-globe"></i> Jazyk';
         document.getElementById('welcomeTitle').innerHTML = '<strong>Vitajte v ODILS paneli</strong>';
-        document.getElementById('profileTitle').innerText = 'Nastavenia profilu';
+        document.getElementById('profileTitle').innerText = 'Profil';
         document.getElementById('changePasswordButton').innerHTML = '<i class="bi bi-key"></i> Zmena hesla';
-        document.getElementById('logoutButton').innerHTML = '<i class="bi bi-box-arrow-right"></i> Odhlásenie';
-        document.getElementById('userSettingsLabel').innerText = 'Správa užívateľov';
+        document.getElementById('userSettingsLabel').innerText = 'Skryté funkcie pre admina';
         document.getElementById('manageUsersButton').innerHTML = '<i class="bi bi-people"></i> Správa užívateľov';
-        document.getElementById('questionsSettingsTitle').innerText = 'Nastavenia otázok';
+        document.getElementById('questionsSettingsTitle').innerText = 'Otázky';
         document.getElementById('manageQuestionsButton').innerHTML = '<i class="bi bi-file-earmark-text"></i> Správa otázky';
         document.getElementById('logoutLink').innerHTML = '<i class="fas fa-sign-out-alt"></i> Odhlásenie';
         document.getElementById('rightsReservedText').innerText = 'Všetky práva vyhradené.';
@@ -379,7 +361,7 @@
             var userNameLink = document.getElementById('userNameLink');
             var usernameLabel = document.getElementById('usernameText');
             var groupText = document.getElementById('groupText');
-            userNameLink.textContent = "Si prihlásený ako " + parsedCredentials.username;
+            userNameLink.innerHTML = "Si prihlásený ako <strong>" + parsedCredentials.username + " </strong>";
             usernameLabel.innerHTML = "Prihlásený ako: <strong>" + parsedCredentials.username + " </strong>";
 
             var role = parsedCredentials.role;
@@ -398,13 +380,15 @@
         }
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         var credentials = sessionStorage.getItem('credentials');
         if (credentials) {
             var parsedCredentials = JSON.parse(credentials);
             var logoutButton = document.getElementById('logoutLink');
             var userMenuItem = document.getElementById('userMenuItem');
             var userNameLink = document.getElementById('userNameLink');
+            var userSettingsSection = document.getElementById('userSettingsSection');
+
             if (logoutButton) {
                 logoutButton.style.display = "block";
             }
@@ -414,10 +398,16 @@
             if (userNameLink) {
                 userNameLink.textContent = "You are logged in as " + parsedCredentials.username;
             }
+            if (parsedCredentials.role === 'admin') {
+                userSettingsSection.style.display = "block";
+            } else {
+                userSettingsSection.style.display = "none";
+            }
         } else {
             window.location.href = 'restricted.php';
         }
     });
+
 
     function checkSavedLanguage() {
         var savedLanguage = localStorage.getItem('selectedLanguage');
@@ -451,13 +441,12 @@
                         icon: 'success',
                         confirmButtonColor: '#3085d6',
                         confirmButtonText: 'OK'
-                    }).then(function() {
+                    }).then(function () {
                         window.location.href = 'index.php';
                     });
                 }
             });
-        }
-        else {
+        } else {
             Swal.fire({
                 title: 'Ste si istý/á, že sa chcete odhlásiť?',
                 text: "Budete odhlásený/á zo svojho účtu.",
@@ -475,7 +464,7 @@
                         icon: 'success',
                         confirmButtonColor: '#3085d6',
                         confirmButtonText: 'OK'
-                    }).then(function() {
+                    }).then(function () {
                         window.location.href = 'index.php';
                     });
                 }

@@ -1,7 +1,9 @@
 <?php
+
 namespace Models;
 
-class StaticOption{
+class StaticOption
+{
     private int $id;
     private int $period_id;
     private string $value_en;

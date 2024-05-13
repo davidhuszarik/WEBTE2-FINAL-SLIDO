@@ -14,8 +14,7 @@ $endpoint = $uri_parts[0];
 $query_string = isset($uri_parts[1]) ? $uri_parts[1] : null;
 if ($query_string != null) {
     parse_str($query_string, $params);
-}
-else{
+} else {
     $params = [];
 }
 //echo "Method: " . $method . "\n";
@@ -31,10 +30,10 @@ if (str_starts_with($endpoint, "/api")) {
                     if (isset($params['id'])) {
                         echo "Params: " . $params['id'] . "\n";
                         // TODO: Retrieve question by id
-                    } elseif(isset($params['code'])) {
+                    } elseif (isset($params['code'])) {
                         echo "Params: " . $params['code'] . "\n";
                         // TODO: Retrieve question by code
-                    }else{
+                    } else {
                         // TODO: Retrieve all questions
                     }
                     break;
@@ -70,11 +69,9 @@ if (str_starts_with($endpoint, "/api")) {
         case "DELETE":
             break;
     }
-}
-else if($endpoint == "/register")
-{
+} else if ($endpoint == "/register") {
     $controller = new AuthController();
-    switch($method){
+    switch ($method) {
         case "GET":
             $controller->registerIndex();
             break;

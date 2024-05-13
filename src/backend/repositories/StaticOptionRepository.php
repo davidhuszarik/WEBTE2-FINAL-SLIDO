@@ -1,16 +1,19 @@
 <?php
+
 namespace Repositories;
 require_once __DIR__ . "/../loader.php";
 
-use Util\DatabaseConnection;
-use mysqli;
 use Models\StaticOption;
+use mysqli;
+use Util\DatabaseConnection;
 
-class StaticOptionRepository{
+class StaticOptionRepository
+{
     private mysqli $connection;
 
     // Constructor
-    public function __construct(){
+    public function __construct()
+    {
         $this->connection = DatabaseConnection::getInstance()->getConnection();
     }
 
@@ -38,11 +41,11 @@ class StaticOptionRepository{
             $is_correct,
         );
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             $inserted_id = $stmt->insert_id;
             $stmt->close();
             return $inserted_id;
-        }else{
+        } else {
             error_log("Error creating new static option: " . $stmt->error);
             $stmt->close();
             return -1;
@@ -60,18 +63,18 @@ class StaticOptionRepository{
             return [];
         }
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             $result = $stmt->get_result();
             $static_options_array = [];
-            while ($row = $result->fetch_assoc()){
-                $is_correct = (bool) $row['is_correct'];
+            while ($row = $result->fetch_assoc()) {
+                $is_correct = (bool)$row['is_correct'];
                 $option = new StaticOption($row['question_id'], $row['value_en'], $row['value_sk'], $is_correct);
                 $option->setId($row['id']);
                 $static_options_array[] = $option;
             }
             $stmt->close();
             return $static_options_array;
-        }else{
+        } else {
             error_log("Error retrieving all users: " . $stmt->error);
             $stmt->close();
             return [];
@@ -92,16 +95,16 @@ class StaticOptionRepository{
 
         $stmt->bind_param("i", $id);
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             $result = $stmt->get_result();
             $row = $result->fetch_assoc();
-            if($row){
-                $is_correct = (bool) $row['is_correct'];
+            if ($row) {
+                $is_correct = (bool)$row['is_correct'];
                 $option = new StaticOption($row['question_id'], $row['value_en'], $row['value_sk'], $is_correct);
                 $option->setId($row['id']);
             }
             $stmt->close();
-        }else{
+        } else {
             error_log("Error retrieving static option with id: " . $id . " error: " . $stmt->error);
             $stmt->close();
         }
@@ -121,15 +124,15 @@ class StaticOptionRepository{
 
         $stmt->bind_param("i", $id);
 
-        if($stmt->execute()){
-            if($stmt->affected_rows > 0){
+        if ($stmt->execute()) {
+            if ($stmt->affected_rows > 0) {
                 $stmt->close();
                 return true;
-            }else{
+            } else {
                 $stmt->close();
                 return false;
             }
-        }else{
+        } else {
             error_log("Deletion execution failed: " . $stmt->error);
             $stmt->close();
             return false;
@@ -161,15 +164,15 @@ class StaticOptionRepository{
             $option_id
         );
 
-        if($stmt->execute()){
-            if($stmt->affected_rows === 0){
+        if ($stmt->execute()) {
+            if ($stmt->affected_rows === 0) {
                 error_log("No rows updated, possibly because the static option ID does not exit.");
                 $stmt->close();
                 return false;
             }
             $stmt->close();
             return true;
-        }else{
+        } else {
             error_log("Update execution failed for static option ID " . $option_id . ": " . $stmt->error);
             $stmt->close();
             return false;

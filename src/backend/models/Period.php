@@ -1,6 +1,9 @@
 <?php
+
 namespace Models;
+
 use DateTime;
+
 require_once __DIR__ . "/QuestionType.php";
 
 class Period
@@ -17,7 +20,7 @@ class Period
     private string $code;
 
     // Constructor
-    public function __construct(int $question_id, string $title_en, string $title_sk, string $content_en, string $content_sk,
+    public function __construct(int          $question_id, string $title_en, string $title_sk, string $content_en, string $content_sk,
                                 QuestionType $question_type, DateTime $start_timestamp, DateTime $end_timestamp, string $code)
     {
         $this->question_id = $question_id;

@@ -98,7 +98,9 @@
         </div>
         <button id="loginButton" type="submit" class="btn btn-primary btn-block">Log in</button>
         <div style="text-align: center; margin-top: 10px;">
-            <button id="backButton" onclick="window.location.href = 'index.php';" class="btn btn-secondary btn-block">Back</button>
+            <button id="backButton" onclick="window.location.href = 'index.php';" class="btn btn-secondary btn-block">
+                Back
+            </button>
         </div>
         <div class="register-prompt">
             <span id="registerPrompt"></span>
@@ -121,8 +123,7 @@
             savedLanguage = localStorage.getItem('selectedLanguage');
             if (savedLanguage === "slovak") {
                 usernameFeedback.textContent = 'Používateľské meno obsahuje špeciálne znaky.';
-            }
-            else {
+            } else {
                 usernameFeedback.textContent = 'Username contains special characters.';
             }
             username.classList.add('is-invalid');
@@ -132,8 +133,7 @@
             savedLanguage = localStorage.getItem('selectedLanguage');
             if (savedLanguage === "slovak") {
                 usernameFeedback.textContent = 'Prosím, zadajte svoje používateľské meno.';
-            }
-            else {
+            } else {
                 usernameFeedback.textContent = 'Please enter your username.';
             }
             valid = false;
@@ -142,8 +142,7 @@
             savedLanguage = localStorage.getItem('selectedLanguage');
             if (savedLanguage === "slovak") {
                 usernameFeedback.textContent = 'Používateľské meno musí mať menej ako 25 znakov.';
-            }
-            else {
+            } else {
                 usernameFeedback.textContent = 'Username must be less than 25 characters long.';
             }
             valid = false;
@@ -190,7 +189,7 @@
         }
     }
 
-    window.onload = function() {
+    window.onload = function () {
         checkSavedLanguage();
     };
 
@@ -218,11 +217,11 @@
                 type: 'POST',
                 url: window.location.href,
                 data: formData,
-                success: function(response) {
+                success: function (response) {
                     sessionStorage.setItem('credentials', JSON.stringify(response.credentials));
                     window.location.replace(window.location.hostname)
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Error:', error);
                     if (xhr.responseJSON.error === "Invalid username or password") {
                         if (checkSavedLanguage() === "English") {
@@ -231,8 +230,7 @@
                                 title: 'Invalid credentials',
                                 text: 'Please check your username and password and try again.'
                             });
-                        }
-                        else {
+                        } else {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Neplatné prihlasovacie údaje',

@@ -134,7 +134,8 @@
         <button id="registerButton" type="submit" class="btn btn-primary btn-block">Register</button>
     </form>
     <div style="text-align: center; margin-top: 10px;">
-        <button id="backButton" onclick="window.location.href = 'index.php';" class="btn btn-secondary btn-block">Back</button>
+        <button id="backButton" onclick="window.location.href = 'index.php';" class="btn btn-secondary btn-block">Back
+        </button>
     </div>
     <div id="loginPrompt" style="text-align: center; margin-top: 10px;">
         <p>Have you already account? <a href="login">Login</a></p>
@@ -162,8 +163,7 @@
             savedLanguage = localStorage.getItem('selectedLanguage');
             if (savedLanguage === "slovak") {
                 usernameFeedback.textContent = 'Používateľské meno obsahuje špeciálne znaky.';
-            }
-            else {
+            } else {
                 usernameFeedback.textContent = 'Username contains special characters.';
             }
         } else if (username.value.trim() === '') {
@@ -171,8 +171,7 @@
             savedLanguage = localStorage.getItem('selectedLanguage');
             if (savedLanguage === "slovak") {
                 usernameFeedback.textContent = 'Prosím, zadajte používateľské meno.';
-            }
-            else {
+            } else {
                 usernameFeedback.textContent = 'Please enter your username.';
             }
         } else if (username.value.length > 25) {
@@ -180,8 +179,7 @@
             savedLanguage = localStorage.getItem('selectedLanguage');
             if (savedLanguage === "slovak") {
                 usernameFeedback.textContent = 'Používateľské meno musí mať menej ako 25 znakov.';
-            }
-            else {
+            } else {
                 usernameFeedback.textContent = 'Username must be less than 25 characters long.';
             }
         } else {
@@ -204,7 +202,7 @@
         }
     }
 
-    window.onload = function() {
+    window.onload = function () {
         checkSavedLanguage();
     };
 
@@ -215,7 +213,7 @@
         document.getElementById('usernameLabel').textContent = 'Username';
         document.getElementById('password').placeholder = 'Password';
         document.getElementById('passwordLabel').textContent = 'Password';
-        document.getElementById('confirmPassword').placeholder= 'Confirm password';
+        document.getElementById('confirmPassword').placeholder = 'Confirm password';
         document.getElementById('confirmPasswordLabel').textContent = 'Confirm password';
         document.getElementById('registerButton').textContent = 'Register';
         document.getElementById('backButton').textContent = 'Back';
@@ -229,7 +227,7 @@
         document.getElementById('usernameLabel').textContent = 'Užívateľské meno';
         document.getElementById('password').placeholder = 'Heslo';
         document.getElementById('passwordLabel').textContent = 'Heslo';
-        document.getElementById('confirmPassword').placeholder= 'Potvrďte heslo';
+        document.getElementById('confirmPassword').placeholder = 'Potvrďte heslo';
         document.getElementById('confirmPasswordLabel').textContent = 'Potvrďte heslo';
         document.getElementById('registerButton').textContent = 'Registrovať';
         document.getElementById('backButton').textContent = 'Späť';
@@ -243,8 +241,7 @@
             savedLanguage = localStorage.getItem('selectedLanguage');
             if (savedLanguage === "slovak") {
                 usernameFeedback.textContent = 'Prosím, zadaj správnu email.';
-            }
-            else {
+            } else {
                 usernameFeedback.textContent = 'Please enter a valid email address.';
             }
         } else {
@@ -259,8 +256,7 @@
             savedLanguage = localStorage.getItem('selectedLanguage');
             if (savedLanguage === "slovak") {
                 usernameFeedback.textContent = 'Heslá sa nerovnajú.';
-            }
-            else {
+            } else {
                 usernameFeedback.textContent = 'Passwords do not match.';
             }
         } else {
@@ -287,10 +283,10 @@
                 type: 'POST',
                 url: window.location.href,
                 data: formData,
-                success: function(response) {
+                success: function (response) {
                     window.location.replace(window.location.hostname + '/login');
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Error:', error);
                     if (checkSavedLanguage() === "Slovak") {
                         if (xhr.responseJSON.error === "Failed to create new user") {
@@ -300,16 +296,14 @@
                                 text: 'Došlo k neznámej chybe!',
                                 footer: 'Skúste to prosím neskôr znova'
                             });
-                        }
-                        else if (xhr.responseJSON.error === "User already exists") {
+                        } else if (xhr.responseJSON.error === "User already exists") {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Ups...',
                                 text: 'Používateľ už existuje!',
                                 footer: 'Skúste to prosím s iným používateľom alebo emailom.'
                             });
-                        }
-                        else if (xhr.responseJSON.error === "Invalid username or email address") {
+                        } else if (xhr.responseJSON.error === "Invalid username or email address") {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Registrácia zlyhala',
@@ -326,16 +320,14 @@
                                 text: 'An unknown error occurred!',
                                 footer: 'Please try again later'
                             });
-                        }
-                        else if (xhr.responseJSON.error === "User already exists") {
+                        } else if (xhr.responseJSON.error === "User already exists") {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
                                 text: 'User already exists!',
                                 footer: 'Please try with a different user or email'
                             });
-                        }
-                        else if (xhr.responseJSON.error === "Invalid username or email address") {
+                        } else if (xhr.responseJSON.error === "Invalid username or email address") {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Registration Failed',

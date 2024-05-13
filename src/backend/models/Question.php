@@ -1,6 +1,9 @@
 <?php
+
 namespace Models;
+
 use DateTime;
+
 require_once __DIR__ . "/QuestionType.php";
 
 class Question
@@ -16,7 +19,7 @@ class Question
     private bool $is_open;
 
     // Constructor
-    public function __construct(int $user_id, string $title_en, string $title_sk, string $content_en, string $content_sk,
+    public function __construct(int      $user_id, string $title_en, string $title_sk, string $content_en, string $content_sk,
                                 DateTime $date_time, QuestionType $question_type, bool $is_open)
     {
         $this->user_id = $user_id;
@@ -121,7 +124,8 @@ class Question
     }
 
     // toArray
-    public function toArray(){
+    public function toArray()
+    {
         return [
             "id" => $this->id,
             "user_id" => $this->user_id,

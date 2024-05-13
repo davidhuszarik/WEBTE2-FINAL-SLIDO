@@ -9,8 +9,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
@@ -87,7 +90,8 @@
                     <button class="nav-link" id="logoutLink" style="display: none;" onclick="logout()">Logout</button>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="panelLink" style="display: none;" href="panel.php"><i class="fas fa-cogs"></i> Panel</a>
+                    <a class="nav-link" id="panelLink" style="display: none;" href="panel.php"><i
+                                class="fas fa-cogs"></i> Panel</a>
                 </li>
 
 
@@ -114,8 +118,10 @@
 <div id="welcome" class="jumbotron" style="padding: 20px 20px;" data-aos="fade-up" data-aos-duration="1000">
     <div class="container" style="position: relative;">
         <div id="particles-js"></div>
-        <h1 style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); z-index: 1;" id="invitationHeading"></h1>
-        <p style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); z-index: 1; font-size: 16px;" id="invitationMessage"></p>
+        <h1 style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); z-index: 1;"
+            id="invitationHeading"></h1>
+        <p style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); z-index: 1; font-size: 16px;"
+           id="invitationMessage"></p>
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
             <input type="text" id="invitationCode" name="invitationCode" placeholder="XXXXXX"
                    style="width: 300px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;">
@@ -131,7 +137,8 @@
         <h2 class="text-center" id="whatsGoodHeading"></h2>
         <div class="row align-items-center">
             <div class="col-md-4 text-center">
-                <img src="backend/views/images/imagWithLogo.png" class="img-fluid" alt="Who We Are Image" style="max-width: 200px; border: 1px solid black;">
+                <img src="backend/views/images/imagWithLogo.png" class="img-fluid" alt="Who We Are Image"
+                     style="max-width: 200px; border: 1px solid black;">
             </div>
             <div class="col-md-8">
                 <p style="margin-top: 20px; margin-bottom: 20px;" id="whatsGoodText1"></p>
@@ -187,7 +194,6 @@
             }
         });
     }
-
 
 
     AOS.init();
@@ -267,7 +273,7 @@
         if (credentials) {
             var parsedCredentials = JSON.parse(credentials);
             var userNameLink = document.getElementById('userNameLink');
-            userNameLink.textContent = "You are logged in as " + parsedCredentials.username;
+            userNameLink.innerHTML = "You are logged in as <strong>" + parsedCredentials.username + " </strong>";
         }
     }
 
@@ -297,11 +303,11 @@
         if (credentials) {
             var parsedCredentials = JSON.parse(credentials);
             var userNameLink = document.getElementById('userNameLink');
-            userNameLink.textContent = "Si prihlásený ako " + parsedCredentials.username;
+            userNameLink.innerHTML = "Si prihlásený ako <strong>" + parsedCredentials.username + " </strong>";
         }
     }
 
-    document.getElementById('englishLink').addEventListener('click', function() {
+    document.getElementById('englishLink').addEventListener('click', function () {
         translateToEnglish();
         Swal.fire({
             icon: 'success',
@@ -310,7 +316,7 @@
         });
     });
 
-    document.getElementById('slovakLink').addEventListener('click', function() {
+    document.getElementById('slovakLink').addEventListener('click', function () {
         translateToSlovak();
         Swal.fire({
             icon: 'success',
@@ -319,7 +325,7 @@
         });
     });
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         var credentials = sessionStorage.getItem('credentials');
         if (credentials) {
             var parsedCredentials = JSON.parse(credentials);
@@ -404,8 +410,7 @@
                     }
                 }
             });
-        }
-        else {
+        } else {
             Swal.fire({
                 title: 'Ste si istý/á, že sa chcete odhlásiť?',
                 text: "Budete odhlásený/á zo svojho účtu.",
@@ -425,13 +430,13 @@
                     userMenuItem.style.display = "none";
                     var panelLink = document.getElementById('panelLink');
                     panelLink.style.display = "none";
-                        Swal.fire({
-                            title: 'Úspešné odhlásenie!',
-                            text: "Boli ste úspešne odhlásení zo svojho účtu.",
-                            icon: 'success',
-                            confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'OK'
-                        })
+                    Swal.fire({
+                        title: 'Úspešné odhlásenie!',
+                        text: "Boli ste úspešne odhlásení zo svojho účtu.",
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    })
                 }
             });
         }
