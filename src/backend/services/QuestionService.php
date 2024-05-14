@@ -27,8 +27,22 @@ class QuestionService
     }
 
     /* Create new question */
-    public function createNewQuestionForGivenUser(int $user_id, string $user_role, ?string $username, array $question_data)
+    public function createNewQuestionForGivenUser(?string $username, array $question_data)
     {
+        if(session_status() === PHP_SESSION_NONE){
+            session_start();
+        }
+
+        if (!isset($_SESSION['user'])) {
+            return [
+                'error' => "Unauthorized access - no session found",
+                'status' => 403
+            ];
+        }
+
+        $user = $_SESSION['user'];
+        $user_role = $user->getUserRole();
+
         if (empty($question_data['title_en']) || empty($question_data['title_sk']) || empty($question_data['content_en'])
             || empty($question_data['content_sk']) || empty($question_data['creation_date']) || empty($question_data['type'])
             || empty($question_data['is_open'])) {
@@ -52,17 +66,17 @@ class QuestionService
         $new_question_id = null;
 
         // admin creates question for himself
-        if ($user_role === 'admin' && $username === null) {
-            $new_question = new Question($user_id, $question_data['title_en'], $question_data['title_sk'], $question_data['content_en'],
+        if ($user_role === UserRole::Admin && $username === null) {
+            $new_question = new Question($user->getId(), $question_data['title_en'], $question_data['title_sk'], $question_data['content_en'],
                 $question_data['content_sk'], $creation_date, $type, $isOpen);
             $new_question_id = $this->question_repository->createNewQuestion($new_question);
-        } elseif ($user_role === 'admin' && $username != null) { // Admin creates for specific user
+        } elseif ($user_role === UserRole::Admin && $username != null) { // Admin creates for specific user
             $specific_user = $this->user_repository->getByUsername($username);
             $new_question = new Question($specific_user->getId(), $question_data['title_en'], $question_data['title_sk'], $question_data['content_en'],
                 $question_data['content_sk'], $creation_date, $type, $isOpen);
             $new_question_id = $this->question_repository->createNewQuestion($new_question);
-        } elseif ($user_role === 'user' && $username === null) { // User creates question for himself
-            $new_question = new Question($user_id, $question_data['title_en'], $question_data['title_sk'], $question_data['content_en'],
+        } elseif ($user_role === UserRole::User && $username === null) { // User creates question for himself
+            $new_question = new Question($user->getId(), $question_data['title_en'], $question_data['title_sk'], $question_data['content_en'],
                 $question_data['content_sk'], $creation_date, $type, $isOpen);
             $new_question_id = $this->question_repository->createNewQuestion($new_question);
         }
@@ -117,8 +131,19 @@ class QuestionService
      * @param string $user_role
      * @return array<string, int>|array<string, int, Question>
      */
-    public function getSpecificQuestion(int $question_id, int $user_id, string $user_role)
+    public function getSpecificQuestion(int $question_id)
     {
+        if(session_status() === PHP_SESSION_NONE){
+            session_start();
+        }
+
+        if (!isset($_SESSION['user'])) {
+            return [
+                'error' => "Unauthorized access - no session found",
+                'status' => 403
+            ];
+        }
+
         $question = $this->question_repository->getQuestionById($question_id);
 
         if ($question === null) {
@@ -128,7 +153,10 @@ class QuestionService
             ];
         }
 
-        if ($user_role === 'admin') {
+        $user = $_SESSION['user'];
+        $user_role = $user->getUserRole();
+
+        if ($user_role === UserRole::Admin) {
             return [
                 'message' => "Successfully retrieved question.",
                 'status' => 200,
@@ -136,7 +164,7 @@ class QuestionService
             ];
         }
 
-        if ($user_role === "user" && $question->getUserId() === $user_id) {
+        if ($user_role === UserRole::User && $question->getUserId() === $user->getId()) {
             return [
                 'message' => "Successfully retrieved question.",
                 'status' => 200,
@@ -151,9 +179,9 @@ class QuestionService
     }
 
     /* Get specific question and its options */
-    public function getSpecificQuestionWithOptions(int $question_id, int $user_id, string $user_role)
+    public function getSpecificQuestionWithOptions(int $question_id)
     {
-        $question = $this->getSpecificQuestion($question_id, $user_id, $user_role);
+        $question = $this->getSpecificQuestion($question_id);
         if ($question['status'] != 200 ) {
             return $question;
         }
@@ -181,9 +209,9 @@ class QuestionService
     }
 
     /* Delete specific question */
-    public function deleteSpecificQuestion(int $question_id, int $user_id, string $user_role)
+    public function deleteSpecificQuestion(int $question_id)
     {
-        $question = $this->getSpecificQuestion($question_id, $user_id, $user_role);
+        $question = $this->getSpecificQuestion($question_id);
         if ($question['status'] != 200 ) {
             return $question;
         }
@@ -205,9 +233,9 @@ class QuestionService
     }
 
     /* Update question */
-    public function updateSpecificQuestion(int $user_id, string $user_role, int $question_id, array $question_data)
+    public function updateSpecificQuestion(int $question_id, array $question_data)
     {
-        $question = $this->getSpecificQuestion($question_id, $user_id, $user_role);
+        $question = $this->getSpecificQuestion($question_id);
         if ($question['status'] != 200 ) {
             return $question;
         }
