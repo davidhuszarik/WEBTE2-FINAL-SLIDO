@@ -68,7 +68,7 @@ class StaticOptionRepository
             $static_options_array = [];
             while ($row = $result->fetch_assoc()) {
                 $is_correct = (bool)$row['is_correct'];
-                $option = new StaticOption($row['question_id'], $row['value_en'], $row['value_sk'], $is_correct);
+                $option = new StaticOption($row['period_id'], $row['value_en'], $row['value_sk'], $is_correct);
                 $option->setId($row['id']);
                 $static_options_array[] = $option;
             }
@@ -100,7 +100,7 @@ class StaticOptionRepository
             $row = $result->fetch_assoc();
             if ($row) {
                 $is_correct = (bool)$row['is_correct'];
-                $option = new StaticOption($row['question_id'], $row['value_en'], $row['value_sk'], $is_correct);
+                $option = new StaticOption($row['period_id'], $row['value_en'], $row['value_sk'], $is_correct);
                 $option->setId($row['id']);
             }
             $stmt->close();
@@ -177,6 +177,40 @@ class StaticOptionRepository
             $stmt->close();
             return false;
         }
+    }
+
+    // Specific methods
+    // ----------------------------
+
+    // get all options associated to period id
+    public function getAllStaticOptionsByPeriodId(int $period_id)
+    {
+        $query = "SELECT * FROM static_options WHERE period_id = ?";
+
+        $stmt = $this->connection->prepare($query);
+        if (!$stmt) {
+            error_log("Prepare failed: " . $this->connection->error);
+            return [];
+        }
+
+        $stmt->bind_param("i", $period_id);
+        $static_options_array = [];
+
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            while ($row = $result->fetch_assoc()) {
+                $is_correct = (bool)$row['is_correct'];
+                $option = new StaticOption($row['period_id'], $row['value_en'], $row['value_sk'], $is_correct);
+                $option->setId($row['id']);
+                $static_options_array[] = $option;
+            }
+            $stmt->close();
+        } else {
+            error_log("Error retrieving static options by period id");
+            $stmt->close();
+        }
+
+        return $static_options_array;
     }
 }
 
