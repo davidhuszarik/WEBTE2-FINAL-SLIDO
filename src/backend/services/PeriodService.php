@@ -10,16 +10,18 @@ use Models\QuestionType;
 use DateTime;
 use Repositories\PeriodRepository;
 use Repositories\QuestionRepository;
-
+use Service\StaticOptionService;
 class PeriodService
 {
     private PeriodRepository $period_repository;
     private QuestionRepository $question_repository;
+    private StaticOptionService $static_option_service;
 
     public function __construct()
     {
         $this->period_repository = new PeriodRepository();
         $this->question_repository = new QuestionRepository();
+        $this->static_option_service = new StaticOptionService();
     }
 
     // Create period
@@ -53,6 +55,14 @@ class PeriodService
                         $start_timestamp, $end_timestamp, $code);
                     $new_period_id = $this->period_repository->createNewPeriod($new_period);
                     if($new_period_id > -1){
+                        // Creating static options
+                        $option_data = $this->static_option_service->createStaticOption($new_period_id, $question->getId());
+                        if($option_data['status'] == 500){
+                            return [
+                                'error' => "Failed creating static option",
+                                'status' => 500
+                            ];
+                        }
                         return [
                             'message' => 'Period created successfully',
                             'status' => 200,
