@@ -342,46 +342,6 @@
         });
     });
 
-    document.addEventListener("DOMContentLoaded", function () {
-        var credentials = sessionStorage.getItem('credentials');
-        if (credentials) {
-            var parsedCredentials = JSON.parse(credentials);
-            var loginButton = document.getElementById('loginLink');
-            var logoutButton = document.getElementById('logoutLink');
-            var userMenuItem = document.getElementById('userMenuItem');
-            var userNameLink = document.getElementById('userNameLink');
-            var panelLink = document.getElementById('panelLink');
-            if (loginButton) {
-                loginButton.style.display = "none";
-            }
-            if (logoutButton) {
-                logoutButton.style.display = "block";
-            }
-            if (userMenuItem) {
-                userMenuItem.style.display = "block";
-            }
-            if (userNameLink) {
-                userNameLink.textContent = "You are logged in as " + parsedCredentials.username;
-            }
-            panelLink.style.display = "block";
-        } else {
-            var loginButton = document.getElementById('loginLink');
-            var logoutButton = document.getElementById('logoutLink');
-            var userMenuItem = document.getElementById('userMenuItem');
-            var panelLink = document.getElementById('panelLink');
-            if (loginButton) {
-                loginButton.style.display = "block";
-            }
-            if (logoutButton) {
-                logoutButton.style.display = "none";
-            }
-            if (userMenuItem) {
-                userMenuItem.style.display = "none";
-            }
-            panelLink.style.display = "none";
-        }
-    });
-
     function checkSavedLanguage() {
         var savedLanguage = localStorage.getItem('selectedLanguage');
         if (savedLanguage === 'english') {
