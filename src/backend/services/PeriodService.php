@@ -184,6 +184,24 @@ class PeriodService
         ];
     }
 
+    // Get period by code (specific period)
+    public function getPeriodByCode(string $code)
+    {
+        $period = $this->period_repository->getPeriodByCode($code);
+        if (!$period) {
+            return [
+                'error' => "Period not found",
+                'status' => 404
+            ];
+        }
+
+        return [
+            'message' => "Successfully retrieved period",
+            'status' => 200,
+            'data' => $period
+        ];
+    }
+
     // Delete period by id
     public function deletePeriodById(int $period_id)
     {

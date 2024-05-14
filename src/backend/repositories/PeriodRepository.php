@@ -68,7 +68,7 @@ class PeriodRepository
     // Get all periods (no restriction)
     public function getAllPeriods()
     {
-        $query = "SELECT * FROM periods";
+        $query = "SELECT *, NOW()<end_timestamp as is_open FROM periods";
 
         $stmt = $this->connection->prepare($query);
         if (!$stmt) {
@@ -92,7 +92,7 @@ class PeriodRepository
                 }
 
                 $period = new Period($row['question_id'], $row['title_en'], $row['title_sk'], $row['content_en'],
-                    $row['content_sk'], $type, $start_timestamp, $end_timestamp, $row['code']);
+                    $row['content_sk'], $type, $start_timestamp, $end_timestamp, $row['code'], $row['is_open']);
                 $period->setId($row['id']);
                 $periods_array[] = $period;
             }
@@ -108,7 +108,7 @@ class PeriodRepository
     // Get period by ID
     public function getPeriodById(int $id)
     {
-        $query = "SELECT * FROM periods WHERE id = ?";
+        $query = "SELECT *, NOW()<end_timestamp as is_open FROM periods WHERE id = ?";
 
         $stmt = $this->connection->prepare($query);
         $period = null;
@@ -135,7 +135,7 @@ class PeriodRepository
                 }
 
                 $period = new Period($row['question_id'], $row['title_en'], $row['title_sk'], $row['content_en'],
-                    $row['content_sk'], $type, $start_timestamp, $end_timestamp, $row['code']);
+                    $row['content_sk'], $type, $start_timestamp, $end_timestamp, $row['code'], $row['is_open']);
                 $period->setId($row['id']);
             }
             $stmt->close();
@@ -230,7 +230,7 @@ class PeriodRepository
     // Get all periods by question id
     public function getPeriodsByQuestionId(int $question_id)
     {
-        $query = "SELECT * FROM periods WHERE question_id = ?";
+        $query = "SELECT *, NOW()<end_timestamp as is_open FROM periods WHERE question_id = ?";
 
         $stmt = $this->connection->prepare($query);
         if(!$stmt){
@@ -256,7 +256,7 @@ class PeriodRepository
                 }
 
                 $period = new Period($row['question_id'], $row['title_en'], $row['title_sk'], $row['content_en'],
-                    $row['content_sk'], $type, $start_timestamp, $end_timestamp, $row['code']);
+                    $row['content_sk'], $type, $start_timestamp, $end_timestamp, $row['code'], $row['is_open']);
                 $period->setId($row['id']);
                 $periods_array[] = $period;
             }
@@ -270,9 +270,9 @@ class PeriodRepository
     }
 
     // Get period by code
-    public function getPeriodByCode(int $code)
+    public function getPeriodByCode(string $code)
     {
-        $query = "SELECT * FROM periods WHERE code = ?";
+        $query = "SELECT *, NOW()<end_timestamp as is_open FROM periods WHERE code = ?";
 
         $stmt = $this->connection->prepare($query);
         if(!$stmt){
@@ -280,7 +280,7 @@ class PeriodRepository
             return null;
         }
 
-        $stmt->bind_param("i", $code);
+        $stmt->bind_param("s", $code);
         $period = null;
 
         if($stmt->execute()){
@@ -299,7 +299,7 @@ class PeriodRepository
                 }
 
                 $period = new Period($row['question_id'], $row['title_en'], $row['title_sk'], $row['content_en'],
-                    $row['content_sk'], $type, $start_timestamp, $end_timestamp, $row['code']);
+                    $row['content_sk'], $type, $start_timestamp, $end_timestamp, $row['code'], $row['is_open']);
                 $period->setId($row['id']);
             }
             $stmt->close();
