@@ -24,7 +24,7 @@ class AnswerRepository extends Repository
     // Create answer
     public function createAnswer(Answer $new_answer)
     {
-        $query = "INSERT INTO answers (period_id, user_id, type, free_answer, vote_time) VALUES (?, ?, ?, ?, ?)";
+        $query = "INSERT INTO answers (period_id, user_id, type, free_answer) VALUES (?, ?, ?, ?)";
         $stmt = $this->connection->prepare($query);
         if (!$stmt) {
             error_log("Prepare failed: " . $this->connection->error);
@@ -35,14 +35,12 @@ class AnswerRepository extends Repository
         $user_id = $new_answer->getUserId();
         $type = $new_answer->getQuestionType()->value;
         $free_answer = $new_answer->getFreeAnswer();
-        $vote_time = $new_answer->getVoteTime()->format("Y-m-d H:i:s");
 
-        $stmt->bind_param("iisss",
+        $stmt->bind_param("iiss",
             $period_id,
             $user_id,
             $type,
-            $free_answer,
-            $vote_time
+            $free_answer
         );
 
         if ($stmt->execute()) {
