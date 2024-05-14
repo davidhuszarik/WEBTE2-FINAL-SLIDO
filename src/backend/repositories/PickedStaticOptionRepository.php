@@ -1,20 +1,19 @@
 <?php
 
 namespace Repositories;
+require_once __DIR__ . "/Repository.php";
 require_once __DIR__ . "/../loader.php";
 
 use Models\PickedStaticOption;
 use mysqli;
 use Util\DatabaseConnection;
 
-class PickedStaticOptionRepository
+class PickedStaticOptionRepository extends Repository
 {
-    private mysqli $connection;
-
     // Construct
     public function __construct()
     {
-        $this->connection = DatabaseConnection::getInstance()->getConnection();
+        parent::__construct();
     }
 
     // CRUD methods

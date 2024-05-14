@@ -1,6 +1,7 @@
 <?php
 
 namespace Repositories;
+require_once __DIR__ . "/Repository.php";
 require_once __DIR__ . "/../loader.php";
 
 use DateTime;
@@ -10,14 +11,12 @@ use mysqli;
 use UnhandledMatchError;
 use Util\DatabaseConnection;
 
-class PeriodRepository
+class PeriodRepository extends Repository
 {
-    private mysqli $connection;
-
-    // Constructor
+    // Construct
     public function __construct()
     {
-        $this->connection = DatabaseConnection::getInstance()->getConnection();
+        parent::__construct();
     }
 
     // CRUD methods
