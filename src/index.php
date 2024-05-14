@@ -46,6 +46,7 @@
             text-align: center;
             margin-bottom: 0;
             flex: 1;
+            min-height: 70vh;
         }
 
         h2 {
@@ -65,6 +66,19 @@
 
         #logo {
             max-width: 75px;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+
+        #particles-js {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
         }
     </style>
 </head>
@@ -101,8 +115,8 @@
                         Language
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" id="englishLink">English <span id="englishIndicator"></span></a>
-                        <a class="dropdown-item" id="slovakLink">Slovak <span id="slovakIndicator"></span></a>
+                        <a class="dropdown-item cursor-pointer" id="englishLink">English <span id="englishIndicator"></span></a>
+                        <a class="dropdown-item cursor-pointer" id="slovakLink">Slovak <span id="slovakIndicator"></span></a>
                     </div>
                 </li>
                 <li class="nav-item" id="userMenuItem" style="display: none;">
@@ -115,20 +129,20 @@
 </nav>
 
 <div class="divider"></div>
-<div id="welcome" class="jumbotron" style="padding: 20px 20px;" data-aos="fade-up" data-aos-duration="1000">
-    <div class="container" style="position: relative;">
-        <div id="particles-js"></div>
-        <h1 style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); z-index: 1;"
-            id="invitationHeading"></h1>
-        <p style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); z-index: 1; font-size: 16px;"
-           id="invitationMessage"></p>
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
-            <input type="text" id="invitationCode" name="invitationCode" placeholder="Enter your 6 digit-code"
-                   style="width: 300px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;">
-            <button onclick="sendInvitation()"
-                    style="margin-top: 10px; padding: 10px 20px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">
-                <i class="fas fa-paper-plane"></i> <span id="connectText"></span>
-            </button>
+<div id="welcome" class="jumbotron py-4" data-aos="fade-up" data-aos-duration="1000">
+    <div class="container text-center position-relative d-flex justify-content-center align-items-center" style="min-height: 70vh">
+        <div id="particles-js" class="position-absolute"></div>
+        <div>
+            <h1 class="my-3" id="invitationHeading"></h1>
+            <p class="my-3" id="invitationMessage"></p>
+            <div class="my-3 d-flex justify-content-center align-items-center flex-wrap">
+                <input type="text" id="invitationCode" name="invitationCode" placeholder="Enter your 6 digit-code"
+                    class="form-control form-control-lg text-center mx-1" style="max-width: 300px;">
+                <button onclick="sendInvitation()"
+                        class="btn btn-primary btn-lg my-2">
+                    <i class="fas fa-paper-plane"></i> <span id="connectText"></span>
+                </button>
+            </div>
         </div>
     </div>
 </div>
