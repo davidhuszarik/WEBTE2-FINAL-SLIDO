@@ -312,7 +312,7 @@ class PeriodRepository
     }
 
     // Check if period with code already exists
-    public function checkIfPeriodWithGivenCodeExists(int $code)
+    public function checkIfPeriodWithGivenCodeExists(string $code)
     {
         $query = "SELECT COUNT(*) as count FROM periods WHERE code = ?";
 
@@ -322,7 +322,7 @@ class PeriodRepository
             return -1;
         }
 
-        $stmt->bind_param("i", $code);
+        $stmt->bind_param("s", $code);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();

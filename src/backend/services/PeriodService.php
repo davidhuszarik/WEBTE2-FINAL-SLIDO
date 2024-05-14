@@ -264,8 +264,13 @@ class PeriodService
 
     private function generateCode(): int
     {
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         do {
-            $code = random_int(100000, 999999);
+            $code = '';
+            $max = strlen($characters) - 1;
+            for ($i = 0; $i < 6; $i++) {
+                $code .= $characters[rand(0, $max)];
+            }
             $count = $this->period_repository->checkIfPeriodWithGivenCodeExists($code);
         }while($count > 0);
 
