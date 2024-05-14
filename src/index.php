@@ -182,7 +182,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-<script src="index.js"></script>
+<script src="backend/views/index.js"></script>
 <script>
     const cookieAccepted = localStorage.getItem('cookieAccepted');
     if (!cookieAccepted) {
