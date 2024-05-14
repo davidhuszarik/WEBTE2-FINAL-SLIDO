@@ -102,6 +102,10 @@ if (str_starts_with($endpoint, "/api")) {
         case "GET":
             $controller->index($code);
             break;
+        case "POST":
+            parse_str(file_get_contents("php://input"), $postData);
+            $controller->answer($code, $postData);
+            break;
     }
 }
 ?>
