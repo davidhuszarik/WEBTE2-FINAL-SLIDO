@@ -12,7 +12,9 @@ class LoginService
     public function __construct()
     {
         $this->userRepository = new UserRepository();
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
     }
 
     public function getLoggedInUser()
@@ -40,8 +42,6 @@ class LoginService
                     if ($this->userRepository->touch($user) != null){
                         $_SESSION['loggedIn'] = true;
                         $_SESSION['user'] = $user;
-
-                        echo json_encode(["credentials" => ["username" => $user->getUserName(), "access_token" => $user->getAccessToken(), "role" => $user->getUserRole()]]);
                         http_response_code($response_code = 200);
                     }
                     else{

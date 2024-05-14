@@ -87,4 +87,16 @@ class AuthController extends Controller
             header("Content-Type: application/json");
         }
     }
+
+    public function getSessionInfo(){
+        $user = $this->loginService->getLoggedInUser();
+        if ($user === null){
+            echo json_encode([]);
+            http_response_code(204);
+        }
+        else{
+            echo json_encode(["credentials" => ["username" => $user->getUserName(), "access_token" => $user->getAccessToken(), "role" => $user->getUserRole()]]);
+            http_response_code(200);
+        }
+    }
 }
