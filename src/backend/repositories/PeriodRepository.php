@@ -223,6 +223,113 @@ class PeriodRepository
             return false;
         }
     }
+
+    // Specific methods
+    // -------------------------------
+
+    // Get all periods by question id
+    public function getPeriodsByQuestionId(int $question_id)
+    {
+        $query = "SELECT * FROM periods WHERE question_id = ?";
+
+        $stmt = $this->connection->prepare($query);
+        if(!$stmt){
+            error_log("Prepare failed: " . $this->connection->error);
+            return [];
+        }
+
+        $stmt->bind_param("i", $question_id);
+        $periods_array = [];
+
+        if($stmt->execute()){
+            $result = $stmt->get_result();
+            while($row = $result->fetch_assoc()){
+                $start_timestamp = new DateTime($row['start_timestamp']);
+                $end_timestamp = new DateTime($row['end_timestamp']);
+
+                try {
+                    $type = QuestionType::from($row['type']);
+                } catch (UnhandledMatchError $e) {
+                    error_log("Invalid question type: " . $row['type']);
+                    $stmt->close();
+                    return [];
+                }
+
+                $period = new Period($row['question_id'], $row['title_en'], $row['title_sk'], $row['content_en'],
+                    $row['content_sk'], $type, $start_timestamp, $end_timestamp, $row['code']);
+                $period->setId($row['id']);
+                $periods_array[] = $period;
+            }
+            $stmt->close();
+        }else{
+            error_log("Failed to retrieve all period records for specific question");
+            $stmt->close();
+        }
+
+        return $periods_array;
+    }
+
+    // Get period by code
+    public function getPeriodByCode(int $code)
+    {
+        $query = "SELECT * FROM periods WHERE code = ?";
+
+        $stmt = $this->connection->prepare($query);
+        if(!$stmt){
+            error_log("Prepare failed: " . $this->connection->error);
+            return null;
+        }
+
+        $stmt->bind_param("i", $code);
+        $period = null;
+
+        if($stmt->execute()){
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            if($row){
+                $start_timestamp = new DateTime($row['start_timestamp']);
+                $end_timestamp = new DateTime($row['end_timestamp']);
+
+                try {
+                    $type = QuestionType::from($row['type']);
+                } catch (UnhandledMatchError $e) {
+                    error_log("Invalid question type: " . $row['type']);
+                    $stmt->close();
+                    return [];
+                }
+
+                $period = new Period($row['question_id'], $row['title_en'], $row['title_sk'], $row['content_en'],
+                    $row['content_sk'], $type, $start_timestamp, $end_timestamp, $row['code']);
+                $period->setId($row['id']);
+            }
+            $stmt->close();
+        }else{
+            error_log("Failed to retrieve period by code");
+            $stmt->close();
+        }
+
+        return $period;
+    }
+
+    // Check if period with code already exists
+    public function checkIfPeriodWithGivenCodeExists(int $code)
+    {
+        $query = "SELECT COUNT(*) as count FROM periods WHERE code = ?";
+
+        $stmt = $this->connection->prepare($query);
+        if (!$stmt) {
+            error_log("Prepare failed: " . $this->connection->error);
+            return -1;
+        }
+
+        $stmt->bind_param("i", $code);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $stmt->close();
+
+        return $row['count'];
+    }
 }
 
 ?>
