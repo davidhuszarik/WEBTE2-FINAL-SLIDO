@@ -1,0 +1,121 @@
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#logo {
+    max-width: 75px;
+}
+
+.navbar {
+    background-color: #28a745 !important;
+}
+
+.navbar-brand {
+    color: #ffffff !important;
+    font-weight: bold;
+}
+
+.navbar-nav .nav-link {
+    color: #ffffff !important;
+    cursor: pointer;
+}
+
+.admin-panel {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 50px auto;
+    max-width: 800px;
+    padding: 30px;
+}
+
+.admin-panel-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.admin-panel-header img {
+    max-width: 150px;
+    margin-bottom: 20px;
+}
+
+.admin-panel-header h2 {
+    color: #333;
+}
+
+.admin-details {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.admin-details p {
+    margin: 0;
+    color: #6c757d;
+}
+
+.admin-panel-content {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.section {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #f8f9fa;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.section-content {
+    text-align: center;
+}
+
+.btn-green {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-green:hover {
+    background-color: #218838;
+    border-color: #218838;
+}
+
+.btn-red {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-red:hover {
+    background-color: #c82333;
+    border-color: #c82333;
+}
+
+.btn-blue {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-blue:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.footer {
+    background-color: #28a745;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
