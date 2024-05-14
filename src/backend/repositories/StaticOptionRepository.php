@@ -182,6 +182,10 @@ class StaticOptionRepository extends Repository
     // ----------------------------
 
     // get all options associated to period id
+    /**
+     * @param int $period_id
+     * @return \Models\StaticOption[]
+     */
     public function getAllStaticOptionsByPeriodId(int $period_id)
     {
         $query = "SELECT * FROM static_options WHERE period_id = ?";
