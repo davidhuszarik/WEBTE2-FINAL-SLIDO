@@ -1,8 +1,9 @@
 <?php
 
 namespace Models;
+use JsonSerializable;
 
-class StaticOption
+class StaticOption implements JsonSerializable
 {
     private int $id;
     private int $period_id;
@@ -80,6 +81,11 @@ class StaticOption
             "valueSk" => $this->value_sk,
             "isCorrect" => $this->is_correct
         ];
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->toArray();
     }
 }
 

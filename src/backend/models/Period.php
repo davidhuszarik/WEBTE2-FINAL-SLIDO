@@ -6,7 +6,7 @@ use DateTime;
 
 require_once __DIR__ . "/QuestionType.php";
 
-class Period
+class Period implements JsonSerializable
 {
     private int $id;
     private int $question_id;
@@ -150,6 +150,11 @@ class Period
             "endTimestamp" => $this->end_timestamp->format("Y-m-d H:i:s"),
             "code" => $this->code,
         ];
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->toArray();
     }
 }
 
