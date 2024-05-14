@@ -87,5 +87,12 @@ if (str_starts_with($endpoint, "/api")) {
             $controller->changePassword();
             break;
     }
+} else if($endpoint == "/session") {
+    $controller = new AuthController();
+    switch ($method) {
+        case "GET":
+            $controller->getSessionInfo();
+            break;
+    }
 }
 ?>

@@ -182,7 +182,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-
+<script src="backend/views/index.js"></script>
 <script>
     const cookieAccepted = localStorage.getItem('cookieAccepted');
     if (!cookieAccepted) {
@@ -340,46 +340,6 @@
             title: 'Jazyk zmenený',
             text: 'Jazyk bol úspešne zmenený.'
         });
-    });
-
-    document.addEventListener("DOMContentLoaded", function () {
-        var credentials = sessionStorage.getItem('credentials');
-        if (credentials) {
-            var parsedCredentials = JSON.parse(credentials);
-            var loginButton = document.getElementById('loginLink');
-            var logoutButton = document.getElementById('logoutLink');
-            var userMenuItem = document.getElementById('userMenuItem');
-            var userNameLink = document.getElementById('userNameLink');
-            var panelLink = document.getElementById('panelLink');
-            if (loginButton) {
-                loginButton.style.display = "none";
-            }
-            if (logoutButton) {
-                logoutButton.style.display = "block";
-            }
-            if (userMenuItem) {
-                userMenuItem.style.display = "block";
-            }
-            if (userNameLink) {
-                userNameLink.textContent = "You are logged in as " + parsedCredentials.username;
-            }
-            panelLink.style.display = "block";
-        } else {
-            var loginButton = document.getElementById('loginLink');
-            var logoutButton = document.getElementById('logoutLink');
-            var userMenuItem = document.getElementById('userMenuItem');
-            var panelLink = document.getElementById('panelLink');
-            if (loginButton) {
-                loginButton.style.display = "block";
-            }
-            if (logoutButton) {
-                logoutButton.style.display = "none";
-            }
-            if (userMenuItem) {
-                userMenuItem.style.display = "none";
-            }
-            panelLink.style.display = "none";
-        }
     });
 
     function checkSavedLanguage() {
