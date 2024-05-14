@@ -473,6 +473,29 @@
         }
     }
 
+    // TODO implement this where needed
+    function changePassword(){
+        $.ajax({
+            url: 'user',
+            type: 'PUT',
+            dataType: 'json',
+            data: {
+                // You can include any data you want to send with the PUT request here
+                // For example:
+                old_password: 'asdasdasd',
+                new_password: 'asdasd',
+                // Add more fields as needed
+            },
+            success: function(response) {
+                // Handle success
+                console.log('PUT request successful:', response);
+            },
+            error: function(xhr, status, error) {
+                // Handle errors
+            }
+        });
+    }
+
 </script>
 </body>
 </html>

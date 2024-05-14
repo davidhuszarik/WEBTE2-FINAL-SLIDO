@@ -5,17 +5,17 @@ require_once __DIR__ . "/Controller.php";
 require_once __DIR__ . "/../loader.php";
 
 use Services\LoginService;
-use Services\RegisterService;
+use Services\UserService;
 
 class AuthController extends Controller
 {
     private LoginService $loginService;
-    private RegisterService $registerService;
+    private UserService $userService;
 
     public function __construct()
     {
         $this->loginService = new LoginService();
-        $this->registerService = new RegisterService();
+        $this->userService = new UserService();
     }
 
     public function loginIndex(): void
@@ -62,11 +62,29 @@ class AuthController extends Controller
     public function register(): void
     {
         if ($this->loginService->getLoggedInUser() == null){
-            $this->registerService->register();
+            $this->userService->register();
             header("Content-Type: application/json");
         }
         else{
             header('Location: index.php');
+        }
+    }
+
+    public function changePassword(): void
+    {
+        if ($this->loginService->getLoggedInUser() == null){
+            $this->render("login", []);
+            header("Content-Type: text/html");
+        }
+        else{
+            $this->loginService->updateSessionUser();
+            $result = $this->userService->changePassword($this->loginService->getLoggedInUser());
+            if ($result['status'] == 200){
+                $this->loginService->updateSessionUser();
+            }
+            echo json_encode($result);
+            http_response_code($result['status']);
+            header("Content-Type: application/json");
         }
     }
 }
