@@ -20,8 +20,6 @@ class StaticOptionService
         $this->option_repository = new OptionRepository();
     }
 
-    // TODO:  get static options, get specific static option, delete static option
-
     // Create new Static options
     public function createStaticOption(int $period_id, $question_id)
     {
@@ -36,6 +34,13 @@ class StaticOptionService
         foreach ($options as $option){
             $new_static_option = new StaticOption($period_id, $option->getValueEn(), $option->getValueSk(), $option->isIsCorrect());
             $temp_id = $this->static_option_repository->createNewStaticOption($new_static_option);
+            if ($temp_id == -1) {
+                error_log("Failed to create static option for period ID: " . $period_id);
+                return [
+                    'error' => 'Failed to create static options',
+                    'status' => 500
+                ];
+            }
             $new_static_option->setId($temp_id);
             $inserted_ids[] = $temp_id;
         }
@@ -49,7 +54,34 @@ class StaticOptionService
 
     public function getAllStaticOptionsByPeriodId(int $period_id)
     {
+        $static_option_array = $this->static_option_repository->getAllStaticOptionsByPeriodId($period_id);
+        if(empty($static_option_array)){
+            return [
+                'error' => "Did not found any static options by period id",
+                'status' => 500,
+            ];
+        }
+        return [
+            'message' => "Successfully retrieved static options by period id",
+            'status' => 200,
+            'data' => $static_option_array
+        ];
+    }
 
+    public function getStaticOptionById(int $static_option_id)
+    {
+        $static_option = $this->static_option_repository->getStaticOptionById($static_option_id);
+        if($static_option == null){
+            return [
+                'error' => "Did not found any static option",
+                'status' => 500,
+            ];
+        }
+        return [
+            'message' => "Successfully retrieved static options by period id",
+            'status' => 200,
+            'data' => $static_option
+        ];
     }
 
     // Helper functions
