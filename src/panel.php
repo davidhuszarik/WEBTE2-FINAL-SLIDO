@@ -92,16 +92,6 @@
             text-align: center;
         }
 
-        .btn-yellow {
-            background-color: #ffc107;
-            border-color: #ffc107;
-        }
-
-        .btn-yellow:hover {
-            background-color: #e0a800;
-            border-color: #e0a800;
-        }
-
         .btn-green {
             background-color: #28a745;
             border-color: #28a745;
@@ -191,8 +181,8 @@
         <div class="section">
             <div id="profileTitle" class="section-title">Profile settings</div>
             <div class="section-content">
-                <button id="changePasswordButton" class="btn btn-yellow mx-auto" data-toggle="modal"
-                        data-target="#changePasswordModal"><i class="bi bi-key"></i> Change password
+                <button id="changePasswordButton" class="btn btn-secondary mx-auto" data-toggle="modal" data-target="#changePasswordModal">
+                    <i class="bi bi-key"></i> Change password
                 </button>
             </div>
         </div>
@@ -228,26 +218,26 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label id="currentPasswordLabel" for="currentPassword">Current password</label>
-                        <input type="password" class="form-control" id="currentPassword" required>
+                        <label id="currentPasswordLabel" for="currentPassword" >Current password</label>
+                        <input type="password"  class="form-control" id="currentPassword" required autocomplete="current-password">
                     </div>
                     <div class="form-group">
                         <label id="newPasswordLabel" for="newPassword">New password</label>
-                        <input type="password" class="form-control" id="newPassword" required>
+                        <input type="password" class="form-control" id="newPassword" required autocomplete="new-password">
                         <small id="passwordCriteria" class="form-text text-muted">
                             Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.
                         </small>
                     </div>
                     <div class="form-group">
                         <label id="confirmNewPasswordLabel" for="confirmNewPassword">Confirm new password</label>
-                        <input type="password" class="form-control" id="confirmNewPassword" required>
+                        <input type="password" class="form-control" id="confirmNewPassword" required autocomplete="new-password">
                         <small id="passwordMatchError" class="form-text text-danger d-none">Passwords do not match.</small>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button id="confirmPasswordButton" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="closePasswordButton" type="button" class="btn btn-primary" id="saveChanges" disabled>Save changes</button>
+                <button id="closePasswordButton" onclick="changePassword()" type="button" class="btn btn-primary btn-success">Save changes</button>
             </div>
         </div>
     </div>
@@ -260,64 +250,148 @@
     </div>
 </footer>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 </body>
 </html>
 
 <script>
-    $(document).ready(function () {
-        var passwordInput = $('#newPassword');
-        var confirmPasswordInput = $('#confirmNewPassword');
 
-        passwordInput.keyup(function () {
-            var password = $(this).val();
-            var confirmPassword = confirmPasswordInput.val();
+    validatePasswords();
 
-            if (validatePassword(password) && password === confirmPassword) {
-                $(this).removeClass('is-invalid').addClass('is-valid');
-                confirmPasswordInput.removeClass('is-invalid').addClass('is-valid');
+    function validatePasswords() {
+        let currentPasswordInput = document.getElementById('currentPassword');
+        let newPasswordInput = document.getElementById('newPassword');
+        let confirmNewPasswordInput = document.getElementById('confirmNewPassword');
+        let submitButton = document.getElementById('closePasswordButton');
+
+        let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+        function validatePassword(passwordInput) {
+            let password = passwordInput.value;
+            if (passwordRegex.test(password)) {
+                passwordInput.classList.remove('is-invalid');
+                passwordInput.classList.add('is-valid');
+                return true;
             } else {
-                $(this).removeClass('is-valid').addClass('is-invalid');
-                confirmPasswordInput.removeClass('is-valid').addClass('is-invalid');
-            }
-
-            checkForm();
-        });
-
-        confirmPasswordInput.keyup(function () {
-            var password = passwordInput.val();
-            var confirmPassword = $(this).val();
-
-            if (validatePassword(password) && password === confirmPassword) {
-                $(this).removeClass('is-invalid').addClass('is-valid');
-                passwordInput.removeClass('is-invalid').addClass('is-valid');
-            } else {
-                $(this).removeClass('is-valid').addClass('is-invalid');
-                passwordInput.removeClass('is-valid').addClass('is-invalid');
-            }
-
-            checkForm();
-        });
-
-        function validatePassword(password) {
-            var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{7,}$/;
-            return re.test(password);
-        }
-
-        function checkForm() {
-            var isValidPassword = $('.is-valid').length == 2;
-
-            if (isValidPassword) {
-                $('#saveChanges').prop('disabled', false);
-            } else {
-                $('#saveChanges').prop('disabled', true);
+                passwordInput.classList.remove('is-valid');
+                passwordInput.classList.add('is-invalid');
+                return false;
             }
         }
-    });
 
+        function toggleSubmitButton() {
+            submitButton.disabled = !(validatePassword(currentPasswordInput) && validatePassword(newPasswordInput) && validatePassword(confirmNewPasswordInput) && newPasswordInput.value === confirmNewPasswordInput.value);
+        }
+
+        currentPasswordInput.addEventListener('input', function() {
+            validatePassword(currentPasswordInput);
+            toggleSubmitButton();
+        });
+
+        newPasswordInput.addEventListener('input', function() {
+            validatePassword(newPasswordInput);
+            toggleSubmitButton();
+        });
+
+        confirmNewPasswordInput.addEventListener('input', function() {
+            validatePassword(confirmNewPasswordInput);
+            toggleSubmitButton();
+            if (newPasswordInput.value !== confirmNewPasswordInput.value) {
+                confirmNewPasswordInput.classList.add('is-invalid');
+                document.getElementById('passwordMatchError').classList.remove('d-none');
+            } else {
+                document.getElementById('passwordMatchError').classList.add('d-none');
+            }
+        });
+
+        toggleSubmitButton();
+    }
+
+    function changePassword(){
+        let currentPassword = document.getElementById('currentPassword').value;
+        let newPassword = document.getElementById('newPassword').value;
+        let currentLanguage = checkSavedLanguage();
+        $.ajax({
+            url: 'user',
+            type: 'PUT',
+            dataType: 'json',
+            data: {
+                old_password: currentPassword,
+                new_password: newPassword,
+            },
+            success: function() {
+                if (currentLanguage === "english") {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Successfully updated password',
+                        text: 'Now you can use your new password.',
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Heslo úspešne aktualizované',
+                        text: 'Teraz môžeš použiť tvoj nové heslo.',
+                    });
+                }
+                $('#changePasswordModal').modal('hide');
+                document.getElementById('currentPassword').value = '';
+                document.getElementById('newPassword').value = '';
+                document.getElementById('confirmNewPassword').value = '';
+                document.getElementById('currentPassword').classList.remove('is-valid');
+                document.getElementById('newPassword').classList.remove('is-valid');
+                document.getElementById('confirmNewPassword').classList.remove('is-valid');
+            },
+            error: function(xhr) {
+                if (xhr.responseJSON.error === "Missing required fields") {
+                    if (currentLanguage === "english") {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Missing required field(s)',
+                            text: 'Please enter a value for the all input field.',
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Chýbajúce povinné polia',
+                            text: 'Prosím, zadaj hodnotu pre všetky vstupné polia.',
+                        });
+                    }
+                } else if (xhr.responseJSON.error === "Could not update password") {
+                    if (currentLanguage === "english") {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Could not update password',
+                            text: 'There was an error on the server side, please try again later.',
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Nepodarilo sa aktualizovať heslo',
+                            text: 'Došlo k chybe na strane servera, skús to prosím neskôr znova.',
+                        });
+                    }
+                } else if (xhr.responseJSON.error === "Old password does not match") {
+                    if (currentLanguage === "english") {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Old password does not match',
+                            text: 'Please enter your valid old password.',
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Staré heslo sa nezhoduje',
+                            text: 'Prosím, zadaj tvoj platné staré heslo.',
+                        });
+                    }
+                }
+            }
+        });
+    }
 
     document.getElementById('englishLink').addEventListener('click', function () {
         translateToEnglish();
@@ -333,7 +407,7 @@
         document.getElementById('navbarDropdown').innerHTML = '<i class="fas fa-globe"></i> Language';
         document.getElementById('welcomeTitle').innerHTML = '<strong>Welcome to ODILS Panel</strong>';
         document.getElementById('profileTitle').innerText = 'Profile';
-        document.getElementById('changePasswordButton').innerHTML = '<i class="bi bi-key"></i> Change password';
+        document.getElementById('changePasswordButton').innerHTML = '🔐 Change password';
         document.getElementById('userSettingsLabel').innerText = 'Hidden functions for admins';
         document.getElementById('manageUsersButton').innerHTML = '<i class="bi bi-people"></i> Manage users';
         document.getElementById('questionsSettingsTitle').innerText = 'Questions';
@@ -349,20 +423,19 @@
         document.getElementById('confirmPasswordButton').innerText = 'Back';
         document.getElementById('closePasswordButton').innerText = 'Submit';
         localStorage.setItem('selectedLanguage', 'english');
-        var credentials = sessionStorage.getItem('credentials');
+        let credentials = sessionStorage.getItem('credentials');
         if (credentials) {
-            var parsedCredentials = JSON.parse(credentials);
-            var userNameLink = document.getElementById('userNameLink');
-            var usernameLabel = document.getElementById('usernameText');
-            var groupText = document.getElementById('groupText');
+            let parsedCredentials = JSON.parse(credentials);
+            let userNameLink = document.getElementById('userNameLink');
+            let usernameLabel = document.getElementById('usernameText');
+            let groupText = document.getElementById('groupText');
             userNameLink.innerHTML = "You are logged in as <strong>" + parsedCredentials.username + " </strong>";
-            usernameText.textContent = "You are logged in as " + parsedCredentials.username;
             usernameLabel.innerHTML = "Logged in as: <strong>" + parsedCredentials.username + " </strong>";
 
-            var role = parsedCredentials.role;
-            var roleText = "Role: ";
-            var userColor = "green";
-            var adminColor = "red";
+            let role = parsedCredentials.role;
+            let roleText = "Role: ";
+            let userColor = "green";
+            let adminColor = "red";
 
             if (role === "admin") {
                 roleText += "<span style='color: " + adminColor + "; font-weight: bold;'>ADMIN</span>";
@@ -381,7 +454,7 @@
         document.getElementById('navbarDropdown').innerHTML = '<i class="fas fa-globe"></i> Jazyk';
         document.getElementById('welcomeTitle').innerHTML = '<strong>Vitajte v ODILS paneli</strong>';
         document.getElementById('profileTitle').innerText = 'Profil';
-        document.getElementById('changePasswordButton').innerHTML = '<i class="bi bi-key"></i> Zmena hesla';
+        document.getElementById('changePasswordButton').innerHTML = '🔐 Zmena hesla';
         document.getElementById('userSettingsLabel').innerText = 'Skryté funkcie pre admina';
         document.getElementById('manageUsersButton').innerHTML = '<i class="bi bi-people"></i> Správa užívateľov';
         document.getElementById('questionsSettingsTitle').innerText = 'Otázky';
@@ -397,19 +470,19 @@
         document.getElementById('confirmPasswordButton').innerText = 'Späť';
         document.getElementById('closePasswordButton').innerText = 'Poslať';
         localStorage.setItem('selectedLanguage', 'slovak');
-        var credentials = sessionStorage.getItem('credentials');
+        let credentials = sessionStorage.getItem('credentials');
         if (credentials) {
-            var parsedCredentials = JSON.parse(credentials);
-            var userNameLink = document.getElementById('userNameLink');
-            var usernameLabel = document.getElementById('usernameText');
-            var groupText = document.getElementById('groupText');
+            let parsedCredentials = JSON.parse(credentials);
+            let userNameLink = document.getElementById('userNameLink');
+            let usernameLabel = document.getElementById('usernameText');
+            let groupText = document.getElementById('groupText');
             userNameLink.innerHTML = "Si prihlásený ako <strong>" + parsedCredentials.username + " </strong>";
             usernameLabel.innerHTML = "Prihlásený ako: <strong>" + parsedCredentials.username + " </strong>";
 
-            var role = parsedCredentials.role;
-            var roleText = "Rola: ";
-            var userColor = "green";
-            var adminColor = "red";
+            let role = parsedCredentials.role;
+            let roleText = "Rola: ";
+            let userColor = "green";
+            let adminColor = "red";
 
             if (role === "admin") {
                 roleText += "<span style='color: " + adminColor + "; font-weight: bold;'>ADMIN</span>";
@@ -423,13 +496,13 @@
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-        var credentials = sessionStorage.getItem('credentials');
+        let credentials = sessionStorage.getItem('credentials');
         if (credentials) {
-            var parsedCredentials = JSON.parse(credentials);
-            var logoutButton = document.getElementById('logoutLink');
-            var userMenuItem = document.getElementById('userMenuItem');
-            var userNameLink = document.getElementById('userNameLink');
-            var userSettingsSection = document.getElementById('userSettingsSection');
+            let parsedCredentials = JSON.parse(credentials);
+            let logoutButton = document.getElementById('logoutLink');
+            let userMenuItem = document.getElementById('userMenuItem');
+            let userNameLink = document.getElementById('userNameLink');
+            let userSettingsSection = document.getElementById('userSettingsSection');
 
             if (logoutButton) {
                 logoutButton.style.display = "block";
@@ -450,9 +523,8 @@
         }
     });
 
-
     function checkSavedLanguage() {
-        var savedLanguage = localStorage.getItem('selectedLanguage');
+        let savedLanguage = localStorage.getItem('selectedLanguage');
         if (savedLanguage === 'english') {
             translateToEnglish();
             return "english";
@@ -480,8 +552,7 @@
                     $.ajax({
                         url: 'login',
                         type: 'DELETE',
-                        success: function(result) {
-                            // Handle success response here
+                        success: function() {
                             console.log('Deleted successfully');
                         }
                     });
@@ -511,8 +582,7 @@
                     $.ajax({
                         url: 'login',
                         type: 'DELETE',
-                        success: function(result) {
-                            // Handle success response here
+                        success: function() {
                             console.log('Deleted successfully');
                         }
                     });
