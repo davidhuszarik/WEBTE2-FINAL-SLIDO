@@ -1,20 +1,19 @@
 <?php
 
 namespace Repositories;
+require_once __DIR__ . "/Repository.php";
 require_once __DIR__ . "/../loader.php";
 
 use Models\StaticOption;
 use mysqli;
 use Util\DatabaseConnection;
 
-class StaticOptionRepository
+class StaticOptionRepository extends Repository
 {
-    private mysqli $connection;
-
-    // Constructor
+    // Construct
     public function __construct()
     {
-        $this->connection = DatabaseConnection::getInstance()->getConnection();
+        parent::__construct();
     }
 
     // CRUD methods
@@ -183,6 +182,10 @@ class StaticOptionRepository
     // ----------------------------
 
     // get all options associated to period id
+    /**
+     * @param int $period_id
+     * @return \Models\StaticOption[]
+     */
     public function getAllStaticOptionsByPeriodId(int $period_id)
     {
         $query = "SELECT * FROM static_options WHERE period_id = ?";

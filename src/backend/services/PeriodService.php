@@ -10,7 +10,7 @@ use Models\QuestionType;
 use DateTime;
 use Repositories\PeriodRepository;
 use Repositories\QuestionRepository;
-use Service\StaticOptionService;
+use Services\StaticOptionService;
 class PeriodService
 {
     private PeriodRepository $period_repository;
@@ -184,6 +184,24 @@ class PeriodService
         ];
     }
 
+    // Get period by code (specific period)
+    public function getPeriodByCode(string $code)
+    {
+        $period = $this->period_repository->getPeriodByCode($code);
+        if (!$period) {
+            return [
+                'error' => "Period not found",
+                'status' => 404
+            ];
+        }
+
+        return [
+            'message' => "Successfully retrieved period",
+            'status' => 200,
+            'data' => $period
+        ];
+    }
+
     // Delete period by id
     public function deletePeriodById(int $period_id)
     {
@@ -244,10 +262,15 @@ class PeriodService
         }
     }
 
-    private function generateCode(): int
+    private function generateCode(): string
     {
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         do {
-            $code = random_int(100000, 999999);
+            $code = '';
+            $max = strlen($characters) - 1;
+            for ($i = 0; $i < 6; $i++) {
+                $code .= $characters[rand(0, $max)];
+            }
             $count = $this->period_repository->checkIfPeriodWithGivenCodeExists($code);
         }while($count > 0);
 

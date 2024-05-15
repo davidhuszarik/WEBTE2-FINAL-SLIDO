@@ -12,10 +12,10 @@ class Answer
     private ?int $user_id;
     private QuestionType $question_type;
     private ?string $free_answer;
-    private DateTime $vote_time;
+    private ?DateTime $vote_time;
 
     // Constructor
-    public function __construct(int $period_id, ?int $user_id, QuestionType $question_type, ?string $free_answer, DateTime $vote_time)
+    public function __construct(int $period_id, ?int $user_id, QuestionType $question_type, ?string $free_answer, ?DateTime $vote_time = null)
     {
         $this->period_id = $period_id;
         $this->user_id = $user_id;

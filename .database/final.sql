@@ -163,6 +163,7 @@ ALTER TABLE `options`
 --
 ALTER TABLE `periods`
     ADD PRIMARY KEY (`id`),
+    ADD UNIQUE KEY `code` (`code`),
     ADD KEY `fk_period_question` (`question_id`);
 
 --

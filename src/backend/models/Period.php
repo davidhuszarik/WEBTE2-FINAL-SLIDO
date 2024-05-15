@@ -3,10 +3,11 @@
 namespace Models;
 
 use DateTime;
+use JsonSerializable;
 
 require_once __DIR__ . "/QuestionType.php";
 
-class Period
+class Period implements JsonSerializable
 {
     private int $id;
     private int $question_id;
@@ -18,10 +19,11 @@ class Period
     private DateTime $start_timestamp;
     private DateTime $end_timestamp;
     private string $code;
+    private bool $is_open;
 
     // Constructor
     public function __construct(int          $question_id, string $title_en, string $title_sk, string $content_en, string $content_sk,
-                                QuestionType $question_type, DateTime $start_timestamp, DateTime $end_timestamp, string $code)
+                                QuestionType $question_type, DateTime $start_timestamp, DateTime $end_timestamp, string $code, bool $is_open = false)
     {
         $this->question_id = $question_id;
         $this->title_en = $title_en;
@@ -32,6 +34,7 @@ class Period
         $this->start_timestamp = $start_timestamp;
         $this->end_timestamp = $end_timestamp;
         $this->code = $code;
+        $this->is_open = $is_open;
     }
 
     // Getters and Setters
@@ -135,6 +138,11 @@ class Period
         $this->code = $code;
     }
 
+    public function isIsOpen(): bool
+    {
+        return $this->is_open;
+    }
+
     // toArray
     public function toArray()
     {
@@ -149,7 +157,13 @@ class Period
             "startTimestamp" => $this->start_timestamp->format("Y-m-d H:i:s"),
             "endTimestamp" => $this->end_timestamp->format("Y-m-d H:i:s"),
             "code" => $this->code,
+            "is_open" => $this->is_open,
         ];
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->toArray();
     }
 }
 

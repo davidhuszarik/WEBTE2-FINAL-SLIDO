@@ -1,6 +1,7 @@
 <?php
 
 namespace Repositories;
+require_once __DIR__ . "/Repository.php";
 require_once __DIR__ . "/../loader.php";
 
 use DateTime;
@@ -11,21 +12,19 @@ use UnhandledMatchError;
 use Util\DatabaseConnection;
 
 
-class AnswerRepository
+class AnswerRepository extends Repository
 {
-    private mysqli $connection;
-
     // Construct
     public function __construct()
     {
-        $this->connection = DatabaseConnection::getInstance()->getConnection();
+        parent::__construct();
     }
 
     // CRUD methods
     // Create answer
     public function createAnswer(Answer $new_answer)
     {
-        $query = "INSERT INTO answers (period_id, user_id, type, free_answer, vote_time) VALUES (?, ?, ?, ?, ?)";
+        $query = "INSERT INTO answers (period_id, user_id, type, free_answer) VALUES (?, ?, ?, ?)";
         $stmt = $this->connection->prepare($query);
         if (!$stmt) {
             error_log("Prepare failed: " . $this->connection->error);
@@ -36,14 +35,12 @@ class AnswerRepository
         $user_id = $new_answer->getUserId();
         $type = $new_answer->getQuestionType()->value;
         $free_answer = $new_answer->getFreeAnswer();
-        $vote_time = $new_answer->getVoteTime()->format("Y-m-d H:i:s");
 
-        $stmt->bind_param("iisss",
+        $stmt->bind_param("iiss",
             $period_id,
             $user_id,
             $type,
-            $free_answer,
-            $vote_time
+            $free_answer
         );
 
         if ($stmt->execute()) {
@@ -202,6 +199,46 @@ class AnswerRepository
             error_log("Update execution failed: " . $stmt->error);
             $stmt->close();
             return false;
+        }
+    }
+
+    // Get answers by period ID
+    public function getAnswersByPeriodId(int $period_id)
+    {
+        $query = "SELECT * FROM answers WHERE period_id = ?";
+
+        $stmt = $this->connection->prepare($query);
+        if (!$stmt) {
+            error_log("Prepare failed: " . $this->connection->error);
+            return [];
+        }
+
+        $stmt->bind_param("i", $period_id);
+
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            $answers_array = [];
+            while ($row = $result->fetch_assoc()) {
+                $vote_time = new DateTime($row['vote_time']);
+
+                try {
+                    $type = QuestionType::from($row['type']);
+                } catch (UnhandledMatchError $e) {
+                    error_log("Invalid question type: " . $row['type']);
+                    $stmt->close();
+                    return [];
+                }
+
+                $answer = new Answer($row['period_id'], $row['user_id'], $type, $row['free_answer'], $vote_time);
+                $answer->setId($row['id']);
+                $answers_array[] = $answer;
+            }
+            $stmt->close();
+            return $answers_array;
+        } else {
+            error_log("Error retrieving answers for period ID " . $period_id . ": " . $stmt->error);
+            $stmt->close();
+            return [];
         }
     }
 }

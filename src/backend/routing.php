@@ -2,6 +2,7 @@
 require_once __DIR__ . "/loader.php";
 
 use Controllers\AuthController;
+use Controllers\AnswerController;
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -92,6 +93,18 @@ if (str_starts_with($endpoint, "/api")) {
     switch ($method) {
         case "GET":
             $controller->getSessionInfo();
+            break;
+    }
+} else if(preg_match('/^\/([A-Za-z0-9]{3})(?:|-)([A-Za-z0-9]{3})$/', $endpoint, $matches)){
+    $code = $matches[1] . $matches[2];
+    $controller = new AnswerController();
+    switch ($method) {
+        case "GET":
+            $controller->index($code);
+            break;
+        case "POST":
+            parse_str(file_get_contents("php://input"), $postData);
+            $controller->answer($code, $postData);
             break;
     }
 }
