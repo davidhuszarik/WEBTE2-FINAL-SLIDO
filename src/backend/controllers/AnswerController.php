@@ -7,8 +7,8 @@ use Models\QuestionType;
 use Repositories\AnswerRepository;
 use Repositories\PeriodRepository;
 use Repositories\UserRepository;
-use Service\AnswerService;
-use Service\StaticOptionService;
+use Services\AnswerService;
+use Services\StaticOptionService;
 use Services\OptionService;
 use Services\PeriodService;
 
