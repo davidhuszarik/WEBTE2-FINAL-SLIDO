@@ -1,6 +1,6 @@
 <?php
 
-namespace Service;
+namespace Services;
 
 use Models\Answer;
 use Models\Period;
@@ -63,6 +63,7 @@ class AnswerService
         }
     }
 
+    // Get answer by ID
     public function createAnswer(Period $period, array $answerData)
     {
         $questionType = $period->getQuestionType();
@@ -181,7 +182,66 @@ class AnswerService
 
     public function getAnswerById(int $answer_id)
     {
+        $answer = $this->answer_repository->getAnswerById($answer_id);
+        if (!$answer) {
+            return [
+                'error' => 'Answer not found',
+                'status' => 404
+            ];
+        }
+        return [
+            'message' => 'Successfully retrieved answer',
+            'status' => 200,
+            'data' => $answer
+        ];
+    }
 
+    // Delete answer by ID
+    public function deleteAnswerById(int $answer_id)
+    {
+        $deleted = $this->answer_repository->deleteAnswerById($answer_id);
+        if ($deleted) {
+            return [
+                'message' => 'Answer deleted successfully',
+                'status' => 200
+            ];
+        } else {
+            return [
+                'error' => 'Failed to delete answer',
+                'status' => 500
+            ];
+        }
+    }
+
+    // Update answer
+    public function updateAnswer(Answer $answer)
+    {
+        $updated = $this->answer_repository->updateAnswer($answer);
+        if ($updated) {
+            return [
+                'message' => 'Answer updated successfully',
+                'status' => 200
+            ];
+        } else {
+            return [
+                'error' => 'Failed to update answer',
+                'status' => 500
+            ];
+        }
+    }
+
+    // Helper
+    // Broadcast the vote update to the WebSocket server
+    private function broadcastVoteUpdate($answer_id)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "http://localhost:8282");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['action' => 'update_vote', 'answer_id' => $answer_id]));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return $response;
     }
 
     private function checkSession(): void

@@ -74,6 +74,34 @@ class PickedStaticOptionRepository extends Repository
         }
     }
 
+    // Get picked static options by answer ID
+    public function getPickedOptionsByAnswerId(int $answer_id)
+    {
+        $query = "SELECT * FROM picked_static_options WHERE answer_id = ?";
+
+        $stmt = $this->connection->prepare($query);
+        if (!$stmt) {
+            error_log("Prepare failed: " . $this->connection->error);
+            return [];
+        }
+
+        $stmt->bind_param("i", $answer_id);
+
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            $picked_static_options_array = [];
+            while ($row = $result->fetch_assoc()) {
+                $tmp = new PickedStaticOption($row['answer_id'], $row['static_option_id']);
+                $picked_static_options_array[] = $tmp;
+            }
+            $stmt->close();
+            return $picked_static_options_array;
+        } else {
+            error_log("Error retrieving picked static options for answer ID " . $answer_id . ": " . $stmt->error);
+            $stmt->close();
+            return [];
+        }
+    }
 }
 
 ?>
