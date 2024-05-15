@@ -453,7 +453,7 @@
     function sendCode() {
         let code = document.getElementById('invitationCode').value;
         if (code.length === 6 && /^\d+$/.test(code)) {
-            window.location.href = window.location.href + code;
+            window.location.href = code;
         } else {
             if (checkSavedLanguage() === "english") {
                 Swal.fire({
