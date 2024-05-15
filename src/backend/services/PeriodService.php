@@ -262,7 +262,7 @@ class PeriodService
         }
     }
 
-    private function generateCode(): int
+    private function generateCode(): string
     {
         $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         do {
