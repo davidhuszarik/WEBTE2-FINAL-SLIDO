@@ -1,6 +1,6 @@
 <?php
 
-namespace Service;
+namespace Services;
 
 use Models\Answer;
 use Models\PickedStaticOption;
@@ -74,6 +74,9 @@ class AnswerService
                 ];
             }
         }
+
+        // Broadcast the new vote to all connected clients
+        $this->broadcastVoteUpdate($new_answer_id);
 
         return [
             'message' => 'Answer created successfully',
@@ -162,6 +165,20 @@ class AnswerService
                 'status' => 500
             ];
         }
+    }
+
+    // Helper
+    // Broadcast the vote update to the WebSocket server
+    private function broadcastVoteUpdate($answer_id)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "http://localhost:8282");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['action' => 'update_vote', 'answer_id' => $answer_id]));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return $response;
     }
 }
 

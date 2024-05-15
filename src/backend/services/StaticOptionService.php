@@ -1,6 +1,6 @@
 <?php
 
-namespace Service;
+namespace Services;
 require_once __DIR__ . "/../loader.php";
 
 use Models\StaticOption;

@@ -204,6 +204,46 @@ class AnswerRepository
             return false;
         }
     }
+
+    // Get answers by period ID
+    public function getAnswersByPeriodId(int $period_id)
+    {
+        $query = "SELECT * FROM answers WHERE period_id = ?";
+
+        $stmt = $this->connection->prepare($query);
+        if (!$stmt) {
+            error_log("Prepare failed: " . $this->connection->error);
+            return [];
+        }
+
+        $stmt->bind_param("i", $period_id);
+
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            $answers_array = [];
+            while ($row = $result->fetch_assoc()) {
+                $vote_time = new DateTime($row['vote_time']);
+
+                try {
+                    $type = QuestionType::from($row['type']);
+                } catch (UnhandledMatchError $e) {
+                    error_log("Invalid question type: " . $row['type']);
+                    $stmt->close();
+                    return [];
+                }
+
+                $answer = new Answer($row['period_id'], $row['user_id'], $type, $row['free_answer'], $vote_time);
+                $answer->setId($row['id']);
+                $answers_array[] = $answer;
+            }
+            $stmt->close();
+            return $answers_array;
+        } else {
+            error_log("Error retrieving answers for period ID " . $period_id . ": " . $stmt->error);
+            $stmt->close();
+            return [];
+        }
+    }
 }
 
 ?>
