@@ -143,7 +143,7 @@
             <p class="my-3" id="invitationMessage"></p>
             <div class="my-3 d-flex justify-content-center align-items-center flex-wrap">
                 <label for="invitationCode"></label><input type="text" id="invitationCode" name="invitationCode" placeholder="Enter your 6 digit-code" class="form-control form-control-lg text-center mx-1" style="max-width: 300px;">
-                <button class="btn btn-primary btn-lg my-2">
+                <button class="btn btn-primary btn-lg my-2" onclick="sendCode()">
                     <i class="fas fa-paper-plane"></i> <span id="connectText"></span>
                 </button>
             </div>
@@ -425,6 +425,53 @@
             });
         }
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Add event listener to the input field
+        document.getElementById('invitationCode').addEventListener('input', function () {
+            let input = this.value;
+
+            // Trim input if it exceeds 6 characters
+            if (input.length > 6) {
+                this.value = input.slice(0, 6);
+            }
+
+            // Use regular expression to allow only numbers
+            this.value = this.value.replace(/\D/g, '');
+
+            // Apply Bootstrap classes for validation states
+            if (input.length === 6) {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            } else {
+                this.classList.remove('is-valid');
+                this.classList.add('is-invalid');
+            }
+        });
+    });
+
+    function sendCode() {
+        let code = document.getElementById('invitationCode').value;
+        if (code.length === 6 && /^\d+$/.test(code)) {
+            window.location.href = window.location.href + code;
+        } else {
+            if (checkSavedLanguage() === "english") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Code',
+                    text: 'Please enter a valid 6-digit code.',
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Neplatný kód',
+                    text: 'Prosím, zadajte platný 6-miestny kód.',
+                });
+            }
+        }
+    }
+
+
 </script>
 </body>
 </html>
