@@ -14,7 +14,6 @@
             height: 100vh;
             background-color: #e9f5f0;
         }
-
         .form-container {
             padding: 50px;
             background: #ffffff;

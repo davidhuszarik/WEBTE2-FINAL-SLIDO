@@ -4,17 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="pageTitle">ODILS | Homepage</title>
+
     <link rel="icon" type="image/x-icon" href="backend/views/images/favicon.png">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="backend/views/index.js"></script>
+
     <style>
         body {
             min-height: 100vh;
@@ -136,10 +142,8 @@
             <h1 class="my-3" id="invitationHeading"></h1>
             <p class="my-3" id="invitationMessage"></p>
             <div class="my-3 d-flex justify-content-center align-items-center flex-wrap">
-                <input type="text" id="invitationCode" name="invitationCode" placeholder="Enter your 6 digit-code"
-                    class="form-control form-control-lg text-center mx-1" style="max-width: 300px;">
-                <button onclick="sendInvitation()"
-                        class="btn btn-primary btn-lg my-2">
+                <label for="invitationCode"></label><input type="text" id="invitationCode" name="invitationCode" placeholder="Enter your 6 digit-code" class="form-control form-control-lg text-center mx-1" style="max-width: 300px;">
+                <button class="btn btn-primary btn-lg my-2">
                     <i class="fas fa-paper-plane"></i> <span id="connectText"></span>
                 </button>
             </div>
@@ -158,9 +162,7 @@
                 <p style="margin-top: 20px; margin-bottom: 20px;" id="whatsGoodText1"></p>
                 <p style="margin-top: 20px; margin-bottom: 0;" id="whatsGoodText2"></p>
             </div>
-
             <div class="vertical-divider"></div>
-
         </div>
     </div>
 </section>
@@ -176,13 +178,6 @@
             <span id="schoolProjectText"></span></p>
     </div>
 </footer>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-<script src="backend/views/index.js"></script>
 <script>
     const cookieAccepted = localStorage.getItem('cookieAccepted');
     if (!cookieAccepted) {
@@ -284,10 +279,10 @@
         document.getElementById('slovakIndicator').style.display = 'none';
         document.getElementById('invitationCode').placeholder = 'Enter your 6-digit code'
         localStorage.setItem('selectedLanguage', 'english');
-        var credentials = sessionStorage.getItem('credentials');
+        let credentials = sessionStorage.getItem('credentials');
         if (credentials) {
-            var parsedCredentials = JSON.parse(credentials);
-            var userNameLink = document.getElementById('userNameLink');
+            let parsedCredentials = JSON.parse(credentials);
+            let userNameLink = document.getElementById('userNameLink');
             userNameLink.innerHTML = "You are logged in as <strong>" + parsedCredentials.username + " </strong>";
         }
     }
@@ -298,7 +293,6 @@
         document.getElementById('loginLink').innerHTML = "<i class=\"fas fa-angle-double-right\"></i> Prihlásenie";
         document.getElementById('navbarDropdown').innerHTML = '<i class="fas fa-globe"></i> Jazyk';
         document.getElementById('invitationHeading').innerHTML = '👋 <strong>Ahoj, máš pozvánkový kód?</strong>';
-
         document.getElementById('logoutLink').innerHTML = '<i class="fas fa-sign-out-alt"></i> Odhlásenie';
         document.getElementById('invitationMessage').innerText = 'Zadaj pozvánkový kód, ktorý si dostal, aby si sa mohol pripojiť ako návštevník.';
         document.getElementById('connectText').innerText = 'Pripojiť sa';
@@ -316,10 +310,10 @@
         document.getElementById('englishIndicator').style.display = 'none';
         document.getElementById('invitationCode').placeholder = 'Zadaj tvôj 6 miestný kód'
         localStorage.setItem('selectedLanguage', 'slovak');
-        var credentials = sessionStorage.getItem('credentials');
+        let credentials = sessionStorage.getItem('credentials');
         if (credentials) {
-            var parsedCredentials = JSON.parse(credentials);
-            var userNameLink = document.getElementById('userNameLink');
+            let parsedCredentials = JSON.parse(credentials);
+            let userNameLink = document.getElementById('userNameLink');
             userNameLink.innerHTML = "Si prihlásený ako <strong>" + parsedCredentials.username + " </strong>";
         }
     }
@@ -343,7 +337,7 @@
     });
 
     function checkSavedLanguage() {
-        var savedLanguage = localStorage.getItem('selectedLanguage');
+        let savedLanguage = localStorage.getItem('selectedLanguage');
         if (savedLanguage === 'english') {
             translateToEnglish();
             return "english";
@@ -368,15 +362,15 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     sessionStorage.removeItem('credentials');
-                    var loginButton = document.getElementById('loginLink');
+                    let loginButton = document.getElementById('loginLink');
                     loginButton.style.display = "block";
-                    var logoutButton = document.getElementById('logoutLink');
+                    let logoutButton = document.getElementById('logoutLink');
                     logoutButton.style.display = "none";
-                    var userMenuItem = document.getElementById('userMenuItem');
+                    let userMenuItem = document.getElementById('userMenuItem');
                     userMenuItem.style.display = "none";
-                    var panelLink = document.getElementById('panelLink');
+                    let panelLink = document.getElementById('panelLink');
                     panelLink.style.display = "none";
-                    if (checkSavedLanguage() == "english") {
+                    if (checkSavedLanguage() === "english") {
                         Swal.fire({
                             title: 'Logged out successfully!',
                             text: "You have been logged out of your account.",
@@ -388,7 +382,6 @@
                             url: 'login',
                             type: 'DELETE',
                             success: function(result) {
-                                // Handle success response here
                                 console.log('Deleted successfully');
                             }
                         });
@@ -407,13 +400,13 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     sessionStorage.removeItem('credentials');
-                    var loginButton = document.getElementById('loginLink');
+                    let loginButton = document.getElementById('loginLink');
                     loginButton.style.display = "block";
-                    var logoutButton = document.getElementById('logoutLink');
+                    let logoutButton = document.getElementById('logoutLink');
                     logoutButton.style.display = "none";
-                    var userMenuItem = document.getElementById('userMenuItem');
+                    let userMenuItem = document.getElementById('userMenuItem');
                     userMenuItem.style.display = "none";
-                    var panelLink = document.getElementById('panelLink');
+                    let panelLink = document.getElementById('panelLink');
                     panelLink.style.display = "none";
                     Swal.fire({
                         title: 'Úspešné odhlásenie!',

@@ -55,10 +55,10 @@
 </div>
 
 <script>
-    var countdown = 5;
-    var countdownElement = document.getElementById('countdown');
+    let countdown = 5;
+    let countdownElement = document.getElementById('countdown');
 
-    var countdownInterval = setInterval(function () {
+    let countdownInterval = setInterval(function () {
         countdown--;
         countdownElement.textContent = countdown;
         updateProgressBar();
@@ -70,7 +70,7 @@
     }, 1000);
 
     function updateProgressBar() {
-        var progress = (5 - countdown) * 20;
+        let progress = (5 - countdown) * 20;
         document.getElementById('progress').style.width = progress + '%';
     }
 
@@ -90,7 +90,7 @@
     }
 
     function checkSavedLanguage() {
-        var savedLanguage = localStorage.getItem('selectedLanguage');
+        let savedLanguage = localStorage.getItem('selectedLanguage');
         if (savedLanguage === 'english') {
             translateToEnglish();
         } else if (savedLanguage === 'slovak') {
