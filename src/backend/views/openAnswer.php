@@ -6,6 +6,7 @@
     <title id="pageTitle">ODILS | Hlasovanie</title>
     <link rel="icon" type="image/x-icon" href="backend/views/images/favicon.png">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             background-color: #28a745;
@@ -102,7 +103,6 @@
     function handleFormSubmission() {
         var inputField = document.getElementById('textInput');
         if (inputField.checkValidity()) {
-            alert('Your response has been sent: ' + inputField.value)
 
             $.ajax({
                 url: window.location.href,
@@ -113,6 +113,20 @@
                 success: function(response) {
                     console.log("POST request successful");
                     console.log("Response:", response);
+                    if (checkSavedLanguage() === "english") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Great!',
+                            text: 'Your answer was sent succesfully!'
+                        });
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Super!',
+                            text: 'Tvoj odpoveď bol odoslané!'
+                        });
+                    }
                 },
                 error: function(xhr, status, error) {
                     console.error("Error making POST request:", error);

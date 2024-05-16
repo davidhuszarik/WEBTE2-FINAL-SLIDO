@@ -429,21 +429,15 @@
     document.addEventListener('DOMContentLoaded', function () {
         // Add event listener to the input field
         document.getElementById('invitationCode').addEventListener('input', function () {
-            let input = this.value;
+            const regex = /^([A-Za-z0-9]{3})(?:|-)([A-Za-z0-9]{3})$/;
 
-            // Trim input if it exceeds 6 characters
-            if (input.length > 6) {
-                this.value = input.slice(0, 6);
-            }
+            const match = regex.exec(this.value);
 
-            // Use regular expression to allow only numbers
-            this.value = this.value.replace(/\D/g, '');
-
-            // Apply Bootstrap classes for validation states
-            if (input.length === 6) {
+            if(match){
                 this.classList.remove('is-invalid');
                 this.classList.add('is-valid');
-            } else {
+            }
+            else{
                 this.classList.remove('is-valid');
                 this.classList.add('is-invalid');
             }
@@ -452,9 +446,15 @@
 
     function sendCode() {
         let code = document.getElementById('invitationCode').value;
-        if (code.length === 6 && /^\d+$/.test(code)) {
-            window.location.href = code;
-        } else {
+
+        const regex = /^([A-Za-z0-9]{3})(?:|-)([A-Za-z0-9]{3})$/;
+
+        const match = regex.exec(code);
+
+        if(match){
+            window.location.href = match[1] + "-" + match[2];
+        }
+        else{
             if (checkSavedLanguage() === "english") {
                 Swal.fire({
                     icon: 'error',
