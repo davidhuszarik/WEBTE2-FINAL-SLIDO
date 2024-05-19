@@ -17,6 +17,23 @@ class UserService
         $this->userRepository = new UserRepository();
     }
 
+    public function getAllUsers()
+    {
+        $result = $this->userRepository->getAllUser();
+        if ($result == null){
+            return [
+                'error' => "Failed to get users",
+                'status' => 500,
+            ];
+        }
+
+        return [
+            'message' => "Successfully retrieved question.",
+            'status' => 200,
+            'data' => $result,
+        ];
+    }
+
     private function randomSalt(): string
     {
         return bin2hex(random_bytes(4));

@@ -6,7 +6,7 @@ use DateTime;
 
 require_once __DIR__ . "/QuestionType.php";
 
-class Question
+class Question implements \JsonSerializable
 {
     private int $id;
     private int $user_id;
@@ -137,6 +137,11 @@ class Question
             "type" => $this->question_type->value,
             "is_open" => $this->is_open
         ];
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->toArray();
     }
 }
 

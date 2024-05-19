@@ -71,7 +71,7 @@ class UserRepository extends Repository
 
         if (!$stmt) {
             error_log("Prepare failed: " . $this->connection->error);
-            return [];
+            return null;
         }
 
         if ($stmt->execute()) {
@@ -99,7 +99,7 @@ class UserRepository extends Repository
         } else {
             error_log("Error retrieving all users: " . $stmt->error);
             $stmt->close();
-            return [];
+            return null;
         }
     }
 

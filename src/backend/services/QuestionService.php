@@ -95,8 +95,9 @@ class QuestionService
         }
     }
 
-    public function getAllQuestionsForGivenUser(User $user, User $requester)
+    public function getAllQuestionsForGivenUserById(int $userId, User $requester)
     {
+        $user = $this->user_repository->getUserById($userId);
         if (
             $requester->getUserRole() != UserRole::Admin
             && $requester->getId() != $user->getId()

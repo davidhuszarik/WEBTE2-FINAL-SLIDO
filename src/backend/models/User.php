@@ -5,7 +5,7 @@ require_once __DIR__ . "/UserRole.php";
 
 use DateTime;
 
-class User
+class User implements \JsonSerializable
 {
     private int $id;
     private string $user_name;
@@ -137,6 +137,12 @@ class User
             "lastAccess" => $this->last_access->format("Y-m-d H:i:s"),
             "role" => $this->user_role->value
         ];
+    }
+
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->toArray();
     }
 }
 
