@@ -67,7 +67,19 @@ class QuestionRepository extends Repository
     // Get all questions (no restriction)
     public function getAllQuestions()
     {
-        $query = "SELECT * FROM questions";
+        $query = "SELECT *,
+    CASE
+        WHEN EXISTS (
+            SELECT 1
+            FROM periods p
+            WHERE p.question_id = q.id
+              AND NOW() < p.end_timestamp
+        ) THEN true
+        ELSE false
+        END AS is_open
+FROM
+    questions q  -- Replace 1 with the specific question_id you want to check
+";
 
         $stmt = $this->connection->prepare($query);
         if (!$stmt) {
@@ -107,7 +119,22 @@ class QuestionRepository extends Repository
     // Get question by ID (no restriction)
     public function getQuestionById(int $id)
     {
-        $query = "SELECT * FROM questions WHERE id = ?";
+        $query = "SELECT
+    *,
+    CASE
+        WHEN EXISTS (
+            SELECT 1
+            FROM periods p
+            WHERE p.question_id = q.id
+              AND NOW() < p.end_timestamp
+        ) THEN true
+        ELSE false
+        END AS is_open
+FROM
+    questions q
+WHERE
+    q.id = ?;  -- Replace 1 with the specific question_id you want to check
+";
 
         $stmt = $this->connection->prepare($query);
         $question = null;
@@ -178,7 +205,7 @@ class QuestionRepository extends Repository
     public function updateQuestion(Question $question)
     {
         $query = "UPDATE questions SET user_id = ?, title_en = ?, title_sk = ?, content_en = ?, content_sk = ?, creation_date = ?,
-                    type = ?, is_open = ? WHERE id = ?";
+                    type = ? WHERE id = ?";
         $stmt = $this->connection->prepare($query);
         if (!$stmt) {
             error_log("Prepare failed: " . $this->connection->error);
@@ -193,7 +220,6 @@ class QuestionRepository extends Repository
         $content_sk = $question->getContentSk();
         $creation_date = $question->getCreationDate()->format("Y-m-d H:i:s");
         $type = $question->getQuestionType()->value;
-        $is_open = $question->isIsOpen() ? 1 : 0;
 
         $stmt->bind_param("issssssii",
             $user_id,
@@ -203,7 +229,6 @@ class QuestionRepository extends Repository
             $content_sk,
             $creation_date,
             $type,
-            $is_open,
             $question_id
         );
 
@@ -229,7 +254,21 @@ class QuestionRepository extends Repository
     // Get questions by user id
     public function getQuestionsByUserId(int $user_id)
     {
-        $query = "SELECT * FROM questions WHERE user_id = ?";
+        $query = "SELECT
+    *,
+    CASE
+        WHEN EXISTS (
+            SELECT 1
+            FROM periods p
+            WHERE p.question_id = q.id
+              AND NOW() < p.end_timestamp
+        ) THEN true
+        ELSE false
+        END AS is_open
+FROM
+    questions q
+WHERE
+    quser_id = ?";
 
         $stmt = $this->connection->prepare($query);
         if (!$stmt) {

@@ -101,8 +101,7 @@ CREATE TABLE `questions` (
                              `content_en` text NOT NULL,
                              `content_sk` text NOT NULL,
                              `creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                             `type` enum('single_choice','multi_choice','open') NOT NULL DEFAULT 'single_choice',
-                             `is_open` tinyint(1) NOT NULL DEFAULT '0'
+                             `type` enum('single_choice','multi_choice','open') NOT NULL DEFAULT 'single_choice'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------

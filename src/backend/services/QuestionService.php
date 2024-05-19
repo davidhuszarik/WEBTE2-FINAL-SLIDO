@@ -258,7 +258,6 @@ class QuestionService
         $question->setContentSk($question_data['content_sk']);
         $question->setCreationDate(new DateTime($question_data['creation_date']));
         $question->setQuestionType(QuestionType::from($question_data['type']));
-        $question->setIsOpen((bool)$question_data['is_open']);
 
         $update_result = $this->question_repository->updateQuestion($question);
         if($update_result){
