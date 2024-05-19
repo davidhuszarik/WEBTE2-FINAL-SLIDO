@@ -19,7 +19,6 @@ class QuestionService
     private QuestionRepository $question_repository;
     private OptionRepository $option_repository;
     private UserRepository $user_repository;
-    private PeriodRepository $periodRepository;
     private PeriodService $periodService;
 
     public function __construct()
@@ -27,7 +26,6 @@ class QuestionService
         $this->question_repository = new QuestionRepository();
         $this->option_repository = new OptionRepository();
         $this->user_repository = new UserRepository();
-        $this->periodRepository = new PeriodRepository();
         $this->periodService = new PeriodService();
     }
 
@@ -286,12 +284,6 @@ class QuestionService
         }
 
         $question = $result['data'];
-        // all errors have been resolved by this point
-        $result = $this->periodService->getAllPeriodByQuestionId($question->getId());
-        if ($result['status'] != 200){
-            return $result;
-        }
-
         if ($question->isIsOpen()){
             return [
                 'error' => 'Question is open',
@@ -299,7 +291,31 @@ class QuestionService
             ];
         }
 
+        // all errors have been resolved by this point
+        $result = $this->periodService->getAllPeriodByQuestionId($question->getId());
+        if ($result['status'] != 200){
+            return $result;
+        }
+
         return $this->periodService->createNewPeriod($question, $endTimestamp);
+    }
+
+    public function close($questionId)
+    {
+        $result = $this->getSpecificQuestion($questionId);
+        if ($result['status'] != 200){
+            return $result;
+        }
+
+        $question = $result['data'];
+        if (!$question->isIsOpen()){
+            return [
+                'error' => 'Question is closed',
+                'status' => 400
+            ];
+        }
+
+        return $this->periodService->closeByQuestionId($question->getId());
     }
 }
 
