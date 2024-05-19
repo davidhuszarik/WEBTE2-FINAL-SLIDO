@@ -39,51 +39,48 @@ class PeriodService
         $user_role = $user->getUserRole();
 
         if ($user_role == UserRole::Admin || ($user_role == UserRole::User && $question->getUserId() == $user->getId())) {
-            if ($question->isIsOpen()) { // only if question is open we create new period
-                $code = $this->generateCode();
-                if($code == -1){
+            $code = $this->generateCode();
+            if($code == -1){
+                return [
+                    'error' => 'Error while generating code for period',
+                    'status' => 500,
+                ];
+            }
+            $start_timestamp = new DateTime();
+
+            $this->periodRepository->startTransaction();
+            if($start_timestamp < $end_timestamp) {
+                $new_period = new Period($question->getId(), $question->getTitleEn(), $question->getTitleSk(),
+                    $question->getContentEn(), $question->getContentSk(), $question->getQuestionType(),
+                    $start_timestamp, $end_timestamp, $code);
+                $new_period_id = $this->period_repository->createNewPeriod($new_period);
+                if($new_period_id > -1){
+                    // Creating static options
+                    $option_data = $this->static_option_service->createStaticOption($new_period_id, $question->getId());
+                    if($option_data['status'] == 500){
+                        $this->period_repository->rollbackTransaction();
+                        return [
+                            'error' => "Failed creating static option",
+                            'status' => 500
+                        ];
+                    }
+                    $this->period_repository->commitTransaction();
                     return [
-                        'error' => 'Error while generating code for period',
+                        'message' => 'Period created successfully',
+                        'status' => 200,
+                        'data' => $new_period_id
+                    ];
+                }else{
+                    $this->period_repository->rollbackTransaction();
+                    return [
+                        'error' => 'Failed to create new period',
                         'status' => 500,
                     ];
                 }
-                $start_timestamp = new DateTime();
-
-                if($start_timestamp < $end_timestamp) {
-                    $new_period = new Period($question->getId(), $question->getTitleEn(), $question->getTitleSk(),
-                        $question->getContentEn(), $question->getContentSk(), $question->getQuestionType(),
-                        $start_timestamp, $end_timestamp, $code);
-                    $new_period_id = $this->period_repository->createNewPeriod($new_period);
-                    if($new_period_id > -1){
-                        // Creating static options
-                        $option_data = $this->static_option_service->createStaticOption($new_period_id, $question->getId());
-                        if($option_data['status'] == 500){
-                            return [
-                                'error' => "Failed creating static option",
-                                'status' => 500
-                            ];
-                        }
-                        return [
-                            'message' => 'Period created successfully',
-                            'status' => 200,
-                            'data' => $new_period_id
-                        ];
-                    }else{
-                        return [
-                            'error' => 'Failed to create new period',
-                            'status' => 500,
-                        ];
-                    }
-                }else {
-                    return [
-                        'error' => 'End timestamp must be after start timestamp',
-                        'status' => 400,
-                    ];
-                }
-            } else {
+            }else {
                 return [
-                    'error' => 'Can not create period, question is not active',
-                    'status' => 500
+                    'error' => 'End timestamp must be after start timestamp',
+                    'status' => 400,
                 ];
             }
         }
