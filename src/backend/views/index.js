@@ -31,7 +31,9 @@ function visualizeLoginState(){
         if (userNameLink) {
             userNameLink.textContent = "You are logged in as " + parsedCredentials.username;
         }
-        panelLink.style.display = "block";
+        if(panelLink) {
+            panelLink.style.display = "block";
+        }
     } else {
         let loginButton = document.getElementById('loginLink');
         let logoutButton = document.getElementById('logoutLink');
@@ -46,7 +48,9 @@ function visualizeLoginState(){
         if (userMenuItem) {
             userMenuItem.style.display = "none";
         }
-        panelLink.style.display = "none";
+        if(panelLink) {
+            panelLink.style.display = "none";
+        }
     }
 }
 

@@ -198,17 +198,17 @@
         <div class="section" id="userSettingsSection">
             <div id="userSettingsLabel" class="section-title">User settings</div>
             <div class="section-content">
-                <button id="manageUsersButton" class="btn btn-green mx-auto"><i class="bi bi-people"></i> Manage users
+                <button id="manageUsersButton" class="btn btn-green text-white mx-auto"><i class="bi bi-people"></i> Manage users
                 </button>
             </div>
         </div>
         <div class="section">
             <div id="questionsSettingsTitle" class="section-title">Question settings</div>
             <div class="section-content">
-                <button id="manageQuestionsButton" class="btn btn-red mx-auto"><i class="bi bi-file-earmark-text"></i>
+                <button id="manageQuestionsButton" class="btn btn-red text-white mx-auto my-2"><i class="bi bi-file-earmark-text"></i>
                     Manage questions
                 </button>
-                <button class="btn btn-blue mx-auto"><i class="bi bi-bar-chart"></i> Show results</button>
+                <button class="btn btn-blue text-white mx-auto my-2"><i class="bi bi-bar-chart"></i> Show results</button>
             </div>
         </div>
     </div>
@@ -461,7 +461,7 @@
         document.getElementById('userSettingsLabel').innerText = 'Skryté funkcie pre admina';
         document.getElementById('manageUsersButton').innerHTML = '<i class="bi bi-people"></i> Správa užívateľov';
         document.getElementById('questionsSettingsTitle').innerText = 'Otázky';
-        document.getElementById('manageQuestionsButton').innerHTML = '<i class="bi bi-file-earmark-text"></i> Správa otázky';
+        document.getElementById('manageQuestionsButton').innerHTML = '<i class="bi bi-file-earmark-text"></i> Správa otázok';
         document.getElementById('logoutLink').innerHTML = '<i class="fas fa-sign-out-alt"></i> Odhlásenie';
         document.getElementById('rightsReservedText').innerText = 'Všetky práva vyhradené.';
         document.getElementById('schoolProjectText').innerText = 'Toto je školský projekt a nie je spätý s Cisco/Slido.';
