@@ -40,16 +40,10 @@ class PeriodService
 
         if ($user_role == UserRole::Admin || ($user_role == UserRole::User && $question->getUserId() == $user->getId())) {
             $code = $this->generateCode();
-            if($code == -1){
-                return [
-                    'error' => 'Error while generating code for period',
-                    'status' => 500,
-                ];
-            }
             $start_timestamp = new DateTime();
 
-            $this->periodRepository->startTransaction();
             if($start_timestamp < $end_timestamp) {
+                $this->period_repository->startTransaction();
                 $new_period = new Period($question->getId(), $question->getTitleEn(), $question->getTitleSk(),
                     $question->getContentEn(), $question->getContentSk(), $question->getQuestionType(),
                     $start_timestamp, $end_timestamp, $code);

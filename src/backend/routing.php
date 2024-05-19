@@ -114,8 +114,8 @@ if (str_starts_with($endpoint, "/api")) {
         case "PATCH":
             parse_str(file_get_contents("php://input"), $patchData);
             if (!empty($patchData['is_open'])){
-                if ($patchData['is_open'] == "true"){
-                    $controller->openById($questionId);
+                if ($patchData['is_open'] == "true" && !empty($patchData['end_timestamp'])){
+                    $controller->openById($questionId, $patchData['end_timestamp']);
                 }
                 else if ($patchData['is_open'] == "false"){
                     $controller->closeById($questionId );

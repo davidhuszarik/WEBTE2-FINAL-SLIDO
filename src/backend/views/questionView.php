@@ -13,6 +13,7 @@ echo json_encode(["questions" => $question]);
         contentType: 'application/json',
         data: {
             is_open: true
+            end_timestamp: "2024-06-19 11:58:49"
         },
         success: function(response) {
             console.log('Response:', response);

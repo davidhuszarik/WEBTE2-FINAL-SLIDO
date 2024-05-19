@@ -27,7 +27,7 @@ class StaticOptionService
         if(empty($options)){
             return [
                 'error' => 'Options do not exist for this question',
-                'status' => 500
+                'status' => 200
             ];
         }
         $inserted_ids = [];
