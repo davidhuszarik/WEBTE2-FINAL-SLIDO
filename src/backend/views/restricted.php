@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="backend/views/index.js"></script>
+    <script src="index.js"></script>
     <title>Obmedzená oblasť</title>
     <style>
         body {
@@ -46,7 +46,7 @@
 </head>
 <body>
 <div class="container">
-    <img id="logo" src="backend/views/images/logo.png" alt="Your Logo">
+    <img id="logo" src="images/logo.png" alt="Your Logo">
     <h1 id="title">Prístup zamietnutý</h1>
     <p id="text">Budete presmerovaní na prihlasovaciu stránku do <span id="countdown">5</span> sekúnd.</p>
     <div id="progressBar">
