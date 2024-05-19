@@ -9,11 +9,26 @@ echo json_encode(["questions" => $question]);
     /*
     $.ajax({
         url: window.location.href,
-        type: 'PATCH',
+        type: 'POST',
         contentType: 'application/json',
         data: {
             is_open: true
             end_timestamp: "2024-06-19 11:58:49"
+        },
+        success: function(response) {
+            console.log('Response:', response);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log('Error:', textStatus, errorThrown);
+        }
+    });
+
+    $.ajax({
+        url: window.location.href,
+        type: 'POST',
+        contentType: 'application/json',
+        data: {
+            is_open: false
         },
         success: function(response) {
             console.log('Response:', response);

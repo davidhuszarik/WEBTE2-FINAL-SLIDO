@@ -111,13 +111,13 @@ if (str_starts_with($endpoint, "/api")) {
         case "GET":
             $controller->indexId($questionId);
             break;
-        case "PATCH":
-            parse_str(file_get_contents("php://input"), $patchData);
-            if (!empty($patchData['is_open'])){
-                if ($patchData['is_open'] == "true" && !empty($patchData['end_timestamp'])){
-                    $controller->openById($questionId, $patchData['end_timestamp']);
+        case "POST":
+            parse_str(file_get_contents("php://input"), $postData);
+            if (!empty($postData['is_open'])){
+                if ($postData['is_open'] == "true" && !empty($postData['end_timestamp'])){
+                    $controller->openById($questionId, $postData['end_timestamp']);
                 }
-                else if ($patchData['is_open'] == "false"){
+                else if ($postData['is_open'] == "false"){
                     $controller->closeById($questionId );
                 }
             }
