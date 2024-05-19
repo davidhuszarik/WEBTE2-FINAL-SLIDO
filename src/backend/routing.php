@@ -3,6 +3,7 @@ require_once __DIR__ . "/loader.php";
 
 use Controllers\AuthController;
 use Controllers\AnswerController;
+use Controllers\QuestionController;
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -93,6 +94,22 @@ if (str_starts_with($endpoint, "/api")) {
     switch ($method) {
         case "GET":
             $controller->getSessionInfo();
+            break;
+    }
+} else if ($endpoint == "/question"){
+    $controller = new QuestionController();
+    $userId = (!empty($_GET['user_id']) && (int)$_GET['user_id'] != 0) ? (int)$_GET['user_id'] : null;
+    switch ($method){
+        case "GET":
+            $controller->index($userId);
+            break;
+    }
+} else if(preg_match('/^\/question\/(\d+)$/', $endpoint, $matches)){
+    $controller = new QuestionController();
+    $questionId = $matches[1];
+    switch ($method){
+        case "GET":
+            $controller->indexId($questionId);
             break;
     }
 } else if(preg_match('/^\/([A-Za-z0-9]{3})(?:|-)([A-Za-z0-9]{3})$/', $endpoint, $matches)){
