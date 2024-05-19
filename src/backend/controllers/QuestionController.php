@@ -90,4 +90,14 @@ class QuestionController extends Controller
 
         $this->render('questionView', ['question' => $result['data']]);
     }
+
+    public function openById($questionId)
+    {
+
+    }
+
+    public function closeById($questionId)
+    {
+
+    }
 }

@@ -111,6 +111,17 @@ if (str_starts_with($endpoint, "/api")) {
         case "GET":
             $controller->indexId($questionId);
             break;
+        case "PATCH":
+            parse_str(file_get_contents("php://input"), $patchData);
+            if (!empty($patchData['is_open'])){
+                if ($patchData['is_open'] == "true"){
+                    $controller->openById($questionId);
+                }
+                else if ($patchData['is_open'] == "false"){
+                    $controller->closeById($questionId );
+                }
+            }
+            break;
     }
 } else if(preg_match('/^\/([A-Za-z0-9]{3})(?:|-)([A-Za-z0-9]{3})$/', $endpoint, $matches)){
     $code = $matches[1] . $matches[2];
