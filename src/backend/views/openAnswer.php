@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="pageTitle">ODILS | Hlasovanie</title>
-    <link rel="icon" type="image/x-icon" href="backend/views/images/favicon.png">
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
@@ -124,7 +124,7 @@
                         Swal.fire({
                             icon: 'success',
                             title: 'Super!',
-                            text: 'Tvoj odpoveď bol odoslané!'
+                            text: 'Tvoja odpoveď bola odoslaná!'
                         });
                     }
                 },
@@ -165,11 +165,11 @@
         document.getElementById('pageTitle').innerText = 'ODILS |> Hlasovanie';
         document.getElementById('questionTitle').innerHTML = '<?php echo $period->getTitleSk(); ?>';
         document.getElementById('questionContent').innerHTML = "<?php echo $period->getContentSk(); ?>";
-        document.getElementById('labelInput').innerHTML = "Sem zadaj svoj odpoveď 👇";
+        document.getElementById('labelInput').innerHTML = "Sem zadaj svoju odpoveď 👇";
         document.getElementById('sendButton').innerHTML = "🗳️ Odoslať";
         document.getElementById('backButton').innerHTML = "⬅️ Späť";
         document.getElementById('invalidFeedback').innerHTML = "Odpoveď musí mať maximum 50 znakov a môže obsahovať len písmená a čísla.";
-        document.getElementById('textInput').placeholder = "📝 Tvoj úžasný odpoveď";
+        document.getElementById('textInput').placeholder = "📝 Tvoja úžasná odpoveď";
     }
 
     function translateToEnglish() {

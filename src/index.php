@@ -279,7 +279,6 @@
         document.getElementById('invitationCode').placeholder = 'Enter your 6-digit code'
         localStorage.setItem('selectedLanguage', 'english');
         let credentials = sessionStorage.getItem('credentials');
-        console.log(credentials);
         if (credentials) {
             let parsedCredentials = JSON.parse(credentials);
             let userNameLink = document.getElementById('userNameLink');
@@ -311,7 +310,6 @@
         document.getElementById('invitationCode').placeholder = 'Zadaj tvôj 6 miestný kód'
         localStorage.setItem('selectedLanguage', 'slovak');
         let credentials = sessionStorage.getItem('credentials');
-        console.log(credentials);
         if (credentials) {
             let parsedCredentials = JSON.parse(credentials);
             let userNameLink = document.getElementById('userNameLink');

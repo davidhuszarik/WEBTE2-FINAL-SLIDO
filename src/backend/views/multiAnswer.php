@@ -8,7 +8,7 @@ $length = count($options);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="pageTitle">ODILS | Hlasovanie</title>
-    <link rel="icon" type="image/x-icon" href="backend/views/images/favicon.png">
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>

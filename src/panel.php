@@ -205,9 +205,9 @@
         <div class="section">
             <div id="questionsSettingsTitle" class="section-title">Question settings</div>
             <div class="section-content">
-                <button id="manageQuestionsButton" class="btn btn-red text-white mx-auto my-2"><i class="bi bi-file-earmark-text"></i>
-                    Manage questions
-                </button>
+            <button id="manageQuestionsButton" class="btn btn-red text-white mx-auto my-2" onclick="window.location.href='backend/views/questionPanel.php'">
+                <i class="bi bi-file-earmark-text"></i> Manage questions
+            </button>
                 <button class="btn btn-blue text-white mx-auto my-2"><i class="bi bi-bar-chart"></i> Show results</button>
             </div>
         </div>
