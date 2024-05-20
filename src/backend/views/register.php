@@ -7,7 +7,7 @@
     <link rel="icon" type="image/x-icon" href="images/favicon.png">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="index.js"></script>
+    <script src="backend/views/index.js"></script>
     <style>
         body {
             height: 100vh;
@@ -188,7 +188,6 @@
 
     function checkSavedLanguage() {
         var savedLanguage = localStorage.getItem('selectedLanguage');
-        console.log(savedLanguage);
         if (savedLanguage === 'english') {
             translateToEnglish();
             return "English";
