@@ -127,6 +127,10 @@ if (str_starts_with($endpoint, "/api")) {
                 }
             }
             break;
+        case "PUT":
+            parse_str(file_get_contents("php://input"), $putData);
+            $controller->updateQuestion($questionId, $putData);
+            break;
         case "DELETE":
             $controller->deleteById($questionId);
             break;

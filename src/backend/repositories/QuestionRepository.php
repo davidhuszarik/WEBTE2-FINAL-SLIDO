@@ -219,7 +219,7 @@ WHERE
         $creation_date = $question->getCreationDate()->format("Y-m-d H:i:s");
         $type = $question->getQuestionType()->value;
 
-        $stmt->bind_param("issssssii",
+        $stmt->bind_param("issssssi",
             $user_id,
             $title_en,
             $title_sk,

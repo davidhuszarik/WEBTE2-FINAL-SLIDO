@@ -71,7 +71,7 @@ class QuestionService
             $type = QuestionType::from($question_data['type']);
         } catch (UnhandledMatchError $e) {
             return [
-                'error' => "Invalid date format or question type or isOpen state",
+                'error' => "Invalid question type",
                 'status' => 400,
             ];
         }
@@ -250,24 +250,19 @@ class QuestionService
 
         $question = $question['data'];
 
-        $options_array = $this->option_repository->getOptionsByQuestionId($question->getId());
+        $options_array = [];
+        if ($question->getQuestionType() == QuestionType::Multi_choice || $question->getQuestionType() == QuestionType::Single_choice){
+            $options_array = $this->option_repository->getOptionsByQuestionId($question->getId());
+        }
+        return [
+            'message' => "Successfully retrieved question and its options",
+            'status' => 200,
+            'data' => [
+                'question' => $question,
+                'options' => $options_array
+            ]
+        ];
 
-        if($options_array === null) {
-            return [
-                'error' => "Failed to get options",
-                'status' => 500,
-            ];
-        }
-        else{
-            return [
-                'message' => "Successfully retrieved question and its options",
-                'status' => 200,
-                'data' => [
-                    'question' => $question,
-                    'options' => $options_array
-                ]
-            ];
-        }
     }
 
     /* Delete specific question */
@@ -295,7 +290,7 @@ class QuestionService
     }
 
     /* Update question */
-    public function updateSpecificQuestion(int $question_id, array $question_data)
+    public function updateSpecificQuestion(int $question_id, array $data)
     {
         $question = $this->getSpecificQuestion($question_id);
         if ($question['status'] != 200 ) {
@@ -304,9 +299,70 @@ class QuestionService
 
         $question = $question['data'];
 
+        if($question->isIsOpen()){
+            return [
+                'error' => 'Question is open',
+                'status' => 400
+            ];
+        }
+
+        /**
+         * @var Array $option_data;
+         */
+        if (!isset($data['options'])|| empty($data['question'])){
+            return [
+                'error' => 'Missing required fields',
+                'status' => 400
+            ];
+        }
+        $option_data = $data['options'];
+        $question_data = $data['question'];
         if (empty($question_data['title_en']) || empty($question_data['title_sk']) || empty($question_data['content_en'])
-            || empty($question_data['content_sk']) || empty($question_data['creation_date']) || empty($question_data['type'])
-            || empty($question_data['is_open'])) {
+            || empty($question_data['content_sk']) || empty($question_data['type'])) {
+            return [
+                'error' => 'Missing required fields',
+                'status' => 400
+            ];
+        }
+
+        try {
+            $type = QuestionType::from($question_data['type']);
+        } catch (UnhandledMatchError $e) {
+            return [
+                'error' => "Invalid date format or question type or isOpen state",
+                'status' => 400,
+            ];
+        }
+
+        $options = null;
+        if ($type == QuestionType::Single_choice || $type == QuestionType::Multi_choice) {
+            if (empty($option_data)) {
+                return [
+                    'error' => 'Missing required fields',
+                    'status' => 400
+                ];
+            }
+            $options = [];
+            foreach ($option_data as $option) {
+                try {
+                    if ($option['is_correct'] != "true" && $option['is_correct'] != "false"){
+                        return [
+                            'error' => 'Bad is_correct format',
+                            'status' => 400
+                        ];
+                    }
+                    $options[] = new Option(0, $option['value_en'], $option['value_sk'], $option['is_correct']);
+                } catch (\Exception $e) {
+                    return [
+                        'error' => 'Missing required fields',
+                        'status' => 400
+                    ];
+                }
+            }
+        }
+
+        if (empty($question_data['title_en']) || empty($question_data['title_sk']) || empty($question_data['content_en'])
+            || empty($question_data['content_sk']) || empty($question_data['type'])) {
             return [
                 'error' => 'Missing required fields',
                 'status' => 400
@@ -317,21 +373,45 @@ class QuestionService
         $question->setTitleSk($question_data['title_sk']);
         $question->setContentEn($question_data['content_en']);
         $question->setContentSk($question_data['content_sk']);
-        $question->setCreationDate(new DateTime($question_data['creation_date']));
-        $question->setQuestionType(QuestionType::from($question_data['type']));
-
-        $update_result = $this->question_repository->updateQuestion($question);
-        if($update_result){
+        try {
+            $question->setQuestionType(QuestionType::from($question_data['type']));
+        } catch (UnhandledMatchError $e) {
             return [
-                'message' => 'Question updated successfully',
-                'status' => 200
+                'error' => "Invalid question type",
+                'status' => 400,
             ];
-        }else{
+        }
+
+        $this->question_repository->startTransaction();
+        $update_result = $this->question_repository->updateQuestion($question);
+        if(!$update_result){
+            $this->question_repository->rollbackTransaction();
             return [
                 'error' => "Failed to updated question",
                 'status' => 500
             ];
+
         }
+
+        $this->option_repository->deleteOptionsByQuestionId($question->getId());
+
+        if ($options != null){
+            foreach ($options as $option){
+                $option->setQuestionId($question->getId());
+                if ($this->option_repository->createNewOption($option) == -1){
+                    $this->question_repository->rollbackTransaction();
+                    return [
+                        'error' => 'Problem updating question',
+                        'status' => 500
+                    ];
+                }
+            }
+        }
+        $this->question_repository->commitTransaction();
+        return [
+            'message' => 'Question updated successfully',
+            'status' => 200
+        ];
     }
 
     public function open($questionId, \DateTime $endTimestamp)

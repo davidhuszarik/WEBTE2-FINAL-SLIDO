@@ -71,7 +71,7 @@ class QuestionController extends Controller
 
     public function indexId(int $id)
     {
-        $result = $this->questionService->getSpecificQuestion($id);
+        $result = $this->questionService->getSpecificQuestionWithOptions($id);
 
         if ($result['status'] == 403){
             $this->render('restricted');
@@ -130,6 +130,14 @@ class QuestionController extends Controller
     public function createNewQuestion(?int $userId, array $data)
     {
         $result = $this->questionService->createNewQuestionForGivenUserId($userId, $data);
+        echo json_encode($result);
+        http_response_code($result['status']);
+        header("Content-Type: application/json");
+    }
+
+    public function updateQuestion($questionId, array $data)
+    {
+        $result = $this->questionService->updateSpecificQuestion($questionId, $data);
         echo json_encode($result);
         http_response_code($result['status']);
         header("Content-Type: application/json");

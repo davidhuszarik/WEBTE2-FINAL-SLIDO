@@ -2,7 +2,7 @@
 
 namespace Models;
 
-class Option
+class Option implements \JsonSerializable
 {
     private int $id;
     private int $question_id;
@@ -80,6 +80,11 @@ class Option
             "valueSk" => $this->value_sk,
             "isCorrect" => $this->is_correct,
         ];
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->toArray();
     }
 }
 
