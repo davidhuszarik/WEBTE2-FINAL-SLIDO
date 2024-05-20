@@ -62,7 +62,7 @@ class PeriodService
                     return [
                         'message' => 'Period created successfully',
                         'status' => 201,
-                        'data' => $new_period_id
+                        'data' => $code
                     ];
                 }else{
                     $this->period_repository->rollbackTransaction();

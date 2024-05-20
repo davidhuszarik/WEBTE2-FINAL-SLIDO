@@ -174,7 +174,9 @@ if (str_starts_with($endpoint, "/api")) {
             break;
     }
 } else {
+    /*
     $controller = new Controller();
     $controller->render("notExist");
+    */
 }
 ?>

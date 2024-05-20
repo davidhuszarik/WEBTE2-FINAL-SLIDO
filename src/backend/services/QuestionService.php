@@ -387,7 +387,7 @@ class QuestionService
         if(!$update_result){
             $this->question_repository->rollbackTransaction();
             return [
-                'error' => "Failed to updated question",
+                'error' => "Failed to update question",
                 'status' => 500
             ];
 
@@ -490,7 +490,7 @@ class QuestionService
         return [
             'message' => 'Question created successfully',
             'status' => 201,
-            'question_id' => $cloned_id
+            'data' => $cloned_id
         ];
     }
 }
