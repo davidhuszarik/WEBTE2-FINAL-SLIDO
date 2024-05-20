@@ -211,6 +211,33 @@ class OptionRepository extends Repository
             return null;
         }
     }
+
+    public function deleteOptionsByQuestionId(int $question_id)
+    {
+        $query = "DELETE FROM options WHERE question_id = ?";
+
+        $stmt = $this->connection->prepare($query);
+        if (!$stmt) {
+            error_log("Prepare failed: " . $this->connection->error);
+            return false;
+        }
+
+        $stmt->bind_param("i", $question_id);
+
+        if ($stmt->execute()) {
+            if ($stmt->affected_rows > 0) {
+                $stmt->close();
+                return true;
+            } else {
+                $stmt->close();
+                return false;
+            }
+        } else {
+            error_log("Deletion execution failed: " . $stmt->error);
+            $stmt->close();
+            return false;
+        }
+    }
 }
 
 ?>
