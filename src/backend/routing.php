@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . "/loader.php";
 
+use Controllers\Controller;
 use Controllers\AuthController;
 use Controllers\AnswerController;
 use Controllers\QuestionController;
@@ -135,6 +136,14 @@ if (str_starts_with($endpoint, "/api")) {
             $controller->deleteById($questionId);
             break;
     }
+} else if (preg_match('/^\/question\/clone\/(\d+)$/', $endpoint, $matches)){
+    $controller = new QuestionController();
+    $questionId = $matches[1];
+    switch ($method){
+        case "POST":
+            $controller->cloneQuestion($questionId);
+            break;
+    }
 } else if(preg_match('/^\/([A-Za-z0-9]{3})(?:|-)([A-Za-z0-9]{3})$/', $endpoint, $matches)){
     $code = $matches[1] . $matches[2];
     $controller = new AnswerController();
@@ -165,11 +174,7 @@ if (str_starts_with($endpoint, "/api")) {
             break;
     }
 } else {
-    http_response_code(404);
-    $response = new stdClass();
-    $response->code = 404;
-    $response->message = "Not Found";
-    $response->description = "The request resource was not found on this server";
-    echo json_encode($response);
+    $controller = new Controller();
+    $controller->render("notExist");
 }
 ?>

@@ -142,4 +142,12 @@ class QuestionController extends Controller
         http_response_code($result['status']);
         header("Content-Type: application/json");
     }
+
+    public function cloneQuestion($questionId)
+    {
+        $result = $this->questionService->clone($questionId);
+        echo json_encode($result);
+        http_response_code($result['status']);
+        header("Content-Type: application/json");
+    }
 }

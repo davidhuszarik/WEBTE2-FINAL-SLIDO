@@ -83,5 +83,17 @@ echo json_encode(["question" => $question]);
             console.log('Error:', textStatus, errorThrown);
         }
     });
+
+    $.ajax({
+        url: "https://localhost/question/clone/3",
+        type: 'POST',
+        contentType: 'application/json',
+        success: function(response) {
+            console.log('Response:', response);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log('Error:', textStatus, errorThrown);
+        }
+    });
     */
 </script>
