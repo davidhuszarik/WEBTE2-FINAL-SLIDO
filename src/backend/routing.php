@@ -4,6 +4,7 @@ require_once __DIR__ . "/loader.php";
 use Controllers\AuthController;
 use Controllers\AnswerController;
 use Controllers\QuestionController;
+use Controllers\ExportController;
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -138,5 +139,29 @@ if (str_starts_with($endpoint, "/api")) {
             $controller->answer($code, $postData);
             break;
     }
+} else if ($endpoint == "/export") {
+    $controller = new ExportController();
+    switch ($method) {
+        case "GET":
+            parse_str(file_get_contents("php://input"), $export_format);
+            if (isset($export_format['format'])) {
+                $controller->export($export_format['format']);
+            } else {
+                http_response_code(400);
+                echo json_encode(["error" => "Format not specified"]);
+            }
+            break;
+        default:
+            http_response_code(405);
+            echo json_encode(["error" => "Method not allowed"]);
+            break;
+    }
+} else {
+    http_response_code(404);
+    $response = new stdClass();
+    $response->code = 404;
+    $response->message = "Not Found";
+    $response->description = "The request resource was not found on this server";
+    echo json_encode($response);
 }
 ?>
