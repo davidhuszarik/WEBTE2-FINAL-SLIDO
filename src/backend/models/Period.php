@@ -10,7 +10,7 @@ require_once __DIR__ . "/QuestionType.php";
 class Period implements JsonSerializable
 {
     private int $id;
-    private int $question_id;
+    private ?int $question_id;
     private string $title_en;
     private string $title_sk;
     private string $content_en;
@@ -22,7 +22,7 @@ class Period implements JsonSerializable
     private bool $is_open;
 
     // Constructor
-    public function __construct(int          $question_id, string $title_en, string $title_sk, string $content_en, string $content_sk,
+    public function __construct(?int          $question_id, string $title_en, string $title_sk, string $content_en, string $content_sk,
                                 QuestionType $question_type, DateTime $start_timestamp, DateTime $end_timestamp, string $code, bool $is_open = false)
     {
         $this->question_id = $question_id;
