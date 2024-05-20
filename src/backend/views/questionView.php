@@ -1,62 +1,3 @@
-<script>
-    /*
-    $.ajax({
-        url: window.location.href,
-        type: 'POST',
-        contentType: 'application/json',
-        data: {
-            is_open: true
-            end_timestamp: "2024-06-19 11:58:49"
-        },
-        success: function(response) {
-            console.log('Response:', response);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log('Error:', textStatus, errorThrown);
-        }
-    });
-
-    $.ajax({
-        url: window.location.href,
-        type: 'POST',
-        contentType: 'application/json',
-        data: {
-            is_open: false
-        },
-        success: function(response) {
-            console.log('Response:', response);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log('Error:', textStatus, errorThrown);
-        }
-    });
-
-    $.ajax({
-        url: window.location.href,
-        type: 'DELETE',
-        contentType: 'application/json',
-        success: function(response) {
-            console.log('Response:', response);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log('Error:', textStatus, errorThrown);
-        }
-    });
-
-    $.ajax({
-        url: "https://localhost/question/clone/3",
-        type: 'POST',
-        contentType: 'application/json',
-        success: function(response) {
-            console.log('Response:', response);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log('Error:', textStatus, errorThrown);
-        }
-    });
-    */
-</script>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -237,102 +178,194 @@
         <button type="button" onclick="addOption()">Add Option</button>
         <button type="submit">Save</button>
     </form>
-    <script>
-        const jsonData = <?php echo json_encode(["question" => $question]);?>;
-
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const questionForm = document.getElementById('questionForm');
-
-            // Populate the form with JSON data
-            document.getElementById('titleEn').value = jsonData.question.question.title_en;
-            document.getElementById('titleSk').value = jsonData.question.question.title_sk;
-            document.getElementById('contentEn').value = jsonData.question.question.content_en;
-            document.getElementById('contentSk').value = jsonData.question.question.content_sk;
-            document.getElementById('creationDate').value = jsonData.question.question.creation_date;
-            document.getElementById('type').value = jsonData.question.question.type;
-
-            const optionsContainer = document.getElementById('optionsContainer');
-            jsonData.question.options.forEach((option, index) => {
-                addOption(option);
-            });
-
-            questionForm.addEventListener('submit', (event) => {
-                event.preventDefault();
-
-                const updatedData = {
-                    question: {
-                        id: jsonData.question.question.id,
-                        user_id: jsonData.question.question.user_id,
-                        title_en: document.getElementById('titleEn').value,
-                        title_sk: document.getElementById('titleSk').value,
-                        content_en: document.getElementById('contentEn').value,
-                        content_sk: document.getElementById('contentSk').value,
-                        creation_date: document.getElementById('creationDate').value,
-                        type: document.getElementById('type').value,
-                    },
-                    options: []
-                };
-
-                optionsContainer.querySelectorAll('.option').forEach(optionDiv => {
-                    const optionId = optionDiv.getAttribute('data-id');
-                    const valueEn = optionDiv.querySelector('.valueEn').value;
-                    const valueSk = optionDiv.querySelector('.valueSk').value;
-                    const is_correct = optionDiv.querySelector('.isCorrect').checked;
-
-                    updatedData.options.push({id: parseInt(optionId), question_id: jsonData.question.question.id, value_en: valueEn, value_sk: valueSk, is_correct: is_correct});
-                });
-
-                if(updatedData == jsonData){
-                    return;
-                }
-                console.log('Updated Data:', updatedData);
+</div>
+<div class="form-container">
+    <form id="additionalForm">
+        <?php if($question['question']->isIsOpen()){ ?>
+        <h1>Close question</h1>
+        <div class="form-group">
+            <label for="additionalIsOpen">Is Open:</label>
+            <input type="checkbox" id="additionalIsOpen" name="additionalIsOpen" readonly checked>
+        </div>
+        <button type="button" id="closeButton">Close</button>
+        <script>
+            document.getElementById("closeButton").addEventListener('click', () => {
                 $.ajax({
                     url: window.location.href,
-                    type: 'PUT',
+                    type: 'POST',
                     contentType: 'application/json',
-                    data: updatedData,
+                    data: {
+                        is_open: false
+                    },
                     success: function(response) {
                         window.location.reload();
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        console.log('Error:', textStatus, errorThrown);
+                        window.location.reload()
                     }
                 });
             });
+        </script>
+        <?php }
+        else{?>
+            <h1>Open question</h1>
+            <div class="form-group">
+                <label for="additionalIsOpen">Is Open:</label>
+                <input type="checkbox" id="additionalIsOpen" name="additionalIsOpen" readonly>
+            </div>
+            <div class="form-group">
+                <label for="endTimestamp">End Timestamp:</label>
+                <input type="datetime-local" id="endTimestamp" name="endTimestamp">
+            </div>
+            <button type="button" id="openButton">Open</button>
+            <script>
+                document.getElementById("openButton").addEventListener('click', () => {
+                    $.ajax({
+                        url: window.location.href,
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: {
+                            is_open: true,
+                            end_timestamp: document.getElementById("endTimestamp").value
+                        },
+                        success: function(response) {
+                            window.location.replace("/" + response.data);
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            window.location.reload();
+                        }
+                    });
+                });
+            </script>
+        <?php }?>
+        <div class="form-group">
+            <button type="button" id="deleteButton">Delete Question</button>
+            <button type="button" id="cloneButton">Clone Question</button>
+            <script>
+                document.getElementById("deleteButton").addEventListener('click', () => {
+                    $.ajax({
+                        url: window.location.href,
+                        type: 'DELETE',
+                        contentType: 'application/json',
+                        success: function(response) {
+                            window.location.replace("/question");
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            window.location.reload();
+                        }
+                    });
+                });
+                document.getElementById("cloneButton").addEventListener('click', () => {
+                    $.ajax({
+                        url: "https://" + window.location.hostname + "/question/clone/" + jsonData.question.question.id,
+                        type: 'POST',
+                        contentType: 'application/json',
+                        success: function(response) {
+                            window.location.replace("/question/" + response.data);
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            window.location.reload();
+                        }
+                    });
+                });
+            </script>
+        </div>
+    </form>
+</div>
+<script>
+    const jsonData = <?php echo json_encode(["question" => $question]);?>;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const questionForm = document.getElementById('questionForm');
+
+        // Populate the form with JSON data
+        document.getElementById('titleEn').value = jsonData.question.question.title_en;
+        document.getElementById('titleSk').value = jsonData.question.question.title_sk;
+        document.getElementById('contentEn').value = jsonData.question.question.content_en;
+        document.getElementById('contentSk').value = jsonData.question.question.content_sk;
+        document.getElementById('creationDate').value = jsonData.question.question.creation_date;
+        document.getElementById('type').value = jsonData.question.question.type;
+
+        const optionsContainer = document.getElementById('optionsContainer');
+        jsonData.question.options.forEach((option, index) => {
+            addOption(option);
         });
 
-        function addOption(option = {id: '', valueEn: '', valueSk: '', isCorrect: false}) {
-            const optionsContainer = document.getElementById('optionsContainer');
-            const optionDiv = document.createElement('div');
-            optionDiv.classList.add('option');
-            optionDiv.setAttribute('data-id', option.id);
+        questionForm.addEventListener('submit', (event) => {
+            event.preventDefault();
 
-            optionDiv.innerHTML = `
-            <div class="form-group">
-                <label for="valueEn">Option Value (EN):</label>
-                <input type="text" class="valueEn" value="${option.valueEn}">
-            </div>
-            <div class="form-group">
-                <label for="valueSk">Option Value (SK):</label>
-                <input type="text" class="valueSk" value="${option.valueSk}">
-            </div>
-            <div class="form-group">
-                <label for="isCorrect">Is Correct:</label>
-                <input type="checkbox" class="isCorrect" ${option.isCorrect ? 'checked' : ''}>
-            </div>
-            <button type="button" class="remove-option" onclick="removeOption(this)">Remove</button>
-        `;
+            const updatedData = {
+                question: {
+                    id: jsonData.question.question.id,
+                    user_id: jsonData.question.question.user_id,
+                    title_en: document.getElementById('titleEn').value,
+                    title_sk: document.getElementById('titleSk').value,
+                    content_en: document.getElementById('contentEn').value,
+                    content_sk: document.getElementById('contentSk').value,
+                    creation_date: document.getElementById('creationDate').value,
+                    type: document.getElementById('type').value,
+                },
+                options: []
+            };
 
-            optionsContainer.appendChild(optionDiv);
-        }
+            optionsContainer.querySelectorAll('.option').forEach(optionDiv => {
+                const optionId = optionDiv.getAttribute('data-id');
+                const valueEn = optionDiv.querySelector('.valueEn').value;
+                const valueSk = optionDiv.querySelector('.valueSk').value;
+                const is_correct = optionDiv.querySelector('.isCorrect').checked;
 
-        function removeOption(button) {
-            const optionDiv = button.parentElement;
-            optionDiv.remove();
-        }
-    </script>
-</div>
+                updatedData.options.push({id: parseInt(optionId), question_id: jsonData.question.question.id, value_en: valueEn, value_sk: valueSk, is_correct: is_correct});
+            });
+
+            if(updatedData == jsonData){
+                return;
+            }
+            console.log('Updated Data:', updatedData);
+            $.ajax({
+                url: window.location.href,
+                type: 'PUT',
+                contentType: 'application/json',
+                data: updatedData,
+                success: function(response) {
+                    window.location.reload();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log('Error:', textStatus, errorThrown);
+                }
+            });
+        });
+    });
+
+    function addOption(option = {id: '', valueEn: '', valueSk: '', isCorrect: false}) {
+        const optionsContainer = document.getElementById('optionsContainer');
+        const optionDiv = document.createElement('div');
+        optionDiv.classList.add('option');
+        optionDiv.setAttribute('data-id', option.id);
+
+        optionDiv.innerHTML = `
+        <div class="form-group">
+            <label for="valueEn">Option Value (EN):</label>
+            <input type="text" class="valueEn" value="${option.valueEn}">
+        </div>
+        <div class="form-group">
+            <label for="valueSk">Option Value (SK):</label>
+            <input type="text" class="valueSk" value="${option.valueSk}">
+        </div>
+        <div class="form-group">
+            <label for="isCorrect">Is Correct:</label>
+            <input type="checkbox" class="isCorrect" ${option.isCorrect ? 'checked' : ''}>
+        </div>
+        <button type="button" class="remove-option" onclick="removeOption(this)">Remove</button>
+    `;
+
+        optionsContainer.appendChild(optionDiv);
+    }
+
+    function removeOption(button) {
+        const optionDiv = button.parentElement;
+        optionDiv.remove();
+    }
+</script>
 
 <footer class="footer">
     <div class="container">
@@ -471,7 +504,7 @@
                 userSettingsSection.style.display = "none";
             }
         } else {
-            window.location.href = 'restricted.php';
+            //window.location.href = 'restricted.php';
         }
     });
 
