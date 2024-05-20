@@ -59,6 +59,30 @@
             border-bottom: 1px solid #ced4da;
             margin-bottom: 20px;
         }
+        .qr-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .qr-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+            margin-left: 50px
+        }
+
+        #qrcode {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+        }
+        p {
+            font-size: 18px;
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -80,11 +104,21 @@
             <button id="backButton" type="button" class="btn btn-secondary btn-block">⬅️ Späť</button>
         </div>
     </div>
+    <div id="qr-container" class="qr-container">
+        <div id="qrcode"></div>
+        <p id="scanQr">Scan the QR code to get to this site.</p>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.js" integrity="sha512-is1ls2rgwpFZyixqKFEExPHVUUL+pPkBEPw47s/6NDQ4n1m6T/ySeDW3p54jp45z2EJ0RSOgilqee1WhtelXfA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+    let url = window.location.hostname + "/<?php echo $period->getCode(); ?>";
+    new QRCode(document.getElementById("qrcode"), url)
+</script>
 </body>
 </html>
 
@@ -170,6 +204,7 @@
         document.getElementById('backButton').innerHTML = "⬅️ Späť";
         document.getElementById('invalidFeedback').innerHTML = "Odpoveď musí mať maximum 50 znakov a môže obsahovať len písmená a čísla.";
         document.getElementById('textInput').placeholder = "📝 Tvoja úžasná odpoveď";
+        document.getElementById('scanQr').innerHTML = "📱 Naskenuj tento QR kód aby si sa dostal k tejto stránke.";
     }
 
     function translateToEnglish() {
@@ -181,6 +216,7 @@
         document.getElementById('backButton').innerHTML = "⬅️ Back";
         document.getElementById('invalidFeedback').innerHTML = "The answer must be maximum 50 characters long and can only contain letters and numbers.";
         document.getElementById('textInput').placeholder = "📝 Your amazing answer";
+        document.getElementById('scanQr').innerHTML = "📱 Scan the QR code to get to this site.";
     }
 
     checkSavedLanguage();

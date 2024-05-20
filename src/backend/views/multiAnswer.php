@@ -22,11 +22,16 @@ $length = count($options);
             align-items: center;
             height: 100vh;
         }
+        .card-container {
+            display: flex;
+            align-items: flex-start;
+        }
         .card {
             max-width: 400px;
             border: 1px solid #ced4da;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-right: 20px;
         }
         .card-body {
             padding: 30px;
@@ -98,38 +103,74 @@ $length = count($options);
             flex-wrap: wrap;
             justify-content: space-between;
         }
+        .qr-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .qr-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+        #qrcode {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+        }
+        p {
+            font-size: 18px;
+            color: #333;
+        }
+
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="card">
-        <div class="card-body">
-            <img src="images/logo.png" alt="Logo" class="logo">
-            <div class="divider"></div>
-            <h5 id="questionTitle" class="card-title text-center"><?php echo $period->getTitleSk(); ?></h5>
-            <div class="divider"></div>
-            <h4 id="questionContent" class="card-title text-center"><?php echo $period->getContentSk(); ?></h4>
-            <div class="divider"></div>
-            <form id="form-group">
-                <div class="options-container">
-                    <?php for ($i = 0; $i < $length; $i++): ?>
-                        <label>
-                            <input type="checkbox" name="option[]" value="<?php echo $options[$i]->getId(); ?>">
-                            <span><?php echo $options[$i]->getValueSk(); ?></span>
-                        </label>
-                    <?php endfor; ?>
-                </div>
-            </form>
-            <button id="sendButton" type="button" class="btn btn-primary btn-block">🗳️ Odoslať</button>
-            <button id="backButton" type="button" class="btn btn-secondary btn-block">⬅️ Späť</button>
+    <div class="card-container">
+        <div class="card">
+            <div class="card-body">
+                <img src="images/logo.png" alt="Logo" class="logo">
+                <div class="divider"></div>
+                <h5 id="questionTitle" class="card-title text-center"><?php echo $period->getTitleSk(); ?></h5>
+                <div class="divider"></div>
+                <h4 id="questionContent" class="card-title text-center"><?php echo $period->getContentSk(); ?></h4>
+                <div class="divider"></div>
+                <form id="form-group">
+                    <div class="options-container">
+                        <?php for ($i = 0; $i < $length; $i++): ?>
+                            <label>
+                                <input type="checkbox" name="option[]" value="<?php echo $options[$i]->getId(); ?>">
+                                <span><?php echo $options[$i]->getValueSk(); ?></span>
+                            </label>
+                        <?php endfor; ?>
+                    </div>
+                </form>
+                <button id="sendButton" type="button" class="btn btn-primary btn-block">🗳️ Odoslať</button>
+                <button id="backButton" type="button" class="btn btn-secondary btn-block">⬅️ Späť</button>
+            </div>
         </div>
+        <div id="qr-container" class="qr-container">
+            <div id="qrcode" ></div>
+            <p id="scanQr">Scan the QR code to get to this site.</p>
+        </div>
+
     </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.js" integrity="sha512-is1ls2rgwpFZyixqKFEExPHVUUL+pPkBEPw47s/6NDQ4n1m6T/ySeDW3p54jp45z2EJ0RSOgilqee1WhtelXfA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+    let url = window.location.hostname + "/<?php echo $period->getCode(); ?>";
+    new QRCode(document.getElementById("qrcode"), url)
+</script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
-
 <script>
     document.getElementById('backButton').addEventListener('click', function() {
         window.location.href = 'index.php';
@@ -205,6 +246,7 @@ $length = count($options);
         document.getElementById('questionContent').innerHTML = "<?php echo $period->getContentSk(); ?>";
         document.getElementById('sendButton').innerHTML = "🗳️ Odoslať";
         document.getElementById('backButton').innerHTML = "⬅️ Späť";
+        document.getElementById('scanQr').innerHTML = "📱 Naskenuj tento QR kód aby si sa dostal k tejto stránke.";
     }
 
     function translateToEnglish() {
@@ -213,6 +255,7 @@ $length = count($options);
         document.getElementById('questionContent').innerHTML = "<?php echo $period->getContentEn(); ?>";
         document.getElementById('sendButton').innerHTML = "🗳️ Send";
         document.getElementById('backButton').innerHTML = "⬅️ Back";
+        document.getElementById('scanQr').innerHTML = "📱 Scan the QR code to get to this site.";
     }
 
     checkSavedLanguage();
