@@ -126,4 +126,12 @@ class QuestionController extends Controller
         http_response_code($result['status']);
         header("Content-Type: application/json");
     }
+
+    public function createNewQuestion(?int $userId, array $data)
+    {
+        $result = $this->questionService->createNewQuestionForGivenUserId($userId, $data);
+        echo json_encode($result);
+        http_response_code($result['status']);
+        header("Content-Type: application/json");
+    }
 }

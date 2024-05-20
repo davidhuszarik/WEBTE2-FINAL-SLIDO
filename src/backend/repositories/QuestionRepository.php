@@ -25,7 +25,7 @@ class QuestionRepository extends Repository
     public function createNewQuestion(Question $new_question)
     {
         $query = "INSERT INTO questions (user_id, title_en, title_sk, content_en, content_sk, creation_date, type)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $this->connection->prepare($query);
         if (!$stmt) {
@@ -41,7 +41,7 @@ class QuestionRepository extends Repository
         $creation_date = $new_question->getCreationDate()->format("Y-m-d H:i:s");
         $type = $new_question->getQuestionType()->value;
 
-        $stmt->bind_param("issssssi",
+        $stmt->bind_param("issssss",
             $user_id,
             $title_en,
             $title_sk,

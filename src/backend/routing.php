@@ -104,6 +104,10 @@ if (str_starts_with($endpoint, "/api")) {
         case "GET":
             $controller->index($userId);
             break;
+        case "POST":
+            parse_str(file_get_contents("php://input"), $postData);
+            $controller->createNewQuestion($userId, $postData);
+            break;
     }
 } else if(preg_match('/^\/question\/(\d+)$/', $endpoint, $matches)){
     $controller = new QuestionController();
