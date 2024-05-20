@@ -118,11 +118,6 @@ class Question implements \JsonSerializable
         return $this->is_open;
     }
 
-    public function setIsOpen(bool $is_open): void
-    {
-        $this->is_open = $is_open;
-    }
-
     // toArray
     public function toArray()
     {

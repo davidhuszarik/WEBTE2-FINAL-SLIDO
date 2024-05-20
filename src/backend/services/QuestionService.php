@@ -8,6 +8,7 @@ use Models\UserRole;
 use Models\Question;
 use DateTime;
 use Models\QuestionType;
+use Repositories\PeriodRepository;
 use UnhandledMatchError;
 use Repositories\QuestionRepository;
 use Repositories\OptionRepository;
@@ -18,12 +19,14 @@ class QuestionService
     private QuestionRepository $question_repository;
     private OptionRepository $option_repository;
     private UserRepository $user_repository;
+    private PeriodService $periodService;
 
     public function __construct()
     {
         $this->question_repository = new QuestionRepository();
         $this->option_repository = new OptionRepository();
         $this->user_repository = new UserRepository();
+        $this->periodService = new PeriodService();
     }
 
     /* Create new question */
@@ -258,7 +261,6 @@ class QuestionService
         $question->setContentSk($question_data['content_sk']);
         $question->setCreationDate(new DateTime($question_data['creation_date']));
         $question->setQuestionType(QuestionType::from($question_data['type']));
-        $question->setIsOpen((bool)$question_data['is_open']);
 
         $update_result = $this->question_repository->updateQuestion($question);
         if($update_result){
@@ -272,6 +274,48 @@ class QuestionService
                 'status' => 500
             ];
         }
+    }
+
+    public function open($questionId, \DateTime $endTimestamp)
+    {
+        $result = $this->getSpecificQuestion($questionId);
+        if ($result['status'] != 200){
+            return $result;
+        }
+
+        $question = $result['data'];
+        if ($question->isIsOpen()){
+            return [
+                'error' => 'Question is open',
+                'status' => 400
+            ];
+        }
+
+        // all errors have been resolved by this point
+        $result = $this->periodService->getAllPeriodByQuestionId($question->getId());
+        if ($result['status'] != 200){
+            return $result;
+        }
+
+        return $this->periodService->createNewPeriod($question, $endTimestamp);
+    }
+
+    public function close($questionId)
+    {
+        $result = $this->getSpecificQuestion($questionId);
+        if ($result['status'] != 200){
+            return $result;
+        }
+
+        $question = $result['data'];
+        if (!$question->isIsOpen()){
+            return [
+                'error' => 'Question is closed',
+                'status' => 400
+            ];
+        }
+
+        return $this->periodService->closeByQuestionId($question->getId());
     }
 }
 

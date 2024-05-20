@@ -111,6 +111,17 @@ if (str_starts_with($endpoint, "/api")) {
         case "GET":
             $controller->indexId($questionId);
             break;
+        case "POST":
+            parse_str(file_get_contents("php://input"), $postData);
+            if (!empty($postData['is_open'])){
+                if ($postData['is_open'] == "true" && !empty($postData['end_timestamp'])){
+                    $controller->openById($questionId, $postData['end_timestamp']);
+                }
+                else if ($postData['is_open'] == "false"){
+                    $controller->closeById($questionId );
+                }
+            }
+            break;
     }
 } else if(preg_match('/^\/([A-Za-z0-9]{3})(?:|-)([A-Za-z0-9]{3})$/', $endpoint, $matches)){
     $code = $matches[1] . $matches[2];

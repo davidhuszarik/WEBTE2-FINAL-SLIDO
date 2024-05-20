@@ -17,18 +17,12 @@ require_once __DIR__ . "/../loader.php";
 class QuestionController extends Controller
 {
     private QuestionService $questionService;
-    private PeriodService $periodService;
-    private OptionService $optionService;
-    private StaticOptionService $staticOptionService;
     private LoginService $loginService;
     private UserService $userService;
 
     public function __construct()
     {
         $this->questionService = new QuestionService();
-        $this->periodService = new PeriodService();
-        $this->optionService = new OptionService();
-        $this->staticOptionService = new StaticOptionService();
         $this->loginService = new LoginService();
         $this->userService = new UserService();
     }
@@ -89,5 +83,35 @@ class QuestionController extends Controller
         }
 
         $this->render('questionView', ['question' => $result['data']]);
+    }
+
+    public function openById($questionId, string $endTimestamp)
+    {
+        try{
+            $date = new \DateTime($endTimestamp);
+        }
+        catch (\Exception $e){
+            $result = [
+                'error' => "Bad date format",
+                'status' => 400
+            ];
+            echo json_encode($result);
+            http_response_code($result['status']);
+            header("Content-Type: application/json");
+            return;
+        }
+
+        $result = $this->questionService->open($questionId, $date);
+        echo json_encode($result);
+        http_response_code($result['status']);
+        header("Content-Type: application/json");
+    }
+
+    public function closeById($questionId)
+    {
+        $result = $this->questionService->close($questionId);
+        echo json_encode($result);
+        http_response_code($result['status']);
+        header("Content-Type: application/json");
     }
 }
