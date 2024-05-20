@@ -104,6 +104,10 @@ $noQuestionsMessage = "No questions found.";
             background-color: #28a745;
             border-color: #28a745;
         }
+        .btn-green:hover {
+            background-color: #218838;
+            border-color: #218838;
+        }
     </style>
 </head>
 <body>
@@ -154,12 +158,17 @@ if (isset($users)){
     // TODO if admin
     // important not to expose other details than usename and id
     if (isset($questions) && count($questions) > 0) {
+        echo "<table class='table'>";
+        echo "<thead><tr><th>Title</th><th>Content</th></tr></thead>";
+        echo "<tbody>";
         foreach ($questions as $question) {
-            echo "<div class='question'>";
-            echo "<h2>" . htmlspecialchars($question->getTitleEn()) . "</h2>";
-            echo "<p>" . htmlspecialchars($question->getContentEn()) . "</p>";
-            echo "</div>";
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($question->getTitleEn()) . "</td>";
+            echo "<td>" . htmlspecialchars($question->getContentEn()) . "</td>";
+            echo "</tr>";
         }
+        echo "</tbody>";
+        echo "</table>";
         echo "<div style='text-align: center;'>";
         echo "<a href='#createQuestionModal' class='btn btn-green text-white' data-toggle='modal' style='border: 2px solid white;'><i class='fas fa-plus'></i> Create Question</a>";
         echo "</div>";
@@ -172,12 +181,17 @@ if (isset($users)){
 }
 else{
     if (isset($questions) && count($questions) > 0) {
+        echo "<table class='table'>";
+        echo "<thead><tr><th>Title</th><th>Content</th></tr></thead>";
+        echo "<tbody>";
         foreach ($questions as $question) {
-            echo "<div class='question'>";
-            echo "<h2>" . htmlspecialchars($question->getTitleEn()) . "</h2>";
-            echo "<p>" . htmlspecialchars($question->getContentEn()) . "</p>";
-            echo "</div>";
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($question->getTitleEn()) . "</td>";
+            echo "<td>" . htmlspecialchars($question->getContentEn()) . "</td>";
+            echo "</tr>";
         }
+        echo "</tbody>";
+        echo "</table>";
         echo "<div style='text-align: center;'>";
         echo "<a href='#createQuestionModal' class='btn btn-green text-white' data-toggle='modal' style='border: 2px solid white;'><i class='fas fa-plus'></i> Create Question</a>";
         echo "</div>";
