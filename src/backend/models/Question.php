@@ -20,7 +20,7 @@ class Question implements \JsonSerializable
 
     // Constructor
     public function __construct(int      $user_id, string $title_en, string $title_sk, string $content_en, string $content_sk,
-                                DateTime $date_time, QuestionType $question_type, bool $is_open)
+                                DateTime $date_time, QuestionType $question_type, bool $is_open = false)
     {
         $this->user_id = $user_id;
         $this->title_en = $title_en;
