@@ -71,7 +71,7 @@ class QuestionService
             $type = QuestionType::from($question_data['type']);
         } catch (UnhandledMatchError $e) {
             return [
-                'error' => "Invalid date format or question type or isOpen state",
+                'error' => "Invalid question type",
                 'status' => 400,
             ];
         }
