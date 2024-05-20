@@ -48,6 +48,10 @@ class QuestionController extends Controller
             $this->render('serverIssue');
             return;
         }
+        if($result['status'] == 404){
+            $this->render('notExist');
+            return;
+        }
         if ($result['status'] != 200){
             $this->render('serverIssue');
             return;

@@ -111,6 +111,13 @@ class QuestionService
             ];
         }
 
+        if ($user == null){
+            return [
+                'error' => "User does not exist",
+                'status' => 404,
+            ];
+        }
+
         $questionArray = $this->question_repository->getQuestionsByUserId($user->getId());
 
         if ($questionArray === null) {
