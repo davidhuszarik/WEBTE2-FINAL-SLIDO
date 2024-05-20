@@ -22,89 +22,89 @@ $noQuestionsMessage = "No questions found.";
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="index.js"></script>
-<style>
-    body {
-        background-color: #28a745;
-        font-family: Arial, sans-serif;
-        color: #333;
-        margin: 0;
-        padding: 0;
-    }
-    .question {
-        margin: 20px;
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-    }
-    .question h2 {
-        margin-bottom: 10px;
-        font-size: 20px;
-    }
-    .question p {
-        margin: 0;
-    }
-    .no-questions {
-        text-align: center;
-    }
-    .navbar {
-        background-color: #28a745 !important;
-    }
+    <style>
+        body {
+            background-color: #28a745;
+            font-family: Arial, sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .question {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .question h2 {
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+        .question p {
+            margin: 0;
+        }
+        .no-questions {
+            text-align: center;
+        }
+        .navbar {
+            background-color: #28a745 !important;
+        }
 
-    .navbar-brand {
-        color: #ffffff !important;
-        font-weight: bold;
-    }
+        .navbar-brand {
+            color: #ffffff !important;
+            font-weight: bold;
+        }
 
-    .navbar-nav .nav-link {
-        color: #ffffff !important;
-    }
-    .jumbotron {
-        background-color: #28a745;
-        color: #ffffff;
-        padding: 20px 20px;
-        text-align: center;
-        margin-bottom: 0;
-        flex: 1;
-        min-height: 70vh;
-    }
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
+        }
+        .jumbotron {
+            background-color: #28a745;
+            color: #ffffff;
+            padding: 20px 20px;
+            text-align: center;
+            margin-bottom: 0;
+            flex: 1;
+            min-height: 70vh;
+        }
 
-    h2 {
-        margin-bottom: 30px;
-    }
+        h2 {
+            margin-bottom: 30px;
+        }
 
-    .footer {
-        background-color: #28a745;
-        color: #ffffff;
-        text-align: center;
-        padding: 20px 0;
-    }
+        .footer {
+            background-color: #28a745;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px 0;
+        }
 
-    .divider {
-        border-bottom: 1px solid #dee2e6;
-    }
+        .divider {
+            border-bottom: 1px solid #dee2e6;
+        }
 
-    #logo {
-        max-width: 75px;
-    }
+        #logo {
+            max-width: 75px;
+        }
 
-    .cursor-pointer {
-        cursor: pointer;
-    }
+        .cursor-pointer {
+            cursor: pointer;
+        }
 
-    #particles-js {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-    }
-    .btn-green {
-        background-color: #28a745;
-        border-color: #28a745;
-    }
-</style>
+        #particles-js {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .btn-green {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
@@ -153,8 +153,8 @@ if (isset($users)){
     if (isset($questions) && count($questions) > 0) {
         foreach ($questions as $question) {
             echo "<div class='question'>";
-            echo "<h2>" . htmlspecialchars($question['title']) . "</h2>";
-            echo "<p>" . htmlspecialchars($question['content']) . "</p>";
+            echo "<h2>" . htmlspecialchars($question->getTitleEn()) . "</h2>";
+            echo "<p>" . htmlspecialchars($question->getContentEn()) . "</p>";
             echo "</div>";
         }
     } else {
@@ -168,8 +168,8 @@ else{
     if (isset($questions) && count($questions) > 0) {
         foreach ($questions as $question) {
             echo "<div class='question'>";
-            echo "<h2>" . htmlspecialchars($question['title']) . "</h2>";
-            echo "<p>" . htmlspecialchars($question['content']) . "</p>";
+            echo "<h2>" . htmlspecialchars($question->getTitleEn()) . "</h2>";
+            echo "<p>" . htmlspecialchars($question->getContentEn()) . "</p>";
             echo "</div>";
         }
     } else {
@@ -241,68 +241,48 @@ else{
         var contentEn = document.getElementById('content-en').value;
         var contentSk = document.getElementById('content-sk').value;
         var type = document.getElementById('type').value;
-        var questionData = {
-            'title_en': titleEn,
-            'title_sk': titleSk,
-            'content_en': contentEn,
-            'content_sk': contentSk,
-            'type': type
-        };
+        // var questionData = {
+        //     'title_en': titleEn,
+        //     'title_sk': titleSk,
+        //     'content_en': contentEn,
+        //     'content_sk': contentSk,
+        //     'type': type
+        // };
         // Send questionData
         $.ajax({
             url: window.location.href,
             type: 'POST',
-            data: questionData,
-            success: function(response) {
-                // handle success
-                console.log(response);
+            contentType: 'application/json',
+            data: {
+                question: {
+                    user_id: 1,
+                    title_en: "asd",
+                    title_sk: "asd",
+                    content_en: "asdasdasd",
+                    content_sk: "asdasdasd",
+                    type: "single_choice"
+                },
+                options: [
+                    {
+                        value_en: "asdasdasdasd",
+                        value_sk: "asdasdasd",
+                        is_correct: true
+                    },
+                    {
+                        value_en: "sjeriuesrg",
+                        value_sk: "diuius",
+                        is_correct: false
+                    }
+                ]
             },
-            error: function(error) {
-                // handle error
-                console.log(error);
+            success: function(response) {
+                console.log('Response:', response);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log('Error:', textStatus, errorThrown);
             }
         });
     });
 </script>
 </body>
 </html>
-
-<script>
-
-    /*
-    $.ajax({
-        url: window.location.href,
-        type: 'POST',
-        contentType: 'application/json',
-        data: {
-            question: {
-                user_id: 1,
-                title_en: "asd",
-                title_sk: "asd",
-                content_en: "asdasdasd",
-                content_sk: "asdasdasd",
-                type: "single_choice"
-            },
-            options: [
-                {
-                    value_en: "asdasdasdasd",
-                    value_sk: "asdasdasd",
-                    is_correct: true
-                },
-                {
-                    value_en: "sjeriuesrg",
-                    value_sk: "diuius",
-                    is_correct: false
-                }
-            ]
-        },
-        success: function(response) {
-            console.log('Response:', response);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log('Error:', textStatus, errorThrown);
-        }
-    });
-     */
-
-</script>
