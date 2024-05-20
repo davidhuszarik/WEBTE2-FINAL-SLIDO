@@ -37,5 +37,17 @@ echo json_encode(["questions" => $question]);
             console.log('Error:', textStatus, errorThrown);
         }
     });
+
+    $.ajax({
+        url: window.location.href,
+        type: 'DELETE',
+        contentType: 'application/json',
+        success: function(response) {
+            console.log('Response:', response);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log('Error:', textStatus, errorThrown);
+        }
+    });
     */
 </script>
