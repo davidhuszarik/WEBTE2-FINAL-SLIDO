@@ -250,24 +250,19 @@ class QuestionService
 
         $question = $question['data'];
 
-        $options_array = $this->option_repository->getOptionsByQuestionId($question->getId());
+        $options_array = [];
+        if ($question->getQuestionType() == QuestionType::Multi_choice || $question->getQuestionType() == QuestionType::Single_choice){
+            $options_array = $this->option_repository->getOptionsByQuestionId($question->getId());
+        }
+        return [
+            'message' => "Successfully retrieved question and its options",
+            'status' => 200,
+            'data' => [
+                'question' => $question,
+                'options' => $options_array
+            ]
+        ];
 
-        if($options_array === null) {
-            return [
-                'error' => "Failed to get options",
-                'status' => 500,
-            ];
-        }
-        else{
-            return [
-                'message' => "Successfully retrieved question and its options",
-                'status' => 200,
-                'data' => [
-                    'question' => $question,
-                    'options' => $options_array
-                ]
-            ];
-        }
     }
 
     /* Delete specific question */

@@ -71,7 +71,7 @@ class QuestionController extends Controller
 
     public function indexId(int $id)
     {
-        $result = $this->questionService->getSpecificQuestion($id);
+        $result = $this->questionService->getSpecificQuestionWithOptions($id);
 
         if ($result['status'] == 403){
             $this->render('restricted');
