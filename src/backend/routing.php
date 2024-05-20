@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . "/loader.php";
 
+use Controllers\Controller;
 use Controllers\AuthController;
 use Controllers\AnswerController;
 use Controllers\QuestionController;
@@ -165,11 +166,7 @@ if (str_starts_with($endpoint, "/api")) {
             break;
     }
 } else {
-    http_response_code(404);
-    $response = new stdClass();
-    $response->code = 404;
-    $response->message = "Not Found";
-    $response->description = "The request resource was not found on this server";
-    echo json_encode($response);
+    $controller = new Controller();
+    $controller->render("notExist");
 }
 ?>
