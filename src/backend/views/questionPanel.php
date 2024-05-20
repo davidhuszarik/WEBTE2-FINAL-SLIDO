@@ -175,7 +175,7 @@ if (isset($users)){
         echo "<thead><tr><th>Title</th><th>Content</th></tr></thead>";
         echo "<tbody>";
         foreach ($questions as $question) {
-            echo "<tr>";
+            echo "<tr value='{$question->getId()}'>";
             echo "<td>" . htmlspecialchars($question->getTitleEn()) . "</td>";
             echo "<td>" . htmlspecialchars($question->getContentEn()) . "</td>";
             echo "</tr>";
@@ -185,6 +185,19 @@ if (isset($users)){
         echo "<div style='text-align: center;'>";
         echo "<a href='#createQuestionModal' class='btn btn-green text-white' data-toggle='modal' style='border: 2px solid white;'><i class='fas fa-plus'></i> Create Question</a>";
         echo "</div>";
+        ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', (event) => {
+                const rows = document.querySelectorAll('table tbody tr');
+
+                rows.forEach(row => {
+                    row.addEventListener('click', (event) => {
+                        window.location.replace("/question/" + event.target.parentElement.getAttribute("value"));
+                    });
+                });
+            });
+        </script>
+<?php
     } else {
         echo "<div class='question no-questions'>";
         echo "<h2>" . $noQuestionsMessage . "</h2>";
