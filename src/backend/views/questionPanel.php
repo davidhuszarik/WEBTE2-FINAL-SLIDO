@@ -121,13 +121,13 @@ $noQuestionsMessage = "No questions found.";
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" id="homeLink" href="index.php"><i class="fas fa-home"></i> Home</a>
+                    <a class="nav-link" id="homeLink" href="/"><i class="fas fa-home"></i> Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="loginLink" href="login"><i class="fas fa-info-circle"></i> Login</a>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link" id="logoutLink" style="display: none;" onclick="logout()">Logout</button>
+                    <a class="nav-link" id="logoutLink" style="display: none;" onclick="logout()">Logout</button>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="panelLink" style="display: none;" href="panel.php"><i
@@ -335,13 +335,13 @@ else{
                 // TODO implement options
                 options: [
                     {
-                        value_en: "asdasdasdasd",
-                        value_sk: "asdasdasd",
+                        value_en: "test_en",
+                        value_sk: "test_sk",
                         is_correct: true
                     },
                     {
-                        value_en: "sjeriuesrg",
-                        value_sk: "diuius",
+                        value_en: "test_en",
+                        value_sk: "test_sk",
                         is_correct: false
                     }
                 ]
@@ -415,6 +415,8 @@ else{
                             icon: 'success',
                             confirmButtonColor: '#3085d6',
                             confirmButtonText: 'OK'
+                        }).then(function () {
+                            window.location.href = 'index.php';
                         });
                         $.ajax({
                             url: 'login',
@@ -452,6 +454,8 @@ else{
                         icon: 'success',
                         confirmButtonColor: '#3085d6',
                         confirmButtonText: 'OK'
+                    }).then(function () {
+                        window.location.href = 'index.php';
                     });
                     $.ajax({
                         url: '/login',
