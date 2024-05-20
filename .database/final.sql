@@ -195,6 +195,10 @@ ALTER TABLE `user`
     ADD UNIQUE KEY `username` (`username`),
     ADD UNIQUE KEY `email_unique` (`email`);
 
+INSERT INTO `user` (`id`, `username`, `email`, `hashed_password`, `salt`, `google_2FA_secret`, `access_token`, `last_access`, `role`) VALUES
+                                                                                                                                          (1, 'admin', 'admin@stuba.sk', '$2y$10$fclbUZoiValIDPQ.QPRXc.fxrBPga9DB4.6kmJ0RA42ASl08OrlvO', '57214338', '', '9031e997ee61230101b308d6124e6b9d', '2024-05-20 21:30:06', 'admin'),
+                                                                                                                                          (2, 'testUser', 'test@stuba.sk', '$2y$10$6kPDHTAcWPvl4dMDYGm4HO9BNPNTz2inprANTBi0f5RwX1lnltm76', '244233d4', '', '0fd89143c7cf140939b5ed85ec61c174', '2024-05-20 21:22:47', 'user');
+
 --
 -- AUTO_INCREMENT for dumped tables
 --
