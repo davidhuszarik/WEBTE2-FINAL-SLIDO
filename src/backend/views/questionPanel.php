@@ -12,16 +12,11 @@ $noQuestionsMessage = "No questions found.";
     <title id="pageTitle">ODILS | Questions</title>
 
     <link rel="icon" type="image/x-icon" href="images/favicon.png">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script src="index.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
+    
     <style>
         body {
             background-color: #28a745;
@@ -108,9 +103,27 @@ $noQuestionsMessage = "No questions found.";
             background-color: #218838;
             border-color: #218838;
         }
+        #questionsTable_wrapper{
+            padding: 40px;
+        }
+        #questionsTable th{
+            border-bottom: 2px solid #218838;
+            background-color: rgba(80, 215, 90, 0.5);
+        }
+        #questionsTable tr:nth-child(even) {
+            border-bottom: 2px solid #218838;
+            background-color: rgba(80, 215, 90, 0.1);
+        }
+        .dataTables_info{
+            color: #ffffff;
+        }
+        .page-item.active .page-link {
+            background-color: rgba(80, 215, 90, 0.4) !important;
+            border-color: rgba(80, 215, 90, 0.4) !important;
+        }
     </style>
 </head>
-<body>
+<body onload="translateToSlovak(); localStorage.setItem('selectedLanguage', 'slovak');">
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
         <a class="navbar-brand"><img id="logo" src="images/logo.png" alt="ODILS | Questions"></a>
@@ -158,7 +171,7 @@ if (isset($users)){
     // TODO if admin
     // important not to expose other details than usename and id
     if (isset($questions) && count($questions) > 0) {
-        echo "<table class='table'>";
+        echo "<table id='questionsTable' class='table dt-responsive nowrap' style='width:100%; background-color: white;'>";
         echo "<thead><tr><th>Title</th><th>Content</th></tr></thead>";
         echo "<tbody>";
         foreach ($questions as $question) {
@@ -181,7 +194,7 @@ if (isset($users)){
 }
 else{
     if (isset($questions) && count($questions) > 0) {
-        echo "<table class='table'>";
+        echo "<table id='questionsTable' class='table dt-responsive nowrap' style='width:100%; background-color: white;'>";
         echo "<thead><tr><th>Title</th><th>Content</th></tr></thead>";
         echo "<tbody>";
         foreach ($questions as $question) {
@@ -247,31 +260,39 @@ else{
     </div>
   </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+<script src="index.js"></script>
 <script>
+    $(document).ready(function() {
+        let table = $('#questionsTable').DataTable({
+            responsive: true,
+            autoWidth: false,
+            lengthChange: false,
+            paging: true,
+            searching: true,
+            info: true,
+            order: [[0, 'asc']],
+            language: {
+                search: "_INPUT_",
+                searchPlaceholder: "Search"
+            }
+        });
+    });
     // TODO implement translation
     function translateToEnglish() {
         document.getElementById('pageTitle').innerText = 'ODILS |> Questions';
         document.getElementById('homeLink').innerHTML = '<i class="fas fa-home"></i> Home';
         document.getElementById('loginLink').innerHTML = "<i class=\"fas fa-angle-double-right\"></i> Login";
         document.getElementById('navbarDropdown').innerHTML = '<i class="fas fa-globe"></i> Language';
-        document.getElementById('invitationHeading').innerHTML = '👋 <strong>Hey, got an invitation code?</strong>';
         document.getElementById('logoutLink').innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
-        document.getElementById('invitationMessage').innerText = 'Enter the invitation code you received to connect as visitor';
-        document.getElementById('connectText').innerText = 'Connect';
-        document.getElementById('whatsGoodHeading').innerHTML = "🔍 <strong>WHAT IS ODILS?</strong>";
-        document.getElementById('whatsGoodText1').innerHTML = '<strong>ODILS</strong> is an easy to use Q&A and polling platform for meetings and events. It allows meeting and event organizers to crowdsource top questions to drive meaningful conversations, engage participants with live polls and capture valuable event data.';
-        document.getElementById('whatsGoodText2').innerHTML = 'Through <strong>ODILS</strong>, attendees transcend the role of mere spectators, becoming integral contributors to the discourse.';
-        document.getElementById('needHelpText').innerText = 'Do you need help?';
-        document.getElementById('documentationText').innerHTML = 'You can find our GitHub here: <a href="https://github.com/davidhuszarik/WEBTE2-FINAL-SLIDO">GITHUB</a>';
-        document.getElementById('logoText').innerHTML = 'The logo was created using <a href="https://textcraft.net/" target="_blank">textcraft.net</a>';
-        document.getElementById('phoneIconText').innerHTML = 'the phone icon is from <a href="https://www.pexels.com" target="_blank">pexels.com</a>';
-        document.getElementById('aiText').innerHTML = 'and some parts of the text were generated by <a href="https://chatgpt.com/" target="_blank">chatgpt.com</a>';
-        document.getElementById('rightsReservedText').innerText = 'All rights reserved.';
-        document.getElementById('schoolProjectText').innerText = 'This is a school project and is not affiliated with Cisco/Slido.';
         document.getElementById('englishIndicator').style.display = 'inline';
         document.getElementById('slovakIndicator').style.display = 'none';
-        document.getElementById('invitationCode').placeholder = 'Enter your 6-digit code'
         localStorage.setItem('selectedLanguage', 'english');
         let credentials = sessionStorage.getItem('credentials');
         if (credentials) {
@@ -286,23 +307,9 @@ else{
         document.getElementById('homeLink').innerHTML = '<i class="fas fa-home"></i> Domov';
         document.getElementById('loginLink').innerHTML = "<i class=\"fas fa-angle-double-right\"></i> Prihlásenie";
         document.getElementById('navbarDropdown').innerHTML = '<i class="fas fa-globe"></i> Jazyk';
-        document.getElementById('invitationHeading').innerHTML = '👋 <strong>Ahoj, máš pozvánkový kód?</strong>';
         document.getElementById('logoutLink').innerHTML = '<i class="fas fa-sign-out-alt"></i> Odhlásenie';
-        document.getElementById('invitationMessage').innerText = 'Zadaj pozvánkový kód, ktorý si dostal, aby si sa mohol pripojiť ako návštevník.';
-        document.getElementById('connectText').innerText = 'Pripojiť sa';
-        document.getElementById('whatsGoodHeading').innerHTML = "🔍 <strong>ČO JE ODILS?</strong>";
-        document.getElementById('whatsGoodText1').innerHTML = '<strong>ODILS</strong> je jednoduchá a intuitívna platforma pre otázky a ankety, určená pre stretnutia a udalosti. Organizátorom stretnutí a podujatí umožňuje získať najlepšie otázky od účastníkov a viesť zmysluplné rozhovory, zapájať účastníkov živými anketami a zbierať cenné údaje o udalostiach.';
-        document.getElementById('whatsGoodText2').innerHTML = 'Prostredníctvom <strong>ODILS</strong> účastníci presahujú úlohu iba divákov, stávajú sa neoddeliteľnými prispievateľmi k diskurzu.';
-        document.getElementById('needHelpText').innerText = 'Potrebuješ pomoc?';
-        document.getElementById('documentationText').innerHTML = 'Náš github nájdeš tu: <a href="https://github.com/davidhuszarik/WEBTE2-FINAL-SLIDO">GITHUB</a>';
-        document.getElementById('logoText').innerHTML = 'Logo bolo vytvorené pomocou <a href="https://textcraft.net/" target="_blank">textcraft.net</a>';
-        document.getElementById('phoneIconText').innerHTML = 'ikona telefónu je od <a href="https://www.pexels.com" target="_blank">pexels.com</a>';
-        document.getElementById('aiText').innerHTML = 'a niektoré časti textu boli vygenerované pomocou <a href="https://chatgpt.com/" target="_blank">chatgpt.com</a>';
-        document.getElementById('rightsReservedText').innerText = 'Všetky práva vyhradené.';
-        document.getElementById('schoolProjectText').innerText = 'Toto je školský projekt a nie je spätý s Cisco/Slido.';
         document.getElementById('slovakIndicator').style.display = 'inline';
         document.getElementById('englishIndicator').style.display = 'none';
-        document.getElementById('invitationCode').placeholder = 'Zadaj tvôj 6 miestný kód'
         localStorage.setItem('selectedLanguage', 'slovak');
         let credentials = sessionStorage.getItem('credentials');
         if (credentials) {
@@ -356,23 +363,23 @@ else{
     });
 
     // FIXME - this is annoying
-    // document.getElementById('englishLink').addEventListener('click', function () {
-    //     translateToEnglish();
-    //     Swal.fire({
-    //         icon: 'success',
-    //         title: 'Language changed',
-    //         text: 'The language has been successfully changed.'
-    //     });
-    // });
+    document.getElementById('englishLink').addEventListener('click', function () {
+        translateToEnglish();
+        // Swal.fire({
+        //     icon: 'success',
+        //     title: 'Language changed',
+        //     text: 'The language has been successfully changed.'
+        // });
+    });
 
-    // document.getElementById('slovakLink').addEventListener('click', function () {
-    //     translateToSlovak();
-    //     Swal.fire({
-    //         icon: 'success',
-    //         title: 'Jazyk zmenený',
-    //         text: 'Jazyk bol úspešne zmenený.'
-    //     });
-    // });
+    document.getElementById('slovakLink').addEventListener('click', function () {
+        translateToSlovak();
+        // Swal.fire({
+        //     icon: 'success',
+        //     title: 'Jazyk zmenený',
+        //     text: 'Jazyk bol úspešne zmenený.'
+        // });
+    });
 
     function checkSavedLanguage() {
         let savedLanguage = localStorage.getItem('selectedLanguage');
@@ -463,8 +470,6 @@ else{
             });
         }
     }
-    document.getElementById('englishLink').addEventListener('click', translateToEnglish);
-    document.getElementById('slovakLink').addEventListener('click', translateToSlovak);
 </script>
 </body>
 </html>
