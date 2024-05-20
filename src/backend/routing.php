@@ -122,6 +122,9 @@ if (str_starts_with($endpoint, "/api")) {
                 }
             }
             break;
+        case "DELETE":
+            $controller->deleteById($questionId);
+            break;
     }
 } else if(preg_match('/^\/([A-Za-z0-9]{3})(?:|-)([A-Za-z0-9]{3})$/', $endpoint, $matches)){
     $code = $matches[1] . $matches[2];

@@ -118,4 +118,18 @@ class QuestionController extends Controller
         http_response_code($result['status']);
         header("Content-Type: application/json");
     }
+
+    public function deleteById(int $id)
+    {
+        $result = $this->questionService->deleteSpecificQuestion($id);
+
+        if ($result['status'] != 200){
+            $this->render('serverIssue');
+            return;
+        }
+
+        echo json_encode($result);
+        http_response_code($result['status']);
+        header("Content-Type: application/json");
+    }
 }
