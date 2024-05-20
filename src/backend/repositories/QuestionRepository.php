@@ -24,8 +24,8 @@ class QuestionRepository extends Repository
     // Create new Question
     public function createNewQuestion(Question $new_question)
     {
-        $query = "INSERT INTO questions (user_id, title_en, title_sk, content_en, content_sk, creation_date, type, is_open)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO questions (user_id, title_en, title_sk, content_en, content_sk, creation_date, type)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $this->connection->prepare($query);
         if (!$stmt) {
@@ -40,9 +40,8 @@ class QuestionRepository extends Repository
         $content_sk = $new_question->getContentSk();
         $creation_date = $new_question->getCreationDate()->format("Y-m-d H:i:s");
         $type = $new_question->getQuestionType()->value;
-        $is_open = $new_question->isIsOpen() ? 1 : 0;
 
-        $stmt->bind_param("issssssi",
+        $stmt->bind_param("issssss",
             $user_id,
             $title_en,
             $title_sk,
@@ -50,7 +49,6 @@ class QuestionRepository extends Repository
             $content_sk,
             $creation_date,
             $type,
-            $is_open,
         );
 
         if ($stmt->execute()) {
@@ -268,7 +266,7 @@ WHERE
 FROM
     questions q
 WHERE
-    quser_id = ?";
+    q.user_id = ?";
 
         $stmt = $this->connection->prepare($query);
         if (!$stmt) {

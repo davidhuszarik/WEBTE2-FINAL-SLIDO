@@ -48,6 +48,10 @@ class QuestionController extends Controller
             $this->render('serverIssue');
             return;
         }
+        if($result['status'] == 404){
+            $this->render('notExist');
+            return;
+        }
         if ($result['status'] != 200){
             $this->render('serverIssue');
             return;
@@ -110,6 +114,22 @@ class QuestionController extends Controller
     public function closeById($questionId)
     {
         $result = $this->questionService->close($questionId);
+        echo json_encode($result);
+        http_response_code($result['status']);
+        header("Content-Type: application/json");
+    }
+
+    public function deleteById(int $id)
+    {
+        $result = $this->questionService->deleteSpecificQuestion($id);
+        echo json_encode($result);
+        http_response_code($result['status']);
+        header("Content-Type: application/json");
+    }
+
+    public function createNewQuestion(?int $userId, array $data)
+    {
+        $result = $this->questionService->createNewQuestionForGivenUserId($userId, $data);
         echo json_encode($result);
         http_response_code($result['status']);
         header("Content-Type: application/json");

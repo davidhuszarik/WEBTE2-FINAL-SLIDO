@@ -3,6 +3,7 @@
 namespace Services;
 require_once __DIR__ . "/../loader.php";
 
+use Models\Option;
 use Models\User;
 use Models\UserRole;
 use Models\Question;
@@ -30,7 +31,7 @@ class QuestionService
     }
 
     /* Create new question */
-    public function createNewQuestionForGivenUser(?string $username, array $question_data)
+    public function createNewQuestionForGivenUserId(?int $userId, array $data)
     {
         if(session_status() === PHP_SESSION_NONE){
             session_start();
@@ -46,9 +47,19 @@ class QuestionService
         $user = $_SESSION['user'];
         $user_role = $user->getUserRole();
 
+        /**
+         * @var Array $option_data;
+         */
+        if (!isset($data['options'])|| empty($data['question'])){
+            return [
+                'error' => 'Missing required fields',
+                'status' => 400
+            ];
+        }
+        $option_data = $data['options'];
+        $question_data = $data['question'];
         if (empty($question_data['title_en']) || empty($question_data['title_sk']) || empty($question_data['content_en'])
-            || empty($question_data['content_sk']) || empty($question_data['creation_date']) || empty($question_data['type'])
-            || empty($question_data['is_open'])) {
+            || empty($question_data['content_sk']) || empty($question_data['type'])) {
             return [
                 'error' => 'Missing required fields',
                 'status' => 400
@@ -56,9 +67,8 @@ class QuestionService
         }
 
         try {
-            $creation_date = new DateTime($question_data['creation_date']);
+            $creation_date = new DateTime();
             $type = QuestionType::from($question_data['type']);
-            $isOpen = (bool) $question_data['is_open'];
         } catch (UnhandledMatchError $e) {
             return [
                 'error' => "Invalid date format or question type or isOpen state",
@@ -66,36 +76,77 @@ class QuestionService
             ];
         }
 
+        $options = null;
+        if ($type == QuestionType::Single_choice || $type == QuestionType::Multi_choice) {
+            if (empty($option_data)) {
+                return [
+                    'error' => 'Missing required fields',
+                    'status' => 400
+                ];
+            }
+            $options = [];
+            foreach ($option_data as $option) {
+                try {
+                    if ($option['is_correct'] != "true" && $option['is_correct'] != "false"){
+                        return [
+                            'error' => 'Bad is_correct format',
+                            'status' => 400
+                        ];
+                    }
+                    $options[] = new Option(0, $option['value_en'], $option['value_sk'], $option['is_correct']);
+                } catch (\Exception $e) {
+                    return [
+                        'error' => 'Missing required fields',
+                        'status' => 400
+                    ];
+                }
+            }
+        }
+
         $new_question_id = null;
 
+        $this->question_repository->startTransaction();
         // admin creates question for himself
-        if ($user_role === UserRole::Admin && $username === null) {
+        if ($user_role === UserRole::Admin && $userId === null) {
             $new_question = new Question($user->getId(), $question_data['title_en'], $question_data['title_sk'], $question_data['content_en'],
-                $question_data['content_sk'], $creation_date, $type, $isOpen);
+                $question_data['content_sk'], $creation_date, $type);
             $new_question_id = $this->question_repository->createNewQuestion($new_question);
-        } elseif ($user_role === UserRole::Admin && $username != null) { // Admin creates for specific user
-            $specific_user = $this->user_repository->getByUsername($username);
+        } elseif ($user_role === UserRole::Admin && $userId != null) { // Admin creates for specific user
+            $specific_user = $this->user_repository->getUserById($userId);
             $new_question = new Question($specific_user->getId(), $question_data['title_en'], $question_data['title_sk'], $question_data['content_en'],
-                $question_data['content_sk'], $creation_date, $type, $isOpen);
+                $question_data['content_sk'], $creation_date, $type);
             $new_question_id = $this->question_repository->createNewQuestion($new_question);
-        } elseif ($user_role === UserRole::User && $username === null) { // User creates question for himself
+        } elseif ($user_role === UserRole::User && $userId === null) { // User creates question for himself
             $new_question = new Question($user->getId(), $question_data['title_en'], $question_data['title_sk'], $question_data['content_en'],
-                $question_data['content_sk'], $creation_date, $type, $isOpen);
+                $question_data['content_sk'], $creation_date, $type);
             $new_question_id = $this->question_repository->createNewQuestion($new_question);
         }
 
         if ($new_question_id === null) {
+            $this->question_repository->rollbackTransaction();
             return [
                 'error' => 'Problem creating new question',
                 'status' => 500
             ];
-        } else {
-            return [
-                'message' => 'Question created successfully',
-                'status' => 201,
-                'question_id' => $new_question_id
-            ];
         }
+        if ($options != null){
+            foreach ($options as $option){
+                $option->setQuestionId($new_question_id);
+                if ($this->option_repository->createNewOption($option) == -1){
+                    $this->question_repository->rollbackTransaction();
+                    return [
+                        'error' => 'Problem creating new question',
+                        'status' => 500
+                    ];
+                }
+            }
+        }
+        $this->question_repository->commitTransaction();
+        return [
+            'message' => 'Question created successfully',
+            'status' => 201,
+            'question_id' => $new_question_id
+        ];
     }
 
     public function getAllQuestionsForGivenUserById(int $userId, User $requester)
@@ -108,6 +159,13 @@ class QuestionService
             return [
                 'error' => "Not authorized",
                 'status' => 403,
+            ];
+        }
+
+        if ($user == null){
+            return [
+                'error' => "User does not exist",
+                'status' => 404,
             ];
         }
 
@@ -226,7 +284,7 @@ class QuestionService
         if ($deleted) {
             return [
                 'message' => "Successfully deleted question",
-                'status' => 200,
+                'status' => 204,
             ];
         } else {
             return [
