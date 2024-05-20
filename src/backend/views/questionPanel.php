@@ -12,16 +12,11 @@ $noQuestionsMessage = "No questions found.";
     <title id="pageTitle">ODILS | Questions</title>
 
     <link rel="icon" type="image/x-icon" href="images/favicon.png">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script src="index.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
+    
     <style>
         body {
             background-color: #28a745;
@@ -108,6 +103,24 @@ $noQuestionsMessage = "No questions found.";
             background-color: #218838;
             border-color: #218838;
         }
+        #questionsTable_wrapper{
+            padding: 40px;
+        }
+        #questionsTable th{
+            border-bottom: 2px solid #218838;
+            background-color: rgba(80, 215, 90, 0.5);
+        }
+        #questionsTable tr:nth-child(even) {
+            border-bottom: 2px solid #218838;
+            background-color: rgba(80, 215, 90, 0.1);
+        }
+        .dataTables_info{
+            color: #ffffff;
+        }
+        .page-item.active .page-link {
+            background-color: rgba(80, 215, 90, 0.4) !important;
+            border-color: rgba(80, 215, 90, 0.4) !important;
+        }
     </style>
 </head>
 <body>
@@ -158,7 +171,7 @@ if (isset($users)){
     // TODO if admin
     // important not to expose other details than usename and id
     if (isset($questions) && count($questions) > 0) {
-        echo "<table class='table'>";
+        echo "<table id='questionsTable' class='table dt-responsive nowrap' style='width:100%; background-color: white;'>";
         echo "<thead><tr><th>Title</th><th>Content</th></tr></thead>";
         echo "<tbody>";
         foreach ($questions as $question) {
@@ -181,7 +194,7 @@ if (isset($users)){
 }
 else{
     if (isset($questions) && count($questions) > 0) {
-        echo "<table class='table'>";
+        echo "<table id='questionsTable' class='table dt-responsive nowrap' style='width:100%; background-color: white;'>";
         echo "<thead><tr><th>Title</th><th>Content</th></tr></thead>";
         echo "<tbody>";
         foreach ($questions as $question) {
@@ -247,8 +260,30 @@ else{
     </div>
   </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+<script src="index.js"></script>
 <script>
+    $(document).ready(function() {
+        let table = $('#questionsTable').DataTable({
+            responsive: true,
+            autoWidth: false,
+            lengthChange: false,
+            paging: true,
+            searching: true,
+            info: true,
+            order: [[0, 'asc']],
+            language: {
+                search: "_INPUT_",
+                searchPlaceholder: "Search"
+            }
+        });
+    });
     // TODO implement translation
     function translateToEnglish() {
         document.getElementById('pageTitle').innerText = 'ODILS |> Questions';
