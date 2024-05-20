@@ -136,6 +136,14 @@ if (str_starts_with($endpoint, "/api")) {
             $controller->deleteById($questionId);
             break;
     }
+} else if (preg_match('/^\/question\/clone\/(\d+)$/', $endpoint, $matches)){
+    $controller = new QuestionController();
+    $questionId = $matches[1];
+    switch ($method){
+        case "POST":
+            $controller->cloneQuestion($questionId);
+            break;
+    }
 } else if(preg_match('/^\/([A-Za-z0-9]{3})(?:|-)([A-Za-z0-9]{3})$/', $endpoint, $matches)){
     $code = $matches[1] . $matches[2];
     $controller = new AnswerController();

@@ -455,6 +455,44 @@ class QuestionService
 
         return $this->periodService->closeByQuestionId($question->getId());
     }
+
+    public function clone($question_id)
+    {
+        $result = $this->getSpecificQuestionWithOptions($question_id);
+        if ($result['status'] != 200){
+            return $result;
+        }
+
+        $question = $result['data']['question'];
+        $options = $result['data']['options'];
+
+        $this->question_repository->startTransaction();
+        $cloned_id = $this->question_repository->createNewQuestion($question);
+        if ($cloned_id == -1){
+            $this->question_repository->rollbackTransaction();
+            return [
+                'error' => 'Question could not be cloned',
+                'status' => 500
+            ];
+        }
+        foreach ($options as $option){
+            $option->setQuestionId($cloned_id);
+            if($this->option_repository->createNewOption($option) == -1){
+                $this->question_repository->rollbackTransaction();
+                return [
+                    'error' => 'Question could not be cloned',
+                    'status' => 500
+                ];
+            }
+        }
+        $this->question_repository->commitTransaction();
+
+        return [
+            'message' => 'Question created successfully',
+            'status' => 201,
+            'question_id' => $cloned_id
+        ];
+    }
 }
 
 ?>
