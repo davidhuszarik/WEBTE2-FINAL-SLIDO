@@ -123,7 +123,7 @@ $noQuestionsMessage = "No questions found.";
         }
     </style>
 </head>
-<body>
+<body onload="translateToSlovak(); localStorage.setItem('selectedLanguage', 'slovak');">
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
         <a class="navbar-brand"><img id="logo" src="images/logo.png" alt="ODILS | Questions"></a>
@@ -363,23 +363,23 @@ else{
     });
 
     // FIXME - this is annoying
-    // document.getElementById('englishLink').addEventListener('click', function () {
-    //     translateToEnglish();
-    //     Swal.fire({
-    //         icon: 'success',
-    //         title: 'Language changed',
-    //         text: 'The language has been successfully changed.'
-    //     });
-    // });
+    document.getElementById('englishLink').addEventListener('click', function () {
+        translateToEnglish();
+        // Swal.fire({
+        //     icon: 'success',
+        //     title: 'Language changed',
+        //     text: 'The language has been successfully changed.'
+        // });
+    });
 
-    // document.getElementById('slovakLink').addEventListener('click', function () {
-    //     translateToSlovak();
-    //     Swal.fire({
-    //         icon: 'success',
-    //         title: 'Jazyk zmenený',
-    //         text: 'Jazyk bol úspešne zmenený.'
-    //     });
-    // });
+    document.getElementById('slovakLink').addEventListener('click', function () {
+        translateToSlovak();
+        // Swal.fire({
+        //     icon: 'success',
+        //     title: 'Jazyk zmenený',
+        //     text: 'Jazyk bol úspešne zmenený.'
+        // });
+    });
 
     function checkSavedLanguage() {
         let savedLanguage = localStorage.getItem('selectedLanguage');
@@ -470,8 +470,6 @@ else{
             });
         }
     }
-    document.getElementById('englishLink').addEventListener('click', translateToEnglish);
-    document.getElementById('slovakLink').addEventListener('click', translateToSlovak);
 </script>
 </body>
 </html>
