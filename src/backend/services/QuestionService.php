@@ -233,7 +233,7 @@ class QuestionService
         if ($deleted) {
             return [
                 'message' => "Successfully deleted question",
-                'status' => 200,
+                'status' => 204,
             ];
         } else {
             return [
