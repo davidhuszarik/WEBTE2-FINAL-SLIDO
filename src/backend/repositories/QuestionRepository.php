@@ -234,7 +234,7 @@ WHERE
             if ($stmt->affected_rows === 0) {
                 error_log("No rows updated, possibly because the question ID does not exist");
                 $stmt->close();
-                return false;
+                return true;
             }
             $stmt->close();
             return true;

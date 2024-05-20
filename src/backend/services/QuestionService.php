@@ -387,7 +387,7 @@ class QuestionService
         if(!$update_result){
             $this->question_repository->rollbackTransaction();
             return [
-                'error' => "Failed to updated question",
+                'error' => "Failed to update question",
                 'status' => 500
             ];
 
